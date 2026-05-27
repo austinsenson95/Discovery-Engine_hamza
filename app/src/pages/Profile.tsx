@@ -138,8 +138,8 @@ export default function Profile() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
             >
-              <div className="w-20 h-20 rounded-full bg-[#FFF0EB] flex items-center justify-center mb-2">
-                <span className="font-serif text-[28px] text-[#F05A28]">JD</span>
+              <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               </div>
               <button className="text-sm text-[#F05A28] underline mb-4">Change Photo</button>
               <h2 className="font-serif text-2xl text-[#0A0A0A]">John Doe</h2>

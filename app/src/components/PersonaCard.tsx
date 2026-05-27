@@ -21,9 +21,6 @@ export default function PersonaCard({ persona, onConfirm }: PersonaCardProps) {
       <div className="p-8">
         {/* Header */}
         <div className="flex items-start gap-5 mb-6">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-2xl font-serif flex-shrink-0">
-            {persona.avatar}
-          </div>
           <div className="flex-1">
             <h3 className="text-2xl font-serif text-gray-900">{persona.name}</h3>
             <p className="text-sm text-gray-500 mt-1">{persona.ageRange} years old</p>
