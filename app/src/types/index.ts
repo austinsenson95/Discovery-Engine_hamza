@@ -66,6 +66,7 @@ export interface RoadmapPhase {
 export interface Blueprint {
   id: string;
   userId: string;
+  title?: string;
   status: 'in_progress' | 'completed';
   currentStep: number;
   progress: number;

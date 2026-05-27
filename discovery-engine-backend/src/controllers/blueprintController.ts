@@ -3,14 +3,18 @@
  * DISCOVERY ENGINE - Blueprint Controller
  * ============================================================================
  * Handles all blueprint-related API endpoints:
- *   - GET /api/blueprint           → Get current blueprint state
- *   - POST /api/blueprint/niche    → Submit niche form, get 3 AI niche options
- *   - POST /api/blueprint/audience → Generate audience persona
- *   - POST /api/blueprint/problems → Save selected audience problems
- *   - POST /api/blueprint/program-name  → Generate program name suggestions
- *   - POST /api/blueprint/pricing       → Generate pricing strategy
-   *   - POST /api/blueprint/roadmap       → Generate 12-week roadmap + PDF
- *   - GET /api/blueprint/pdf/:id   → Download generated PDF
+ *   - GET  /api/blueprint              → Get current blueprint state
+ *   - GET  /api/blueprint/all          → Get all blueprints for user
+ *   - POST /api/blueprint              → Create a new blueprint
+ *   - PUT  /api/blueprint/:id          → Update a blueprint
+ *   - DELETE /api/blueprint/:id        → Delete a blueprint
+ *   - POST /api/blueprint/niche        → Submit niche form, get 3 AI niche options
+ *   - POST /api/blueprint/audience     → Generate audience persona
+ *   - POST /api/blueprint/problems     → Save selected audience problems
+ *   - POST /api/blueprint/program-name → Generate program name suggestions
+ *   - POST /api/blueprint/pricing      → Generate pricing strategy
+ *   - POST /api/blueprint/roadmap      → Generate 12-week roadmap + PDF
+ *   - GET  /api/blueprint/pdf/:id      → Download generated PDF
  * ============================================================================
  */
 
@@ -30,10 +34,14 @@ import {
   dummyUser,
 } from '../data/dummyData';
 import { Blueprint, NicheOption } from '../types';
-
-// In-memory blueprint store (replace with database)
-const blueprintStore = new Map<string, Blueprint>();
-blueprintStore.set(dummyBlueprint.id, { ...dummyBlueprint });
+import {
+  getBlueprintsByUser,
+  getBlueprintById,
+  createBlueprint,
+  updateBlueprint,
+  deleteBlueprint,
+  addActivity,
+} from '../db/blueprintRepository';
 
 /**
  * Utility: Send standardized success response
@@ -68,9 +76,9 @@ export const getBlueprint = async (
   try {
     console.log(`[Blueprint] GET /api/blueprint — fetching blueprint`);
 
-    // TODO: Get userId from authenticated request (JWT token)
     const userId = dummyUser.id;
-    const blueprint = blueprintStore.get('bp_001') || {
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0] || {
       ...dummyBlueprint,
       userId,
     };
@@ -82,9 +90,115 @@ export const getBlueprint = async (
 };
 
 // ---------------------------------------------------------------------------
+// GET /api/blueprint/all
+// ---------------------------------------------------------------------------
+export const getAllBlueprints = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log(`[Blueprint] GET /api/blueprint/all — fetching all blueprints`);
+    const userId = dummyUser.id;
+    const blueprints = getBlueprintsByUser(userId);
+    sendSuccess(res, blueprints);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
+// POST /api/blueprint
+// ---------------------------------------------------------------------------
+export const createNewBlueprint = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log(`[Blueprint] POST /api/blueprint — creating new blueprint`);
+    const userId = dummyUser.id;
+    const id = `bp_${Date.now()}`;
+    const now = new Date();
+
+    const blueprint: Blueprint = {
+      id,
+      userId,
+      status: 'in_progress',
+      currentStep: 1,
+      progress: 0,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    createBlueprint(blueprint);
+    addActivity({
+      userId,
+      blueprintId: id,
+      title: 'Created new blueprint',
+      description: 'Started a new coaching blueprint',
+      type: 'blueprint',
+      createdAt: now,
+    });
+
+    sendSuccess(res, blueprint, 201);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
+// PUT /api/blueprint/:id
+// ---------------------------------------------------------------------------
+export const updateBlueprintById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    console.log(`[Blueprint] PUT /api/blueprint/${id} — updating blueprint`);
+
+    const updates = req.body as Partial<Blueprint>;
+    const updated = updateBlueprint(id, updates);
+
+    if (!updated) {
+      res.status(404).json({ success: false, message: 'Blueprint not found' });
+      return;
+    }
+
+    sendSuccess(res, updated);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
+// DELETE /api/blueprint/:id
+// ---------------------------------------------------------------------------
+export const deleteBlueprintById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    console.log(`[Blueprint] DELETE /api/blueprint/${id} — deleting blueprint`);
+
+    const success = deleteBlueprint(id);
+    if (!success) {
+      res.status(404).json({ success: false, message: 'Blueprint not found' });
+      return;
+    }
+
+    sendSuccess(res, { deleted: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
 // POST /api/blueprint/niche
-// Request: { skills: string, experience: string, passions: string }
-// Response: { niches: NicheOption[], creditsDeducted: number }
 // ---------------------------------------------------------------------------
 export const submitNiche = async (
   req: Request,
@@ -96,10 +210,8 @@ export const submitNiche = async (
     const { skills, experience, passions } = req.body;
     console.log(`[Blueprint] POST /api/blueprint/niche — skills="${skills}"`);
 
-    // TODO: Get userId from authenticated request
     const userId = dummyUser.id;
 
-    // Check if user has enough credits
     const canAfford = await creditService.hasEnoughCredits(userId, 'niche');
     if (!canAfford) {
       res.status(402).json({
@@ -109,34 +221,58 @@ export const submitNiche = async (
       return;
     }
 
-    // Generate niche recommendations via LLM (or dummy data for now)
     const niches = await llmService.generateNicheRecommendations(
       skills,
       experience,
       passions
     );
 
-    // Deduct credits
     const { deducted, remaining } = await creditService.deductCredits(
       userId,
       'niche'
     );
 
-    // Update blueprint in store
-    const blueprint = blueprintStore.get('bp_001') || {
-      ...dummyBlueprint,
+    // Find or create blueprint
+    const blueprints = getBlueprintsByUser(userId);
+    let blueprint = blueprints[0];
+    if (!blueprint) {
+      blueprint = {
+        id: `bp_${Date.now()}`,
+        userId,
+        status: 'in_progress',
+        currentStep: 2,
+        progress: 20,
+        niche: {
+          selectedNiche: niches[0],
+          skills,
+          experience,
+          passions,
+        },
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      createBlueprint(blueprint);
+    } else {
+      blueprint = updateBlueprint(blueprint.id, {
+        currentStep: 2,
+        progress: 20,
+        niche: {
+          selectedNiche: niches[0],
+          skills,
+          experience,
+          passions,
+        },
+      })!;
+    }
+
+    addActivity({
       userId,
-    };
-    blueprint.niche = {
-      selectedNiche: niches[0], // Default to first; user can change
-      skills,
-      experience,
-      passions,
-    };
-    blueprint.currentStep = 2;
-    blueprint.progress = 20;
-    blueprint.updatedAt = new Date();
-    blueprintStore.set(blueprint.id, blueprint);
+      blueprintId: blueprint.id,
+      title: 'Completed Niche Discovery',
+      description: `Found niche: ${niches[0].name}`,
+      type: 'niche',
+      createdAt: new Date(),
+    });
 
     const processingTime = Date.now() - startTime;
     console.log(`[Blueprint] Niche generation complete in ${processingTime}ms`);
@@ -158,8 +294,6 @@ export const submitNiche = async (
 
 // ---------------------------------------------------------------------------
 // POST /api/blueprint/audience
-// Request: { nicheId: string }
-// Response: { persona: Persona, creditsDeducted: number }
 // ---------------------------------------------------------------------------
 export const generateAudience = async (
   req: Request,
@@ -173,7 +307,6 @@ export const generateAudience = async (
 
     const userId = dummyUser.id;
 
-    // Check credits
     const canAfford = await creditService.hasEnoughCredits(userId, 'audience');
     if (!canAfford) {
       res.status(402).json({
@@ -183,29 +316,34 @@ export const generateAudience = async (
       return;
     }
 
-    // Get the selected niche name
-    const blueprint = blueprintStore.get('bp_001');
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
     const nicheName =
       blueprint?.niche?.selectedNiche?.name ||
       dummyNiches.find((n) => n.id === nicheId)?.name ||
       'Career Coaching';
 
-    // Generate persona via LLM
     const persona = await llmService.generatePersona(nicheName);
 
-    // Deduct credits
     const { deducted, remaining } = await creditService.deductCredits(
       userId,
       'audience'
     );
 
-    // Update blueprint
     if (blueprint) {
-      blueprint.audience = { persona };
-      blueprint.currentStep = 3;
-      blueprint.progress = 35;
-      blueprint.updatedAt = new Date();
-      blueprintStore.set(blueprint.id, blueprint);
+      updateBlueprint(blueprint.id, {
+        audience: { persona },
+        currentStep: 3,
+        progress: 35,
+      });
+      addActivity({
+        userId,
+        blueprintId: blueprint.id,
+        title: 'Completed Audience Mapping',
+        description: `Persona: ${persona.name}`,
+        type: 'audience',
+        createdAt: new Date(),
+      });
     }
 
     const processingTime = Date.now() - startTime;
@@ -228,8 +366,6 @@ export const generateAudience = async (
 
 // ---------------------------------------------------------------------------
 // POST /api/blueprint/problems
-// Request: { selectedProblems: string[] }
-// Response: { success: boolean, problems: string[] }
 // ---------------------------------------------------------------------------
 export const submitProblems = async (
   req: Request,
@@ -243,23 +379,21 @@ export const submitProblems = async (
     const userId = dummyUser.id;
     const problems = selectedProblems || dummySelectedProblems;
 
-    // Update blueprint
-    const blueprint = blueprintStore.get('bp_001');
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
     if (blueprint) {
-      if (!blueprint.program) {
-        blueprint.program = {
-          selectedProblems: problems,
-          selectedName: dummyProgramNames[1], // Default to AI recommended
-          pricing: dummyPricing,
-          modules: dummyModules,
-        };
-      } else {
-        blueprint.program.selectedProblems = problems;
-      }
-      blueprint.currentStep = 4;
-      blueprint.progress = 45;
-      blueprint.updatedAt = new Date();
-      blueprintStore.set(blueprint.id, blueprint);
+      const program = blueprint.program || {
+        selectedProblems: problems,
+        selectedName: dummyProgramNames[1],
+        pricing: dummyPricing,
+        modules: dummyModules,
+      };
+      program.selectedProblems = problems;
+      updateBlueprint(blueprint.id, {
+        program,
+        currentStep: 4,
+        progress: 45,
+      });
     }
 
     sendSuccess(res, { success: true, problems });
@@ -270,8 +404,6 @@ export const submitProblems = async (
 
 // ---------------------------------------------------------------------------
 // POST /api/blueprint/program-name
-// Request: { nicheId?: string, personaId?: string }
-// Response: { names: ProgramName[], creditsDeducted: number }
 // ---------------------------------------------------------------------------
 export const generateProgramNames = async (
   req: Request,
@@ -284,7 +416,6 @@ export const generateProgramNames = async (
 
     const userId = dummyUser.id;
 
-    // Check credits
     const canAfford = await creditService.hasEnoughCredits(userId, 'program');
     if (!canAfford) {
       res.status(402).json({
@@ -294,26 +425,25 @@ export const generateProgramNames = async (
       return;
     }
 
-    const blueprint = blueprintStore.get('bp_001');
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
     const niche = blueprint?.niche?.selectedNiche?.name || 'Career Coaching';
     const persona = blueprint?.audience?.persona?.name || 'Target Audience';
 
-    // Generate program names via LLM
     const names = await llmService.generateProgramNames(niche, persona);
 
-    // Deduct credits
     const { deducted, remaining } = await creditService.deductCredits(
       userId,
       'program'
     );
 
-    // Update blueprint
     if (blueprint && blueprint.program) {
       blueprint.program.selectedName = names.find((n) => n.isAiRecommended) || names[0];
-      blueprint.currentStep = 5;
-      blueprint.progress = 55;
-      blueprint.updatedAt = new Date();
-      blueprintStore.set(blueprint.id, blueprint);
+      updateBlueprint(blueprint.id, {
+        program: blueprint.program,
+        currentStep: 5,
+        progress: 55,
+      });
     }
 
     const processingTime = Date.now() - startTime;
@@ -336,8 +466,6 @@ export const generateProgramNames = async (
 
 // ---------------------------------------------------------------------------
 // POST /api/blueprint/pricing
-// Request: { programId?: string }
-// Response: { pricing: PricingStrategy, creditsDeducted: number }
 // ---------------------------------------------------------------------------
 export const generatePricing = async (
   req: Request,
@@ -350,7 +478,6 @@ export const generatePricing = async (
 
     const userId = dummyUser.id;
 
-    // Check credits
     const canAfford = await creditService.hasEnoughCredits(userId, 'pricing');
     if (!canAfford) {
       res.status(402).json({
@@ -360,27 +487,26 @@ export const generatePricing = async (
       return;
     }
 
-    const blueprint = blueprintStore.get('bp_001');
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
     const persona = blueprint?.audience?.persona || dummyPersona;
     const niche = blueprint?.niche?.selectedNiche?.name || 'Career Coaching';
     const program = blueprint?.program?.selectedName?.name || 'Coaching Program';
 
-    // Generate pricing via LLM
     const pricing = await llmService.generatePricing(persona, niche, program);
 
-    // Deduct credits
     const { deducted, remaining } = await creditService.deductCredits(
       userId,
       'pricing'
     );
 
-    // Update blueprint
     if (blueprint && blueprint.program) {
       blueprint.program.pricing = pricing;
-      blueprint.currentStep = 6;
-      blueprint.progress = 70;
-      blueprint.updatedAt = new Date();
-      blueprintStore.set(blueprint.id, blueprint);
+      updateBlueprint(blueprint.id, {
+        program: blueprint.program,
+        currentStep: 6,
+        progress: 70,
+      });
     }
 
     const processingTime = Date.now() - startTime;
@@ -403,8 +529,6 @@ export const generatePricing = async (
 
 // ---------------------------------------------------------------------------
 // POST /api/blueprint/roadmap
-// Request: { blueprintId?: string }
-// Response: { roadmap: { phases }, pdfUrl: string, creditsDeducted: number }
 // ---------------------------------------------------------------------------
 export const generateRoadmap = async (
   req: Request,
@@ -417,7 +541,6 @@ export const generateRoadmap = async (
 
     const userId = dummyUser.id;
 
-    // Check credits
     const canAfford = await creditService.hasEnoughCredits(userId, 'roadmap');
     if (!canAfford) {
       res.status(402).json({
@@ -427,8 +550,8 @@ export const generateRoadmap = async (
       return;
     }
 
-    // Get current blueprint
-    const blueprint = blueprintStore.get('bp_001');
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
     if (!blueprint) {
       res.status(404).json({
         success: false,
@@ -437,36 +560,40 @@ export const generateRoadmap = async (
       return;
     }
 
-    // Generate roadmap via LLM
     const { phases } = await llmService.generateRoadmap(blueprint);
-
-    // Generate PDF
     const pdfUrl = await pdfService.generateBlueprintPDF(blueprint);
 
-    // Deduct credits
     const { deducted, remaining } = await creditService.deductCredits(
       userId,
       'roadmap'
     );
 
-    // Update blueprint — mark as completed
-    blueprint.roadmap = {
-      phases,
-      pdfUrl,
-      completedAt: new Date(),
-    };
-    blueprint.status = 'completed';
-    blueprint.currentStep = 7;
-    blueprint.progress = 100;
-    blueprint.updatedAt = new Date();
-    blueprintStore.set(blueprint.id, blueprint);
+    const updated = updateBlueprint(blueprint.id, {
+      roadmap: {
+        phases,
+        pdfUrl,
+        completedAt: new Date(),
+      },
+      status: 'completed',
+      currentStep: 7,
+      progress: 100,
+    });
+
+    addActivity({
+      userId,
+      blueprintId: blueprint.id,
+      title: 'Completed Blueprint Roadmap',
+      description: '12-week roadmap generated and PDF ready',
+      type: 'roadmap',
+      createdAt: new Date(),
+    });
 
     const processingTime = Date.now() - startTime;
     console.log(`[Blueprint] Roadmap + PDF generated in ${processingTime}ms`);
 
     sendSuccess(
       res,
-      { roadmap: { phases }, pdfUrl },
+      { phases, pdfUrl, blueprint: updated },
       200,
       {
         creditsDeducted: deducted,
@@ -481,7 +608,6 @@ export const generateRoadmap = async (
 
 // ---------------------------------------------------------------------------
 // GET /api/blueprint/pdf/:id
-// Download the generated blueprint PDF
 // ---------------------------------------------------------------------------
 export const downloadPDF = async (
   req: Request,
@@ -492,7 +618,7 @@ export const downloadPDF = async (
     const id = req.params.id as string;
     console.log(`[Blueprint] GET /api/blueprint/pdf/${id} — downloading PDF`);
 
-    const blueprint = blueprintStore.get(id);
+    const blueprint = getBlueprintById(id);
     if (!blueprint) {
       res.status(404).json({
         success: false,
@@ -501,10 +627,8 @@ export const downloadPDF = async (
       return;
     }
 
-    // Generate PDF buffer
     const pdfBuffer = await pdfService.streamPDF(id);
 
-    // Set headers for PDF download
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader(
       'Content-Disposition',

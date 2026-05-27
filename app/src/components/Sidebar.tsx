@@ -20,7 +20,7 @@ const navSections = [
   {
     label: 'MY STUFF',
     items: [
-      { to: '/journey', icon: Route, label: 'Journey' },
+      { to: '/journey', icon: Route, label: 'MY Journey' },
       { to: '/profile', icon: User, label: 'Profile' },
     ],
   },

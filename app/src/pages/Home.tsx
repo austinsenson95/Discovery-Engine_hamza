@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import {
   Compass,
   Check,
@@ -14,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { mockUser } from '@/lib/mockData';
+import { fetchAllBlueprints } from '@/lib/api';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -63,12 +65,17 @@ const featureList = [
   { icon: Target, text: '12-Week Launch Roadmap' },
 ];
 
-const wizardSteps: WizardStep[] = [
-  { id: '1', number: 1, title: 'Niche Discovery', status: 'completed' },
-  { id: '2', number: 2, title: 'Audience Mapping', status: 'completed' },
-  { id: '3', number: 3, title: 'Program Builder', status: 'in_progress' },
-  { id: '4', number: 4, title: 'Roadmap', status: 'upcoming' },
-];
+const getWizardSteps = (bp?: any): WizardStep[] => {
+  const step = bp?.currentStep || 1;
+  return [
+    { id: '1', number: 1, title: 'Niche Discovery', status: step >= 2 ? 'completed' : step === 1 ? 'in_progress' : 'upcoming' },
+    { id: '2', number: 2, title: 'Audience Mapping', status: step >= 3 ? 'completed' : step === 2 ? 'in_progress' : 'upcoming' },
+    { id: '3', number: 3, title: 'Program Builder', status: step >= 6 ? 'completed' : step >= 3 && step <= 5 ? 'in_progress' : 'upcoming' },
+    { id: '4', number: 4, title: 'Roadmap', status: step >= 7 ? 'completed' : step === 6 ? 'in_progress' : 'upcoming' },
+  ];
+};
+
+
 
 const activityItems: ActivityItem[] = [
   { id: '1', title: 'Started Program Builder', timeAgo: '2 hours ago', color: 'orange' },
@@ -173,9 +180,35 @@ function ProgressRing({
 export default function Home() {
   const navigate = useNavigate();
   const userName = mockUser.name.split(' ')[0]; // "John"
-  const creditsUsed = 30;
   const creditsTotal = mockUser.credits;
+  const [blueprints, setBlueprints] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchAllBlueprints().then(setBlueprints).catch(() => setBlueprints([]));
+  }, []);
+
+  const latest = blueprints[0];
+  const creditsUsed = latest
+    ? (latest.currentStep >= 2 ? 10 : 0) +
+      (latest.currentStep >= 3 ? 10 : 0) +
+      (latest.currentStep >= 5 ? 5 : 0) +
+      (latest.currentStep >= 6 ? 5 : 0) +
+      (latest.currentStep >= 7 ? 15 : 0)
+    : 0;
   const creditsRemaining = creditsTotal - creditsUsed;
+
+  const currentStepNumber = latest
+    ? latest.currentStep >= 7
+      ? 4
+      : latest.currentStep >= 3
+        ? 3
+        : latest.currentStep >= 2
+          ? 2
+          : 1
+    : 1;
+  const currentStepTitle = ['Niche Discovery', 'Audience Mapping', 'Program Builder', 'Roadmap'][currentStepNumber - 1];
+  const progressPercent = latest ? latest.progress : 0;
+  const statusText = latest ? (latest.status === 'completed' ? 'Completed' : 'In Progress') : 'Not Started';
 
   return (
     <div className="min-h-full w-full bg-[#FAFAFA] px-4 py-8 sm:px-6 lg:px-8">
@@ -259,9 +292,9 @@ export default function Home() {
 
               {/* Right side — Progress Ring */}
               <div className="flex flex-col items-center gap-4 lg:pl-8">
-                <ProgressRing progress={25} />
+                <ProgressRing progress={progressPercent} />
                 <p className="text-center text-xs text-gray-400">
-                  25% complete
+                  {progressPercent}% complete
                 </p>
               </div>
             </div>
@@ -309,13 +342,13 @@ export default function Home() {
                     Current Step
                   </p>
                   <p className="mt-0.5 text-xl font-bold text-[#0A0A0A]">
-                    Step 1 <span className="text-sm font-normal text-gray-400">of 4</span>
+                    Step {currentStepNumber} <span className="text-sm font-normal text-gray-400">of 4</span>
                   </p>
                 </div>
               </div>
               <div className="mt-3">
                 <span className="inline-block rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-[#F05A28]">
-                  Niche Discovery
+                  {currentStepTitle}
                 </span>
               </div>
             </motion.div>
@@ -362,13 +395,13 @@ export default function Home() {
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                     Blueprint Status
                   </p>
-                  <p className="mt-0.5 text-xl font-bold text-[#0A0A0A]">In Progress</p>
+                  <p className="mt-0.5 text-xl font-bold text-[#0A0A0A]">{statusText}</p>
                 </div>
               </div>
               <div className="mt-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-600">
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-                  Active
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${statusText === 'Completed' ? 'bg-emerald-50 text-emerald-600' : statusText === 'Not Started' ? 'bg-gray-100 text-gray-500' : 'bg-amber-50 text-amber-600'}`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${statusText === 'Completed' ? 'bg-emerald-500' : statusText === 'Not Started' ? 'bg-gray-400' : 'bg-amber-500'}`} />
+                  {statusText === 'Completed' ? 'Done' : statusText === 'Not Started' ? 'Start Now' : 'Active'}
                 </span>
               </div>
             </motion.div>
@@ -391,7 +424,7 @@ export default function Home() {
             Progress <span className="italic text-[#F05A28]">Overview</span>
           </h3>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {wizardSteps.map((step) => (
+            {getWizardSteps(latest).map((step) => (
               <motion.div
                 key={step.id}
                 whileHover={{ scale: 1.01 }}

@@ -76,12 +76,14 @@ export interface RoadmapPhase {
   phase: number;
   weeks: string;
   title: string;
+  color: string;
   items: { week: string; tasks: string[] }[];
 }
 
 export interface Blueprint {
   id: string;
   userId: string;
+  title?: string;
   status: 'in_progress' | 'completed';
   currentStep: number;
   progress: number;
@@ -133,4 +135,14 @@ export interface CreditDeductions {
   program: number;
   pricing: number;
   roadmap: number;
+}
+
+export interface ActivityItem {
+  id: string;
+  userId: string;
+  blueprintId?: string;
+  title: string;
+  description?: string;
+  type: 'blueprint' | 'niche' | 'audience' | 'program' | 'roadmap' | 'credit';
+  createdAt: Date;
 }

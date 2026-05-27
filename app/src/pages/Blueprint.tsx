@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import {
@@ -16,6 +16,10 @@ import {
   Target,
   Rocket,
   Crown,
+  RefreshCcw,
+  Calendar,
+  Phone,
+  ChevronLeft,
 } from 'lucide-react';
 import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase } from '@/types';
 import Stepper from '@/components/Stepper';
@@ -30,10 +34,35 @@ import {
   generatePricing,
   generateRoadmap,
   fetchProblems,
+  fetchBlueprint,
+  fetchAllBlueprints,
+  updateBlueprint,
+  deleteBlueprint,
 } from '@/lib/api';
 import { mockNiches, mockPersona, mockProgramNames, mockPricing, mockRoadmap, mockProblems } from '@/lib/mockData';
 
 const steps = ['Niche Discovery', 'Audience Mapping', 'Program Builder', 'Roadmap & PDF'];
+
+const coachingCategories = [
+  '💪 Fitness & Health',
+  '💼 Business & Career',
+  '🎓 Education & Skills',
+  '🧘 Yoga & Mindfulness',
+  '💰 Personal Finance',
+  '👨‍👩‍👧 Parenting',
+  '🎨 Creative Arts',
+  '💻 Technology',
+  '🗣️ Communication',
+  '🏠 Life Coaching',
+  '🎵 Music & Performing Arts',
+  '📸 Photography & Video',
+  '🍳 Cooking & Nutrition',
+  '🧠 Mental Health',
+  '📱 Digital Marketing',
+  '🏋️ Sports Coaching',
+  '✈️ Travel & Lifestyle',
+  '🌿 Ayurveda & Naturopathy',
+];
 
 const stepVariants = {
   enter: (direction: number) => ({
@@ -136,10 +165,8 @@ export default function Blueprint() {
   const [roadmap, setRoadmap] = useState<RoadmapPhase[]>([]);
   const [credits, setCredits] = useState(100);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
-
-  // Suppress unused variable warnings for state tracked but not rendered
-  void selectedProgramName;
-  void credits;
+  const [blueprintId, setBlueprintId] = useState<string | null>(null);
+  const [showBooking, setShowBooking] = useState(false);
 
   const { toasts, removeToast, success, info } = useToast();
 
@@ -148,6 +175,56 @@ export default function Blueprint() {
   const expTags = ['10+ years corporate', 'Built teams from scratch', 'Managed P&L', 'Career pivots'];
   const passionTags = ['Helping others grow', 'Teaching', 'Building communities', 'Writing'];
 
+  // Suppress unused variable warnings for state tracked but not rendered
+  void selectedProgramName;
+  void credits;
+  void skillTags;
+  void expTags;
+  void passionTags;
+
+  // Load existing blueprint on mount
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const all = await fetchAllBlueprints();
+        const latest = all[0];
+        if (latest && latest.status === 'in_progress') {
+          setBlueprintId(latest.id);
+          if (latest.currentStep > 1) {
+            // Restore step based on backend currentStep
+            const restoredStep = Math.min(latest.currentStep, 4);
+            setStep(restoredStep <= 3 ? restoredStep : 4);
+            if (latest.currentStep >= 3 && latest.currentStep <= 6) {
+              setSubStep(latest.currentStep - 2); // 3->1, 4->2, 5->3
+            }
+            if (latest.niche) {
+              setSkills(latest.niche.skills);
+              setExperience(latest.niche.experience);
+              setPassions(latest.niche.passions);
+              setSelectedNiche(latest.niche.selectedNiche);
+              setNicheOptions([latest.niche.selectedNiche]);
+            }
+            if (latest.audience) {
+              setPersona(latest.audience.persona);
+            }
+            if (latest.program) {
+              setSelectedProblems(latest.program.selectedProblems || []);
+              setSelectedProgramName(latest.program.selectedName);
+              if (latest.program.pricing) setPricing(latest.program.pricing);
+            }
+            if (latest.roadmap) {
+              setRoadmap(latest.roadmap.phases);
+              setPdfDownloaded(true);
+            }
+          }
+        }
+      } catch {
+        // Ignore load errors
+      }
+    };
+    load();
+  }, []);
+
   const handleTagClick = (setter: React.Dispatch<React.SetStateAction<string>>, current: string, tag: string) => {
     setter(current ? `${current}, ${tag}` : tag);
   };
@@ -155,6 +232,36 @@ export default function Blueprint() {
   const goToStep = (targetStep: number) => {
     setDirection(targetStep > step ? 1 : -1);
     setStep(targetStep);
+  };
+
+  const handleReset = async () => {
+    if (blueprintId) {
+      try { await deleteBlueprint(blueprintId); } catch { /* ignore */ }
+    }
+    setStep(1);
+    setSubStep(1);
+    setDirection(-1);
+    setNicheOptions([]);
+    setSelectedNiche(null);
+    setPersona(null);
+    setProblems([]);
+    setSelectedProblems([]);
+    setProgramNames([]);
+    setSelectedProgramName(null);
+    setPricing(null);
+    setRoadmap([]);
+    setPdfDownloaded(false);
+    setShowBooking(false);
+    setSkills('');
+    setExperience('');
+    setPassions('');
+    setBlueprintId(null);
+    info('Blueprint progress has been reset. Start fresh!');
+  };
+
+  const handleCategoryClick = (category: string) => {
+    const clean = category.replace(/^[\p{Emoji}\uFE0F]+\s*/u, '');
+    setPassions(prev => prev ? `${prev}, ${clean}` : clean);
   };
 
   // ─── Step 1: Submit Niche Form ───
@@ -167,16 +274,25 @@ export default function Blueprint() {
     try {
       const result = await submitNicheForm({ skills, experience, passions });
       setNicheOptions(result.niches);
+      setBlueprintId(result.blueprint.id);
       setCredits(prev => prev - result.creditsDeducted);
     } catch {
-      // Use mock data as fallback
       setNicheOptions(mockNiches);
     }
     setLoading(false);
   };
 
-  const handleSelectNiche = (niche: NicheOption) => {
+  const handleSelectNiche = async (niche: NicheOption) => {
     setSelectedNiche(niche);
+    if (blueprintId) {
+      try {
+        await updateBlueprint(blueprintId, {
+          niche: { selectedNiche: niche, skills, experience, passions },
+          currentStep: 2,
+          progress: 20,
+        });
+      } catch { /* ignore */ }
+    }
     goToStep(2);
   };
 
@@ -196,6 +312,15 @@ export default function Blueprint() {
   const handleConfirmPersona = async () => {
     goToStep(3);
     setSubStep(1);
+    if (blueprintId) {
+      try {
+        await updateBlueprint(blueprintId, {
+          audience: { persona: persona || mockPersona },
+          currentStep: 3,
+          progress: 35,
+        });
+      } catch { /* ignore */ }
+    }
     setLoading(true);
     try {
       const fetchedProblems = await fetchProblems();
@@ -219,6 +344,18 @@ export default function Blueprint() {
       return;
     }
     setSubStep(2);
+    if (blueprintId) {
+      try {
+        const bp = await fetchBlueprint();
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: mockProgramNames[1], pricing: mockPricing, modules: [] };
+        program.selectedProblems = selectedProblems;
+        await updateBlueprint(blueprintId, {
+          program,
+          currentStep: 4,
+          progress: 45,
+        });
+      } catch { /* ignore */ }
+    }
     setLoading(true);
     try {
       const result = await generateProgramNames();
@@ -234,6 +371,18 @@ export default function Blueprint() {
   const handleSelectProgramName = async (name: ProgramName) => {
     setSelectedProgramName(name);
     setSubStep(3);
+    if (blueprintId) {
+      try {
+        const bp = await fetchBlueprint();
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: name, pricing: mockPricing, modules: [] };
+        program.selectedName = name;
+        await updateBlueprint(blueprintId, {
+          program,
+          currentStep: 5,
+          progress: 55,
+        });
+      } catch { /* ignore */ }
+    }
     setLoading(true);
     try {
       const result = await generatePricing();
@@ -248,6 +397,18 @@ export default function Blueprint() {
   // ─── Step 3c: Continue to Roadmap ───
   const handleContinueToRoadmap = async () => {
     goToStep(4);
+    if (blueprintId) {
+      try {
+        const bp = await fetchBlueprint();
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
+        if (pricing) program.pricing = pricing;
+        await updateBlueprint(blueprintId, {
+          program,
+          currentStep: 6,
+          progress: 70,
+        });
+      } catch { /* ignore */ }
+    }
     setLoading(true);
     try {
       const result = await generateRoadmap();
@@ -260,7 +421,7 @@ export default function Blueprint() {
   };
 
   // ─── Step 4: Download PDF ───
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     confetti({
       particleCount: 80,
       spread: 70,
@@ -268,6 +429,15 @@ export default function Blueprint() {
       colors: ['#F97316', '#22C55E', '#FFD700', '#FFFFFF'],
     });
     setPdfDownloaded(true);
+    if (blueprintId) {
+      try {
+        await updateBlueprint(blueprintId, {
+          status: 'completed',
+          currentStep: 7,
+          progress: 100,
+        });
+      } catch { /* ignore */ }
+    }
     success('Your Blueprint PDF is ready for download!');
   };
 
@@ -275,6 +445,20 @@ export default function Blueprint() {
   return (
     <div className="min-h-full">
       <ToastContainer toasts={toasts} onRemove={removeToast} />
+
+      {/* Top bar with Reset */}
+      <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={handleReset}
+          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-orange-500 transition-colors"
+        >
+          <RefreshCcw className="w-4 h-4" />
+          Reset Blueprint
+        </button>
+        {blueprintId && (
+          <span className="text-xs text-gray-400">ID: {blueprintId}</span>
+        )}
+      </div>
 
       {/* Stepper */}
       <Stepper currentStep={step} steps={steps} />
@@ -313,6 +497,24 @@ export default function Blueprint() {
                     animate={{ opacity: 1, y: 0 }}
                     className="max-w-2xl mx-auto space-y-6"
                   >
+                    {/* Category Quick Select */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Choose Your Coaching Domain
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        {coachingCategories.map(cat => (
+                          <button
+                            key={cat}
+                            onClick={() => handleCategoryClick(cat)}
+                            className="text-xs font-medium border border-gray-200 rounded-full px-3 py-1.5 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 transition-all active:scale-95 bg-white text-gray-600"
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
                     {/* Skills */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -614,7 +816,14 @@ export default function Blueprint() {
                         </div>
 
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-500">
+                          <button
+                            onClick={() => goToStep(2)}
+                            className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                            Back to Audience
+                          </button>
+                          <p className="text-sm text-gray-500 hidden sm:block">
                             <span className="font-semibold text-gray-700">{selectedProblems.length}</span> of {problems.length} selected
                           </p>
                           <motion.button
@@ -686,19 +895,28 @@ export default function Blueprint() {
                             </motion.div>
                           ))}
                         </div>
-                        <button
-                          onClick={() => {
-                            setLoading(true);
-                            setTimeout(() => {
-                              setProgramNames([...mockProgramNames].sort(() => Math.random() - 0.5));
-                              setLoading(false);
-                            }, 1500);
-                          }}
-                          className="text-sm text-orange-500 hover:text-orange-600 flex items-center gap-1 mx-auto transition-colors"
-                        >
-                          <RotateCw className="w-3.5 h-3.5" />
-                          Regenerate Names
-                        </button>
+                        <div className="flex items-center justify-between">
+                          <button
+                            onClick={() => setSubStep(1)}
+                            className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                            Back to Problems
+                          </button>
+                          <button
+                            onClick={() => {
+                              setLoading(true);
+                              setTimeout(() => {
+                                setProgramNames([...mockProgramNames].sort(() => Math.random() - 0.5));
+                                setLoading(false);
+                              }, 1500);
+                            }}
+                            className="text-sm text-orange-500 hover:text-orange-600 flex items-center gap-1 transition-colors"
+                          >
+                            <RotateCw className="w-3.5 h-3.5" />
+                            Regenerate Names
+                          </button>
+                        </div>
                       </>
                     )}
                   </motion.div>
@@ -805,7 +1023,14 @@ export default function Blueprint() {
                       <p className="text-sm font-semibold text-gray-700">{pricing.sweetSpotRange}</p>
                     </div>
 
-                    <div className="text-center">
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={() => setSubStep(2)}
+                        className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        Back to Naming
+                      </button>
                       <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
@@ -842,6 +1067,15 @@ export default function Blueprint() {
                   </div>
                 ) : (
                   <>
+                    <div className="flex items-center justify-between mb-6">
+                      <button
+                        onClick={() => { setStep(3); setSubStep(3); }}
+                        className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        Back to Pricing
+                      </button>
+                    </div>
                     {/* Roadmap Timeline */}
                     <div className="relative mb-10">
                       {roadmap.map((phase, phaseIndex) => (
@@ -941,7 +1175,7 @@ export default function Blueprint() {
                         </motion.button>
                         <p className="text-sm text-gray-400 mt-4">This will deduct 15 credits</p>
                       </motion.div>
-                    ) : (
+                    ) : !showBooking ? (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -954,28 +1188,58 @@ export default function Blueprint() {
                         <p className="text-gray-500 text-sm">
                           Check your downloads folder for <span className="font-medium text-gray-700">My-Coaching-Blueprint.pdf</span>
                         </p>
-                        <motion.button
-                          whileHover={{ scale: 1.03 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => {
-                            setStep(1);
-                            setSubStep(1);
-                            setNicheOptions([]);
-                            setSelectedNiche(null);
-                            setPersona(null);
-                            setProblems([]);
-                            setSelectedProblems([]);
-                            setProgramNames([]);
-                            setSelectedProgramName(null);
-                            setPricing(null);
-                            setRoadmap([]);
-                            setPdfDownloaded(false);
-                          }}
-                          className="mt-6 py-3 px-6 bg-[#0A0A0A] text-white text-sm font-semibold rounded-full hover:bg-[#141414] transition-colors inline-flex items-center gap-2"
-                        >
-                          <RotateCw className="w-4 h-4" />
-                          Start Over
-                        </motion.button>
+                        <div className="flex items-center justify-center gap-4 mt-6">
+                          <motion.button
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => setShowBooking(true)}
+                            className="py-3 px-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange inline-flex items-center gap-2"
+                          >
+                            <Calendar className="w-4 h-4" />
+                            Book a Strategy Call
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleReset}
+                            className="py-3 px-6 bg-[#0A0A0A] text-white text-sm font-semibold rounded-full hover:bg-[#141414] transition-colors inline-flex items-center gap-2"
+                          >
+                            <RotateCw className="w-4 h-4" />
+                            Start Over
+                          </motion.button>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="max-w-xl mx-auto text-center py-8"
+                      >
+                        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-8">
+                          <Phone className="w-10 h-10 text-orange-500 mx-auto mb-4" />
+                          <h3 className="text-2xl font-serif text-gray-900 mb-2">
+                            Ready to <span className="italic text-orange-500">Launch?</span>
+                          </h3>
+                          <p className="text-gray-600 mb-6">
+                            Book a free 1-on-1 strategy call with Hamza to review your blueprint and plan your next steps.
+                          </p>
+                          <a
+                            href="https://hamzaccoaching.com/1hfbpvsl"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 py-3.5 px-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-base font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange"
+                          >
+                            <Calendar className="w-5 h-5" />
+                            Book My Call Now
+                          </a>
+                          <button
+                            onClick={handleReset}
+                            className="mt-4 text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 mx-auto transition-colors"
+                          >
+                            <RotateCw className="w-3.5 h-3.5" />
+                            Start a New Blueprint
+                          </button>
+                        </div>
                       </motion.div>
                     )}
                   </>

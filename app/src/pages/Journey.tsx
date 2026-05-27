@@ -3,6 +3,7 @@
 // ============================================================
 
 import { useState, useEffect } from 'react';
+import { fetchAllBlueprints } from '@/lib/api';
 import { motion } from 'framer-motion';
 import {
   Check,
@@ -343,6 +344,12 @@ const activities: Activity[] = [
 // MAIN: Journey Page
 // ------------------------------------------------------------------
 export default function Journey() {
+  const [blueprints, setBlueprints] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchAllBlueprints().then(setBlueprints).catch(() => setBlueprints([]));
+  }, []);
+
   return (
     <div>
       {/* ========== PAGE HEADER ========== */}
@@ -353,10 +360,10 @@ export default function Journey() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
       >
         <p className="text-sm text-[#6B7280] mb-2">
-          Dashboard / My Journey
+          Dashboard / MY Journey
         </p>
         <h1 className="font-serif text-[44px] text-[#0A0A0A] leading-tight mb-2">
-          My <em className="text-[#F05A28] not-italic" style={{ fontStyle: 'italic' }}>Journey</em>
+          MY <em className="text-[#F05A28] not-italic" style={{ fontStyle: 'italic' }}>Journey</em>
         </h1>
         <p className="text-lg text-[#4A4A4A]">
           Track your progress and celebrate milestones
@@ -558,75 +565,88 @@ export default function Journey() {
           </h2>
         </motion.div>
 
-        {/* Blueprint Card */}
-        <motion.div
-          variants={staggerChild}
-          className="bg-white border border-[#E5E5E5] rounded-2xl overflow-hidden max-w-[600px]"
-          whileHover={{ translateY: -3, boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
-          transition={{ duration: 0.25 }}
-        >
-          {/* Top section */}
-          <div className="bg-[#FFF0EB] p-6">
-            <h3 className="font-serif text-2xl text-[#0A0A0A] mb-1">Coaching Blueprint #1</h3>
-            <p className="text-sm text-[#4A4A4A]">From scattered to centered in 90 days</p>
-            <span className="inline-flex items-center mt-3 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] bg-white text-[#0A0A0A]">
-              Created May 15, 2025
-            </span>
+        {blueprints.length === 0 ? (
+          <motion.p variants={staggerChild} className="text-sm text-[#6B7280]">
+            No blueprints yet. Start your first blueprint to see it here.
+          </motion.p>
+        ) : (
+          <div className="grid gap-4">
+            {blueprints.map((bp, idx) => (
+              <motion.div
+                key={bp.id}
+                variants={staggerChild}
+                className="bg-white border border-[#E5E5E5] rounded-2xl overflow-hidden max-w-[600px]"
+                whileHover={{ translateY: -3, boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
+                transition={{ duration: 0.25 }}
+              >
+                {/* Top section */}
+                <div className="bg-[#FFF0EB] p-6">
+                  <h3 className="font-serif text-2xl text-[#0A0A0A] mb-1">
+                    {bp.niche?.selectedNiche?.name || `Blueprint #${idx + 1}`}
+                  </h3>
+                  <p className="text-sm text-[#4A4A4A]">
+                    {bp.niche?.selectedNiche?.resultDelivered || 'Your coaching blueprint'}
+                  </p>
+                  <span className="inline-flex items-center mt-3 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] bg-white text-[#0A0A0A]">
+                    Created {new Date(bp.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+
+                {/* Middle section */}
+                <div className="p-6">
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="flex items-center gap-2">
+                      <Lightbulb size={16} className="text-[#F05A28]" />
+                      <span className="text-sm text-[#4A4A4A]">{bp.niche?.selectedNiche?.name || 'Niche TBD'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users size={16} className="text-[#059669]" />
+                      <span className="text-sm text-[#4A4A4A]">Persona: {bp.audience?.persona?.name || 'TBD'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FileText size={16} className="text-[#0A0A0A]" />
+                      <span className="text-sm text-[#4A4A4A]">{bp.program?.selectedProblems?.length || 0} Problems</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Sparkles size={16} className="text-[#F59E0B]" />
+                      <span className="text-sm text-[#4A4A4A]">
+                        {bp.program?.pricing?.startingPrice
+                          ? `Starting at ₹${bp.program.pricing.startingPrice.toLocaleString('en-IN')}`
+                          : 'Pricing TBD'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="mb-2">
+                    <div className="w-full bg-[#E5E5E5] rounded-full overflow-hidden" style={{ height: 4 }}>
+                      <div
+                        className="bg-[#059669] rounded-full"
+                        style={{
+                          width: `${bp.progress}%`,
+                          height: '100%',
+                          transition: 'width 800ms cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-[#6B7280] mt-1.5">{bp.progress}% complete</p>
+                  </div>
+                </div>
+
+                {/* Bottom section */}
+                <div className="px-6 py-4 border-t border-[#E5E5E5] flex items-center justify-between">
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] ${bp.status === 'completed' ? 'bg-[#ECFDF5] text-[#059669]' : 'bg-[#FFF0EB] text-[#F05A28]'}`}>
+                    {bp.status === 'completed' ? 'Completed' : 'In Progress'}
+                  </span>
+                  <button className="btn-ghost text-sm py-2 px-4">
+                    {bp.status === 'completed' ? 'View' : 'Continue'}
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
           </div>
-
-          {/* Middle section */}
-          <div className="p-6">
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="flex items-center gap-2">
-                <Lightbulb size={16} className="text-[#F05A28]" />
-                <span className="text-sm text-[#4A4A4A]">Clarity & Confidence Coach</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Users size={16} className="text-[#059669]" />
-                <span className="text-sm text-[#4A4A4A]">Persona: Kartik</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText size={16} className="text-[#0A0A0A]" />
-                <span className="text-sm text-[#4A4A4A]">6 Modules</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Sparkles size={16} className="text-[#F59E0B]" />
-                <span className="text-sm text-[#4A4A4A]">Starting at $497</span>
-              </div>
-            </div>
-
-            {/* Progress bar */}
-            <div className="mb-2">
-              <div className="w-full bg-[#E5E5E5] rounded-full overflow-hidden" style={{ height: 4 }}>
-                <div
-                  className="bg-[#059669] rounded-full"
-                  style={{
-                    width: '50%',
-                    height: '100%',
-                    transition: 'width 800ms cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                />
-              </div>
-              <p className="text-xs text-[#6B7280] mt-1.5">50% complete</p>
-            </div>
-          </div>
-
-          {/* Bottom section */}
-          <div className="px-6 py-4 border-t border-[#E5E5E5] flex items-center justify-between">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] bg-[#FFF0EB] text-[#F05A28]">
-              In Progress
-            </span>
-            <button className="btn-ghost text-sm py-2 px-4">
-              Continue
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Empty state hint */}
-        <motion.p variants={staggerChild} className="text-sm text-[#6B7280] mt-4">
-          Complete your first blueprint to see it here.
-        </motion.p>
+        )}
       </motion.section>
 
       {/* ========== ACTIVITY TIMELINE ========== */}

@@ -217,6 +217,7 @@ export const dummyRoadmapPhases: RoadmapPhase[] = [
     phase: 1,
     weeks: 'Weeks 1-3',
     title: 'Foundation & Validation',
+    color: '#F97316',
     items: [
       {
         week: 'Week 1',
@@ -251,6 +252,7 @@ export const dummyRoadmapPhases: RoadmapPhase[] = [
     phase: 2,
     weeks: 'Weeks 4-6',
     title: 'Build & Prepare',
+    color: '#8B5CF6',
     items: [
       {
         week: 'Week 4',
@@ -285,6 +287,7 @@ export const dummyRoadmapPhases: RoadmapPhase[] = [
     phase: 3,
     weeks: 'Weeks 7-9',
     title: 'Launch & Acquire',
+    color: '#059669',
     items: [
       {
         week: 'Week 7',
@@ -319,6 +322,7 @@ export const dummyRoadmapPhases: RoadmapPhase[] = [
     phase: 4,
     weeks: 'Weeks 10-12',
     title: 'Scale & Optimize',
+    color: '#3B82F6',
     items: [
       {
         week: 'Week 10',

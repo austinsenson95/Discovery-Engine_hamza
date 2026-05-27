@@ -29,6 +29,7 @@ import blueprintRoutes from './routes/blueprint';
 
 // Middleware
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import './db'; // Initialize SQLite database
 
 // Validate configuration
 validateConfig();

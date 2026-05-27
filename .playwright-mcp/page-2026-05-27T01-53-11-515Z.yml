@@ -1,0 +1,119 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img [ref=e7]
+        - generic [ref=e11]:
+          - text: DISCOVERY ENGINE
+          - paragraph [ref=e12]: Build your blueprint
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [active] [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "MY Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: MY Journey
+            - link "Profile" [ref=e38] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e39]
+              - generic [ref=e42]: Profile
+      - generic [ref=e45]:
+        - img [ref=e47]
+        - generic [ref=e50]:
+          - paragraph [ref=e51]: John Doe
+          - paragraph [ref=e52]: john.doe@example.com
+        - button [ref=e53] [cursor=pointer]:
+          - img [ref=e54]
+  - generic [ref=e57]:
+    - banner [ref=e58]:
+      - heading "Coach Blueprint" [level=2] [ref=e247]
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - img [ref=e63]
+          - generic [ref=e65]: 100 credits
+        - button [ref=e66] [cursor=pointer]:
+          - img [ref=e67]
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+        - img [ref=e76]
+    - main [ref=e79]:
+      - generic [ref=e248]:
+        - button "Reset Blueprint" [ref=e250] [cursor=pointer]:
+          - img [ref=e251]
+          - text: Reset Blueprint
+        - generic [ref=e258]:
+          - generic [ref=e260]:
+            - generic [ref=e261]: "1"
+            - generic [ref=e262]: Niche Discovery
+          - generic [ref=e263]:
+            - generic [ref=e264]: "2"
+            - generic [ref=e265]: Audience Mapping
+          - generic [ref=e266]:
+            - generic [ref=e267]: "3"
+            - generic [ref=e268]: Program Builder
+          - generic [ref=e269]:
+            - generic [ref=e270]: "4"
+            - generic [ref=e271]: Roadmap & PDF
+        - generic [ref=e274]:
+          - generic [ref=e275]:
+            - heading "Let's Find Your Perfect Niche" [level=2] [ref=e276]
+            - paragraph [ref=e277]: Tell us about your background and we will use AI to discover coaching niches perfectly suited to your experience.
+          - generic [ref=e278]:
+            - generic [ref=e279]:
+              - generic [ref=e280]: Choose Your Coaching Domain
+              - generic [ref=e281]:
+                - button "💪 Fitness & Health" [ref=e282] [cursor=pointer]
+                - button "💼 Business & Career" [ref=e283] [cursor=pointer]
+                - button "🎓 Education & Skills" [ref=e284] [cursor=pointer]
+                - button "🧘 Yoga & Mindfulness" [ref=e285] [cursor=pointer]
+                - button "💰 Personal Finance" [ref=e286] [cursor=pointer]
+                - button "👨‍👩‍👧 Parenting" [ref=e287] [cursor=pointer]
+                - button "🎨 Creative Arts" [ref=e288] [cursor=pointer]
+                - button "💻 Technology" [ref=e289] [cursor=pointer]
+                - button "🗣️ Communication" [ref=e290] [cursor=pointer]
+                - button "🏠 Life Coaching" [ref=e291] [cursor=pointer]
+                - button "🎵 Music & Performing Arts" [ref=e292] [cursor=pointer]
+                - button "📸 Photography & Video" [ref=e293] [cursor=pointer]
+                - button "🍳 Cooking & Nutrition" [ref=e294] [cursor=pointer]
+                - button "🧠 Mental Health" [ref=e295] [cursor=pointer]
+                - button "📱 Digital Marketing" [ref=e296] [cursor=pointer]
+                - button "🏋️ Sports Coaching" [ref=e297] [cursor=pointer]
+                - button "✈️ Travel & Lifestyle" [ref=e298] [cursor=pointer]
+                - button "🌿 Ayurveda & Naturopathy" [ref=e299] [cursor=pointer]
+            - generic [ref=e300]:
+              - generic [ref=e301]:
+                - text: What's your professional experience?
+                - generic [ref=e302]: (0 chars)
+              - textbox "e.g. 12 years in tech, managed teams of 20+ people, led digital transformation projects..." [ref=e303]
+              - generic [ref=e304]:
+                - button "+ 10+ years corporate" [ref=e305] [cursor=pointer]
+                - button "+ Built teams from scratch" [ref=e306] [cursor=pointer]
+                - button "+ Managed P&L" [ref=e307] [cursor=pointer]
+                - button "+ Career pivots" [ref=e308] [cursor=pointer]
+            - generic [ref=e309]:
+              - generic [ref=e310]:
+                - text: What are you passionate about?
+                - generic [ref=e311]: (0 chars)
+              - textbox "e.g. Helping people grow, writing about leadership, conducting workshops, building communities..." [ref=e312]
+              - generic [ref=e313]:
+                - button "+ Helping others grow" [ref=e314] [cursor=pointer]
+                - button "+ Teaching" [ref=e315] [cursor=pointer]
+                - button "+ Building communities" [ref=e316] [cursor=pointer]
+                - button "+ Writing" [ref=e317] [cursor=pointer]
+            - generic [ref=e318]:
+              - button "Discover My Niche" [ref=e319] [cursor=pointer]:
+                - img [ref=e320]
+                - text: Discover My Niche
+              - paragraph [ref=e323]: This will deduct 10 credits from your account

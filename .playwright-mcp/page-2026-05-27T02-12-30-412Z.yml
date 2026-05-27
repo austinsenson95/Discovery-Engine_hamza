@@ -1,0 +1,233 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img [ref=e7]
+        - generic [ref=e11]:
+          - text: DISCOVERY ENGINE
+          - paragraph [ref=e12]: Build your blueprint
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "MY Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: MY Journey
+            - link "Profile" [ref=e38] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e39]
+              - generic [ref=e42]: Profile
+      - generic [ref=e45]:
+        - img [ref=e47]
+        - generic [ref=e50]:
+          - paragraph [ref=e51]: John Doe
+          - paragraph [ref=e52]: john.doe@example.com
+        - button [ref=e53] [cursor=pointer]:
+          - img [ref=e54]
+  - generic [ref=e57]:
+    - banner [ref=e58]:
+      - heading "My Journey" [level=2] [ref=e60]
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - img [ref=e63]
+          - generic [ref=e65]: 100 credits
+        - button [ref=e66] [cursor=pointer]:
+          - img [ref=e67]
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+        - img [ref=e76]
+    - main [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - paragraph [ref=e82]: Dashboard / MY Journey
+          - heading "MY Journey" [level=1] [ref=e83]:
+            - text: MY
+            - emphasis [ref=e84]: Journey
+          - paragraph [ref=e85]: Track your progress and celebrate milestones
+        - generic [ref=e88]:
+          - generic [ref=e90]:
+            - img [ref=e91]
+            - generic [ref=e94]:
+              - generic [ref=e95]: 0%
+              - generic [ref=e96]: Complete
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - heading "Blueprint in Progress" [level=2] [ref=e99]:
+                - text: Blueprint in
+                - emphasis [ref=e100]: Progress
+              - generic [ref=e101]: In Progress
+            - paragraph [ref=e102]: 2 of 4 steps completed
+            - paragraph [ref=e103]: You are halfway there! Complete the Program Builder to continue.
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e106]: Niche Discovery ✓
+                - img [ref=e107]
+              - generic [ref=e109]:
+                - generic [ref=e110]: Audience Mapping ✓
+                - img [ref=e111]
+              - generic [ref=e113]:
+                - generic [ref=e114]: Program Builder
+                - img [ref=e115]
+              - generic [ref=e118]: Roadmap Generation
+        - generic [ref=e119]:
+          - generic [ref=e120]:
+            - paragraph [ref=e121]: PROGRESS OVERVIEW
+            - heading "Your Growth Path" [level=2] [ref=e122]:
+              - text: Your
+              - emphasis [ref=e123]: Growth
+              - text: Path
+          - generic [ref=e124]:
+            - generic [ref=e125]:
+              - img [ref=e128]
+              - generic [ref=e131]:
+                - generic [ref=e132]:
+                  - heading "Niche Discovery" [level=3] [ref=e133]
+                  - generic [ref=e134]: Completed
+                - paragraph [ref=e135]: Clarity & Confidence Coach
+                - paragraph [ref=e136]: Completed on May 15, 2025
+            - generic [ref=e137]:
+              - img [ref=e140]
+              - generic [ref=e143]:
+                - generic [ref=e144]:
+                  - heading "Audience Mapping" [level=3] [ref=e145]
+                  - generic [ref=e146]: Completed
+                - paragraph [ref=e147]: "Persona: Kartik"
+                - paragraph [ref=e148]: Completed on May 16, 2025
+            - generic [ref=e149]:
+              - img [ref=e152]
+              - generic [ref=e155]:
+                - generic [ref=e156]:
+                  - heading "Program Builder" [level=3] [ref=e157]
+                  - generic [ref=e158]: In Progress
+                - paragraph [ref=e159]: Setting up your program
+                - paragraph [ref=e160]: Started on May 17, 2025
+            - generic [ref=e161]:
+              - img [ref=e164]
+              - generic [ref=e167]:
+                - generic [ref=e168]:
+                  - heading "Roadmap Generation" [level=3] [ref=e169]
+                  - generic [ref=e170]: Upcoming
+                - paragraph [ref=e171]: Generate your roadmap
+                - paragraph [ref=e172]: Complete step 3 to unlock
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - paragraph [ref=e175]: ACHIEVEMENTS
+            - heading "Milestones Unlocked" [level=2] [ref=e176]:
+              - text: Milestones
+              - emphasis [ref=e177]: Unlocked
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - img [ref=e181]
+              - heading "First Steps" [level=4] [ref=e186]
+              - paragraph [ref=e187]: Complete Step 1
+              - generic [ref=e188]: Earned
+            - generic [ref=e189]:
+              - img [ref=e191]
+              - heading "People Person" [level=4] [ref=e196]
+              - paragraph [ref=e197]: Complete Step 2
+              - generic [ref=e198]: Earned
+            - generic [ref=e199]:
+              - img [ref=e201]
+              - heading "Getting Started" [level=4] [ref=e203]
+              - paragraph [ref=e204]: Start the wizard
+              - generic [ref=e205]: Earned
+            - generic [ref=e206]:
+              - img [ref=e208]
+              - heading "Program Builder" [level=4] [ref=e211]
+              - paragraph [ref=e212]: Complete Step 3
+              - generic [ref=e213]: Locked
+            - generic [ref=e214]:
+              - img [ref=e216]
+              - heading "Roadmapper" [level=4] [ref=e222]
+              - paragraph [ref=e223]: Complete Step 4
+              - generic [ref=e224]: Locked
+            - generic [ref=e225]:
+              - img [ref=e227]
+              - heading "PDF Pro" [level=4] [ref=e230]
+              - paragraph [ref=e231]: Download your first blueprint
+              - generic [ref=e232]: Locked
+            - generic [ref=e233]:
+              - img [ref=e235]
+              - heading "Credit Saver" [level=4] [ref=e237]
+              - paragraph [ref=e238]: Complete with credits remaining
+              - generic [ref=e239]: Locked
+            - generic [ref=e240]:
+              - img [ref=e242]
+              - heading "Speed Runner" [level=4] [ref=e244]
+              - paragraph [ref=e245]: Complete all steps in one day
+              - generic [ref=e246]: Locked
+        - generic [ref=e247]:
+          - generic [ref=e248]:
+            - paragraph [ref=e249]: YOUR BLUEPRINTS
+            - heading "My Blueprints" [level=2] [ref=e250]:
+              - text: My
+              - emphasis [ref=e251]: Blueprints
+          - generic [ref=e253]:
+            - generic [ref=e254]:
+              - heading "Clarity & Confidence Coach for Mid-Career Professionals" [level=3] [ref=e255]
+              - paragraph [ref=e256]: Clear career direction, renewed confidence, and a concrete action plan within 90 days
+              - generic [ref=e257]: Created 5/27/2026
+            - generic [ref=e258]:
+              - generic [ref=e259]:
+                - generic [ref=e260]:
+                  - img [ref=e261]
+                  - generic [ref=e263]: Clarity & Confidence Coach for Mid-Career Professionals
+                - generic [ref=e264]:
+                  - img [ref=e265]
+                  - generic [ref=e270]: "Persona: Kartik"
+                - generic [ref=e271]:
+                  - img [ref=e272]
+                  - generic [ref=e275]: 2 Problems
+                - generic [ref=e276]:
+                  - img [ref=e277]
+                  - generic [ref=e280]: Starting at ₹4,999
+              - paragraph [ref=e284]: 100% complete
+            - generic [ref=e285]:
+              - generic [ref=e286]: Completed
+              - button "View" [ref=e287] [cursor=pointer]:
+                - text: View
+                - img [ref=e288]
+        - generic [ref=e290]:
+          - generic [ref=e291]:
+            - paragraph [ref=e292]: TIMELINE
+            - heading "Recent Activity" [level=2] [ref=e293]:
+              - text: Recent
+              - emphasis [ref=e294]: Activity
+          - generic [ref=e295]:
+            - generic [ref=e296]:
+              - img [ref=e298]
+              - generic [ref=e302]:
+                - paragraph [ref=e303]: Started Program Builder
+                - paragraph [ref=e304]: 2 hours ago
+            - generic [ref=e305]:
+              - img [ref=e307]
+              - generic [ref=e311]:
+                - paragraph [ref=e312]: Completed Audience Mapping
+                - paragraph [ref=e313]: Yesterday
+            - generic [ref=e314]:
+              - img [ref=e316]
+              - generic [ref=e320]:
+                - paragraph [ref=e321]: Generated niche recommendations
+                - paragraph [ref=e322]: 2 days ago
+            - generic [ref=e323]:
+              - img [ref=e325]
+              - generic [ref=e329]:
+                - paragraph [ref=e330]: Started Blueprint Wizard
+                - paragraph [ref=e331]: 2 days ago
+            - generic [ref=e332]:
+              - img [ref=e334]
+              - generic [ref=e337]:
+                - paragraph [ref=e338]: Joined Discovery Engine
+                - paragraph [ref=e339]: 3 days ago
