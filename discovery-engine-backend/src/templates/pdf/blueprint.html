@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery Engine — {{nicheName}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: #4A4A4A;
+      line-height: 1.6;
+      background: #FFFFFF;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'DM Serif Display', serif;
+      color: #0A0A0A;
+      font-weight: 400;
+    }
+    .page {
+      page-break-after: always;
+      min-height: 257mm;
+      padding: 10mm 0;
+    }
+    .page:last-child {
+      page-break-after: auto;
+    }
+    .accent-line {
+      width: 60px;
+      height: 3px;
+      background: #F05A28;
+      margin: 16px 0;
+    }
+    .accent-text {
+      color: #F05A28;
+    }
+    .section-title {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #0A0A0A;
+    }
+    .card {
+      background: #FAFAFA;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: #F05A28;
+      margin-bottom: 6px;
+    }
+    ul {
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .quote {
+      font-style: italic;
+      border-left: 3px solid #F05A28;
+      padding-left: 16px;
+      margin: 16px 0;
+      color: #4A4A4A;
+    }
+    .badge {
+      display: inline-block;
+      background: #F05A28;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid #E5E5E5;
+    }
+    th {
+      font-weight: 600;
+      color: #0A0A0A;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #F05A28;
+    }
+    .week-card {
+      background: #FAFAFA;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+    .week-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .next-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .step-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: #F05A28;
+      line-height: 1;
+      min-width: 36px;
+    }
+    .cta-bar {
+      background: #F05A28;
+      color: #FFFFFF;
+      text-align: center;
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 24px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  {{content}}
+</body>
+</html>

@@ -2,27 +2,176 @@
  * ============================================================================
  * DISCOVERY ENGINE - PDF Service
  * ============================================================================
- * Placeholder service for PDF generation.
- *
- * TODO: Integrate with a real PDF generation library:
- *   Option A: Puppeteer + HTML template (best quality)
- *   Option B: jsPDF (lightweight, client-side compatible)
- *   Option C: pdfmake (declarative table-based layout)
- *   Option D: React-pdf (if using React for templates)
- *
- * Integration Guide:
- * 1. npm install puppeteer
- * 2. Create HTML template with blueprint data
- * 3. Use puppeteer to render HTML to PDF
- * 4. Store PDF in cloud storage (S3, Cloudinary, etc.)
- * 5. Return signed URL for download
+ * Generates professional PDF blueprint documents using Puppeteer.
+ * Renders compiled HTML templates to PDF with brand styling.
+ * Caches generated PDFs in memory for 1 hour to avoid re-rendering.
  * ============================================================================
  */
 
-import { Blueprint } from '../types';
+import puppeteer from 'puppeteer-core';
+import type { Browser, LaunchOptions } from 'puppeteer-core';
+import type { Blueprint } from '../types';
+import { compileBlueprintTemplate, validateBlueprintForPDF } from './templateEngine';
+
+// ---------------------------------------------------------------------------
+// Cache
+// ---------------------------------------------------------------------------
+interface CachedPDF {
+  buffer: Buffer;
+  timestamp: number;
+}
+
+const pdfCache = new Map<string, CachedPDF>();
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+// ---------------------------------------------------------------------------
+// Chromium Resolution
+// ---------------------------------------------------------------------------
+function resolveExecutablePath(): string {
+  // 1. Environment variable override
+  const envPath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (envPath) {
+    console.log(`[PDF] Using Chromium from PUPPETEER_EXECUTABLE_PATH: ${envPath}`);
+    return envPath;
+  }
+
+  // 2. Platform-specific common paths
+  const platformPaths: Record<string, string[]> = {
+    darwin: [
+      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
+      '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+      '/Applications/Chromium.app/Contents/MacOS/Chromium',
+    ],
+    linux: [
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/google-chrome',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/chromium',
+      '/usr/bin/microsoft-edge',
+      '/snap/bin/chromium',
+    ],
+    win32: [
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+    ],
+  };
+
+  const paths = platformPaths[process.platform] || [];
+  for (const p of paths) {
+    try {
+      const fs = require('fs');
+      if (fs.existsSync(p)) {
+        console.log(`[PDF] Found Chromium at: ${p}`);
+        return p;
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  // 3. Fallback: try puppeteer's default (may throw at launch if not found)
+  console.warn('[PDF] No Chromium found in common paths. Will attempt puppeteer default.');
+  return '';
+}
+
+// ---------------------------------------------------------------------------
+// Browser Instance Management
+// ---------------------------------------------------------------------------
+let browserInstance: Browser | null = null;
+
+async function getBrowser(): Promise<Browser> {
+  if (browserInstance) {
+    try {
+      // Verify browser is still connected
+      if (browserInstance.connected) {
+        return browserInstance;
+      }
+    } catch {
+      // Browser disconnected, create new
+    }
+  }
+
+  const executablePath = resolveExecutablePath();
+  const launchOptions: LaunchOptions = {
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+      '--font-render-hinting=none',
+    ],
+  };
+
+  if (executablePath) {
+    launchOptions.executablePath = executablePath;
+  }
+
+  console.log('[PDF] Launching Puppeteer browser...');
+  browserInstance = await puppeteer.launch(launchOptions);
+  console.log('[PDF] Puppeteer browser launched');
+
+  return browserInstance;
+}
+
+// ---------------------------------------------------------------------------
+// Cache Operations
+// ---------------------------------------------------------------------------
+function getCachedPDF(blueprintId: string): Buffer | null {
+  const cached = pdfCache.get(blueprintId);
+  if (!cached) return null;
+
+  const now = Date.now();
+  if (now - cached.timestamp > CACHE_TTL_MS) {
+    console.log(`[PDF] Cache expired for blueprint: ${blueprintId}`);
+    pdfCache.delete(blueprintId);
+    return null;
+  }
+
+  console.log(`[PDF] Cache hit for blueprint: ${blueprintId}`);
+  return cached.buffer;
+}
+
+function setCachedPDF(blueprintId: string, buffer: Buffer): void {
+  pdfCache.set(blueprintId, { buffer, timestamp: Date.now() });
+  console.log(`[PDF] Cached PDF for blueprint: ${blueprintId}`);
+}
+
+/**
+ * Invalidate cached PDF for a blueprint (e.g., when blueprint is updated).
+ */
+export function invalidatePDFCache(blueprintId: string): void {
+  if (pdfCache.has(blueprintId)) {
+    pdfCache.delete(blueprintId);
+    console.log(`[PDF] Cache invalidated for blueprint: ${blueprintId}`);
+  }
+}
+
+/**
+ * Clean up expired cache entries.
+ */
+function cleanupExpiredCache(): void {
+  const now = Date.now();
+  let cleaned = 0;
+  for (const [id, entry] of pdfCache.entries()) {
+    if (now - entry.timestamp > CACHE_TTL_MS) {
+      pdfCache.delete(id);
+      cleaned++;
+    }
+  }
+  if (cleaned > 0) {
+    console.log(`[PDF] Cleaned up ${cleaned} expired cache entries`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// PDF Generation
+// ---------------------------------------------------------------------------
 
 class PDFService {
-  // Singleton pattern
   private static instance: PDFService;
 
   public static getInstance(): PDFService {
@@ -34,105 +183,78 @@ class PDFService {
 
   /**
    * Generate a professional PDF blueprint document.
-   *
-   * TODO: Replace with actual PDF generation:
-   * ```typescript
-   * import puppeteer from 'puppeteer';
-   *
-   * const browser = await puppeteer.launch();
-   * const page = await browser.newPage();
-   * const html = this.buildHTMLTemplate(blueprint);
-   * await page.setContent(html, { waitUntil: 'networkidle0' });
-   * const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
-   * await browser.close();
-   *
-   * // Upload to S3 and return URL
-   * const url = await uploadToS3(pdfBuffer, `blueprints/${blueprint.id}.pdf`);
-   * return url;
-   * ```
+   * Returns the filename that should be used for the download.
    */
   async generateBlueprintPDF(blueprint: Blueprint): Promise<string> {
     console.log(`[PDF] Starting PDF generation for blueprint: ${blueprint.id}`);
-    console.log(`[PDF]   Niche: ${blueprint.niche?.selectedNiche.name || 'N/A'}`);
-    console.log(`[PDF]   Program: ${blueprint.program?.selectedName.name || 'N/A'}`);
-
-    await this.simulateDelay(2500);
-
-    // TODO: Integrate with Puppeteer, jsPDF, or server-side rendering
-    // For now, return a mock URL that the client can call
-    const mockPdfUrl = `/api/blueprint/pdf/${blueprint.id}`;
-
-    console.log(`[PDF] Generated mock PDF URL: ${mockPdfUrl}`);
-    return mockPdfUrl;
+    const { filename } = compileBlueprintTemplate(blueprint);
+    console.log(`[PDF] Generated blueprint PDF metadata: ${filename}`);
+    return filename;
   }
 
   /**
-   * Generate and stream a PDF directly to the response.
-   * Used by the downloadPDF endpoint.
-   *
-   * TODO: Implement actual PDF streaming with Puppeteer or jsPDF
+   * Generate and return a PDF buffer for the given blueprint.
+   * Uses cache to avoid re-rendering within the TTL window.
    */
-  async streamPDF(blueprintId: string): Promise<Buffer> {
-    console.log(`[PDF] Streaming PDF for blueprint: ${blueprintId}`);
+  async renderPDF(blueprint: Blueprint): Promise<{ buffer: Buffer; filename: string }> {
+    const startTime = Date.now();
+    console.log(`[PDF] Rendering PDF for blueprint: ${blueprint.id}`);
 
-    await this.simulateDelay(1000);
+    // Check cache
+    cleanupExpiredCache();
+    const cached = getCachedPDF(blueprint.id);
+    if (cached) {
+      const { filename } = compileBlueprintTemplate(blueprint);
+      return { buffer: cached, filename };
+    }
 
-    // TODO: Replace with actual PDF generation
-    // For now, return a mock buffer with a simple message
-    const mockContent = `
-      DISCOVERY ENGINE - Your Coaching Blueprint
-      ============================================
-      
-      Blueprint ID: ${blueprintId}
-      Generated: ${new Date().toISOString()}
-      
-      [This is a placeholder PDF. In production, this will be a professionally
-       formatted PDF document with your complete blueprint including niche,
-       audience persona, program details, pricing strategy, and 12-week roadmap.]
-      
-      ============================================
-      (c) 2024 Discovery Engine. All rights reserved.
-    `;
+    // Validate blueprint completeness
+    const missing = validateBlueprintForPDF(blueprint);
+    if (missing.length > 0) {
+      throw new Error(`Blueprint is incomplete. Missing: ${missing.join(', ')}`);
+    }
 
-    return Buffer.from(mockContent, 'utf-8');
+    // Compile template
+    const { html, filename } = compileBlueprintTemplate(blueprint);
+
+    // Render with Puppeteer
+    const browser = await getBrowser();
+    const page = await browser.newPage();
+
+    try {
+      await page.setContent(html, { waitUntil: 'load', timeout: 30000 });
+
+      // Wait for fonts to load
+      await page.evaluateHandle('document.fonts.ready');
+
+      const pdfArray = await page.pdf({
+        format: 'A4',
+        printBackground: true,
+        preferCSSPageSize: true,
+        margin: { top: '0', right: '0', bottom: '0', left: '0' },
+      });
+
+      const pdfBuffer = Buffer.from(pdfArray);
+
+      // Cache the result
+      setCachedPDF(blueprint.id, pdfBuffer);
+
+      const processingTime = Date.now() - startTime;
+      console.log(`[PDF] PDF rendered in ${processingTime}ms (${(pdfBuffer.length / 1024).toFixed(1)} KB)`);
+
+      return { buffer: pdfBuffer, filename };
+    } finally {
+      await page.close();
+    }
   }
 
   /**
-   * Build an HTML template for the PDF.
-   * Used with Puppeteer for server-side PDF generation.
-   *
-   * TODO: Replace with a proper HTML template engine (Handlebars, EJS, etc.)
+   * Stream a PDF directly for download.
+   * Legacy method name preserved for controller compatibility.
    */
-  private buildHTMLTemplate(blueprint: Blueprint): string {
-    // TODO: Create a professional HTML template with CSS styling
-    return `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Coaching Blueprint - ${blueprint.id}</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 40px; }
-            h1 { color: #1a1a1a; }
-            .section { margin-bottom: 30px; }
-          </style>
-        </head>
-        <body>
-          <h1>Your Coaching Blueprint</h1>
-          <div class="section">
-            <p>Blueprint ID: ${blueprint.id}</p>
-            <p>Generated: ${new Date().toISOString()}</p>
-          </div>
-        </body>
-      </html>
-    `;
-  }
-
-  /**
-   * Simulates PDF generation processing delay.
-   * Remove this once real PDF generation is integrated.
-   */
-  private async simulateDelay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  async streamPDF(blueprintId: string, blueprint: Blueprint): Promise<Buffer> {
+    const { buffer } = await this.renderPDF(blueprint);
+    return buffer;
   }
 }
 

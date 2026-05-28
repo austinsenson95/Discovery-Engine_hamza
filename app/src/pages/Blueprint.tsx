@@ -38,6 +38,7 @@ import {
   fetchAllBlueprints,
   updateBlueprint,
   deleteBlueprint,
+  API_BASE,
 } from '@/lib/api';
 import { mockNiches, mockPersona, mockProgramNames, mockPricing, mockRoadmap, mockProblems } from '@/lib/mockData';
 
@@ -181,39 +182,51 @@ export default function Blueprint() {
   void skillTags;
   void expTags;
   void passionTags;
+  void showBooking;
 
   // Load existing blueprint on mount
   useEffect(() => {
     const load = async () => {
       try {
+        const params = new URLSearchParams(window.location.search);
+        const queryId = params.get('id');
+
         const all = await fetchAllBlueprints();
-        const latest = all[0];
-        if (latest && latest.status === 'in_progress') {
-          setBlueprintId(latest.id);
-          if (latest.currentStep > 1) {
+
+        // Find blueprint by query param id, or fallback to latest
+        let target = queryId ? all.find((b) => b.id === queryId) : null;
+        if (!target) {
+          target = all[0];
+        }
+
+        if (target) {
+          setBlueprintId(target.id);
+          if (target.currentStep > 1) {
             // Restore step based on backend currentStep
-            const restoredStep = Math.min(latest.currentStep, 4);
+            const restoredStep = Math.min(target.currentStep, 4);
             setStep(restoredStep <= 3 ? restoredStep : 4);
-            if (latest.currentStep >= 3 && latest.currentStep <= 6) {
-              setSubStep(latest.currentStep - 2); // 3->1, 4->2, 5->3
+            if (target.currentStep >= 3 && target.currentStep <= 5) {
+              setSubStep(target.currentStep - 2); // 3->1, 4->2, 5->3
+            } else if (target.currentStep >= 6) {
+              setSubStep(3);
             }
-            if (latest.niche) {
-              setSkills(latest.niche.skills);
-              setExperience(latest.niche.experience);
-              setPassions(latest.niche.passions);
-              setSelectedNiche(latest.niche.selectedNiche);
-              setNicheOptions([latest.niche.selectedNiche]);
+            if (target.niche) {
+              setSkills(target.niche.skills);
+              setExperience(target.niche.experience);
+              setPassions(target.niche.passions);
+              setSelectedNiche(target.niche.selectedNiche);
+              setNicheOptions([target.niche.selectedNiche]);
             }
-            if (latest.audience) {
-              setPersona(latest.audience.persona);
+            if (target.audience) {
+              setPersona(target.audience.persona);
             }
-            if (latest.program) {
-              setSelectedProblems(latest.program.selectedProblems || []);
-              setSelectedProgramName(latest.program.selectedName);
-              if (latest.program.pricing) setPricing(latest.program.pricing);
+            if (target.program) {
+              setSelectedProblems(target.program.selectedProblems || []);
+              setSelectedProgramName(target.program.selectedName);
+              if (target.program.pricing) setPricing(target.program.pricing);
             }
-            if (latest.roadmap) {
-              setRoadmap(latest.roadmap.phases);
+            if (target.roadmap) {
+              setRoadmap(target.roadmap.phases);
               setPdfDownloaded(true);
             }
           }
@@ -421,7 +434,9 @@ export default function Blueprint() {
   };
 
   // ─── Step 4: Download PDF ───
-  const handleDownloadPDF = async () => {
+  const handleDownloadPDF = () => {
+    if (!blueprintId) return;
+
     confetti({
       particleCount: 80,
       spread: 70,
@@ -429,16 +444,17 @@ export default function Blueprint() {
       colors: ['#F97316', '#22C55E', '#FFD700', '#FFFFFF'],
     });
     setPdfDownloaded(true);
-    if (blueprintId) {
-      try {
-        await updateBlueprint(blueprintId, {
-          status: 'completed',
-          currentStep: 7,
-          progress: 100,
-        });
-      } catch { /* ignore */ }
-    }
-    success('Your Blueprint PDF is ready for download!');
+
+    // Update blueprint status in the background
+    try {
+      updateBlueprint(blueprintId, {
+        status: 'completed',
+        currentStep: 7,
+        progress: 100,
+      });
+    } catch { /* ignore */ }
+
+    success('Your Blueprint PDF is downloading!');
   };
 
   // ═══ RENDER ═══
@@ -1164,15 +1180,16 @@ export default function Blueprint() {
                         transition={{ delay: 0.5 }}
                         className="text-center"
                       >
-                        <motion.button
+                        <motion.a
+                          href={blueprintId ? `${API_BASE}/blueprint/pdf/${blueprintId}` : '#'}
+                          onClick={handleDownloadPDF}
                           whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.98 }}
-                          onClick={handleDownloadPDF}
                           className="py-4 px-10 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-lg font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange inline-flex items-center gap-3"
                         >
                           <Download className="w-5 h-5" />
                           Download My Blueprint PDF
-                        </motion.button>
+                        </motion.a>
                         <p className="text-sm text-gray-400 mt-4">This will deduct 15 credits</p>
                       </motion.div>
                     ) : !showBooking ? (

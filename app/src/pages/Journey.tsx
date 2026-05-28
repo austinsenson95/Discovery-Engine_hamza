@@ -3,6 +3,7 @@
 // ============================================================
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { fetchAllBlueprints } from '@/lib/api';
 import { motion } from 'framer-motion';
 import {
@@ -344,6 +345,7 @@ const activities: Activity[] = [
 // MAIN: Journey Page
 // ------------------------------------------------------------------
 export default function Journey() {
+  const navigate = useNavigate();
   const [blueprints, setBlueprints] = useState<any[]>([]);
 
   useEffect(() => {
@@ -638,7 +640,10 @@ export default function Journey() {
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] ${bp.status === 'completed' ? 'bg-[#ECFDF5] text-[#059669]' : 'bg-[#FFF0EB] text-[#F05A28]'}`}>
                     {bp.status === 'completed' ? 'Completed' : 'In Progress'}
                   </span>
-                  <button className="btn-ghost text-sm py-2 px-4">
+                  <button
+                    className="btn-ghost text-sm py-2 px-4"
+                    onClick={() => navigate(`/blueprint?id=${bp.id}`)}
+                  >
                     {bp.status === 'completed' ? 'View' : 'Continue'}
                     <ArrowRight size={14} />
                   </button>

@@ -1,0 +1,257 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img [ref=e7]
+        - generic [ref=e11]:
+          - text: DISCOVERY ENGINE
+          - paragraph [ref=e12]: Build your blueprint
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "MY Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: MY Journey
+            - link "Profile" [ref=e38] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e39]
+              - generic [ref=e42]: Profile
+      - generic [ref=e45]:
+        - img [ref=e47]
+        - generic [ref=e50]:
+          - paragraph [ref=e51]: John Doe
+          - paragraph [ref=e52]: john.doe@example.com
+        - button [ref=e53] [cursor=pointer]:
+          - img [ref=e54]
+  - generic [ref=e57]:
+    - banner [ref=e58]:
+      - heading "Coach Blueprint" [level=2] [ref=e60]
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - img [ref=e63]
+          - generic [ref=e65]: 100 credits
+        - button [ref=e66] [cursor=pointer]:
+          - img [ref=e67]
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+        - img [ref=e76]
+    - main [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e466]:
+          - img [ref=e467]
+          - paragraph [ref=e470]: Your Blueprint PDF is downloading!
+          - button [ref=e471] [cursor=pointer]:
+            - img [ref=e472]
+        - generic [ref=e81]:
+          - button "Reset Blueprint" [ref=e82] [cursor=pointer]:
+            - img [ref=e83]
+            - text: Reset Blueprint
+          - generic [ref=e166]: "ID: bp_1779847881493"
+        - generic [ref=e90]:
+          - generic [ref=e92]:
+            - img [ref=e169]
+            - generic [ref=e94]: Niche Discovery
+          - generic [ref=e95]:
+            - img [ref=e172]
+            - generic [ref=e97]: Audience Mapping
+          - generic [ref=e98]:
+            - img [ref=e175]
+            - generic [ref=e100]: Program Builder
+          - generic [ref=e101]:
+            - generic [ref=e102]: "4"
+            - generic [ref=e103]: Roadmap & PDF
+        - generic [ref=e178]:
+          - generic [ref=e179]:
+            - heading "Your Business Roadmap" [level=2] [ref=e180]
+            - paragraph [ref=e181]: A 12-week execution plan to take you from zero to your first paying coaching clients.
+          - button "Back to Pricing" [ref=e183] [cursor=pointer]:
+            - img [ref=e184]
+            - text: Back to Pricing
+          - generic [ref=e186]:
+            - generic [ref=e188]:
+              - generic [ref=e189]:
+                - generic [ref=e190]:
+                  - generic [ref=e191]: "1"
+                  - generic [ref=e192]:
+                    - heading "Foundation & Validation" [level=4] [ref=e193]
+                    - paragraph [ref=e194]: Weeks 1-3
+                - generic [ref=e195]: 3 tasks
+              - generic [ref=e197]:
+                - generic [ref=e198]:
+                  - paragraph [ref=e199]: Week 1
+                  - list [ref=e200]:
+                    - listitem [ref=e201]:
+                      - generic [ref=e204]: Finalize your niche and target persona
+                    - listitem [ref=e205]:
+                      - generic [ref=e208]: Set up your coaching business structure (sole proprietorship)
+                    - listitem [ref=e209]:
+                      - generic [ref=e212]: Create your ideal client avatar document
+                    - listitem [ref=e213]:
+                      - generic [ref=e216]: Set up professional email and calendar system
+                - generic [ref=e217]:
+                  - paragraph [ref=e218]: Week 2
+                  - list [ref=e219]:
+                    - listitem [ref=e220]:
+                      - generic [ref=e223]: Design your program curriculum outline
+                    - listitem [ref=e224]:
+                      - generic [ref=e227]: Create a simple landing page (use Carrd or Notion)
+                    - listitem [ref=e228]:
+                      - generic [ref=e231]: Set up payment collection (Razorpay / Stripe)
+                    - listitem [ref=e232]:
+                      - generic [ref=e235]: Draft your offer and pricing structure
+                - generic [ref=e236]:
+                  - paragraph [ref=e237]: Week 3
+                  - list [ref=e238]:
+                    - listitem [ref=e239]:
+                      - generic [ref=e242]: Validate your offer with 5 potential clients (free discovery calls)
+                    - listitem [ref=e243]:
+                      - generic [ref=e246]: Gather feedback and refine your program
+                    - listitem [ref=e247]:
+                      - generic [ref=e250]: Create content for LinkedIn (3 posts per week)
+                    - listitem [ref=e251]:
+                      - generic [ref=e254]: Join 3 relevant online communities where your audience hangs out
+            - generic [ref=e256]:
+              - generic [ref=e257]:
+                - generic [ref=e258]:
+                  - generic [ref=e259]: "2"
+                  - generic [ref=e260]:
+                    - heading "Build & Prepare" [level=4] [ref=e261]
+                    - paragraph [ref=e262]: Weeks 4-6
+                - generic [ref=e263]: 3 tasks
+              - generic [ref=e265]:
+                - generic [ref=e266]:
+                  - paragraph [ref=e267]: Week 4
+                  - list [ref=e268]:
+                    - listitem [ref=e269]:
+                      - generic [ref=e272]: Build your program content (slides, worksheets, templates)
+                    - listitem [ref=e273]:
+                      - generic [ref=e276]: Record welcome video and module 1 content
+                    - listitem [ref=e277]:
+                      - generic [ref=e280]: Set up community platform (WhatsApp group or Circle)
+                    - listitem [ref=e281]:
+                      - generic [ref=e284]: Create onboarding email sequence
+                - generic [ref=e285]:
+                  - paragraph [ref=e286]: Week 5
+                  - list [ref=e287]:
+                    - listitem [ref=e288]:
+                      - generic [ref=e291]: Complete all module recordings and materials
+                    - listitem [ref=e292]:
+                      - generic [ref=e295]: Set up automation (email reminders, access links)
+                    - listitem [ref=e296]:
+                      - generic [ref=e299]: Create client intake form and assessment
+                    - listitem [ref=e300]:
+                      - generic [ref=e303]: Prepare bonus resources (templates, checklists)
+                - generic [ref=e304]:
+                  - paragraph [ref=e305]: Week 6
+                  - list [ref=e306]:
+                    - listitem [ref=e307]:
+                      - generic [ref=e310]: Run a beta test with 3-5 clients at 50% discount
+                    - listitem [ref=e311]:
+                      - generic [ref=e314]: Collect detailed feedback and testimonials
+                    - listitem [ref=e315]:
+                      - generic [ref=e318]: Fix any issues in content or delivery
+                    - listitem [ref=e319]:
+                      - generic [ref=e322]: Document FAQs and create a knowledge base
+            - generic [ref=e324]:
+              - generic [ref=e325]:
+                - generic [ref=e326]:
+                  - generic [ref=e327]: "3"
+                  - generic [ref=e328]:
+                    - heading "Launch & Acquire" [level=4] [ref=e329]
+                    - paragraph [ref=e330]: Weeks 7-9
+                - generic [ref=e331]: 3 tasks
+              - generic [ref=e333]:
+                - generic [ref=e334]:
+                  - paragraph [ref=e335]: Week 7
+                  - list [ref=e336]:
+                    - listitem [ref=e337]:
+                      - generic [ref=e340]: Plan your official launch (date, messaging, channels)
+                    - listitem [ref=e341]:
+                      - generic [ref=e344]: Create launch content (case studies, testimonials, behind-the-scenes)
+                    - listitem [ref=e345]:
+                      - generic [ref=e348]: Reach out to your network personally (DMs, calls)
+                    - listitem [ref=e349]:
+                      - generic [ref=e352]: Offer early-bird pricing (₹3,999 for first 10 students)
+                - generic [ref=e353]:
+                  - paragraph [ref=e354]: Week 8
+                  - list [ref=e355]:
+                    - listitem [ref=e356]:
+                      - generic [ref=e359]: "Execute launch: daily LinkedIn posts + stories"
+                    - listitem [ref=e360]:
+                      - generic [ref=e363]: Host a free webinar or workshop to attract leads
+                    - listitem [ref=e364]:
+                      - generic [ref=e367]: Follow up with all interested prospects
+                    - listitem [ref=e368]:
+                      - generic [ref=e371]: Enroll first 10 paying students
+                - generic [ref=e372]:
+                  - paragraph [ref=e373]: Week 9
+                  - list [ref=e374]:
+                    - listitem [ref=e375]:
+                      - generic [ref=e378]: Deliver program to first cohort with excellence
+                    - listitem [ref=e379]:
+                      - generic [ref=e382]: Document student wins and collect testimonials
+                    - listitem [ref=e383]:
+                      - generic [ref=e386]: Iterate on program based on live feedback
+                    - listitem [ref=e387]:
+                      - generic [ref=e390]: Plan referral program for students
+            - generic [ref=e392]:
+              - generic [ref=e393]:
+                - generic [ref=e394]:
+                  - generic [ref=e395]: "4"
+                  - generic [ref=e396]:
+                    - heading "Scale & Optimize" [level=4] [ref=e397]
+                    - paragraph [ref=e398]: Weeks 10-12
+                - generic [ref=e399]: 3 tasks
+              - generic [ref=e401]:
+                - generic [ref=e402]:
+                  - paragraph [ref=e403]: Week 10
+                  - list [ref=e404]:
+                    - listitem [ref=e405]:
+                      - generic [ref=e408]: Raise price to ₹9,999 based on testimonials
+                    - listitem [ref=e409]:
+                      - generic [ref=e412]: Launch referral program with incentives
+                    - listitem [ref=e413]:
+                      - generic [ref=e416]: Start collecting video testimonials
+                    - listitem [ref=e417]:
+                      - generic [ref=e420]: Create case study content from student results
+                - generic [ref=e421]:
+                  - paragraph [ref=e422]: Week 11
+                  - list [ref=e423]:
+                    - listitem [ref=e424]:
+                      - generic [ref=e427]: Set up automated lead generation (LinkedIn + ads)
+                    - listitem [ref=e428]:
+                      - generic [ref=e431]: Create evergreen funnel (free resource → email sequence → offer)
+                    - listitem [ref=e432]:
+                      - generic [ref=e435]: Hire a VA for admin tasks (2-3 hours/week)
+                    - listitem [ref=e436]:
+                      - generic [ref=e439]: Plan premium tier (₹24,999 with 1:1 coaching)
+                - generic [ref=e440]:
+                  - paragraph [ref=e441]: Week 12
+                  - list [ref=e442]:
+                    - listitem [ref=e443]:
+                      - generic [ref=e446]: Launch premium tier to existing students
+                    - listitem [ref=e447]:
+                      - generic [ref=e450]: Document your entire system (SOPs)
+                    - listitem [ref=e451]:
+                      - generic [ref=e454]: "Plan next quarter: new program or market expansion"
+                    - listitem [ref=e455]:
+                      - generic [ref=e458]: Celebrate your wins and set new revenue targets!
+          - generic [ref=e459]:
+            - link "Download My Blueprint PDF" [active] [ref=e460] [cursor=pointer]:
+              - /url: http://localhost:3001/api/blueprint/pdf/bp_1779847881493
+              - img [ref=e461]
+              - text: Download My Blueprint PDF
+            - paragraph [ref=e464]: This will deduct 15 credits

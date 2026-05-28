@@ -1,0 +1,81 @@
+<div class="page">
+  <h2 class="section-title">Your Signature Program</h2>
+  <div class="accent-line"></div>
+
+  <div style="text-align: center; margin-bottom: 24px;">
+    <h3 style="font-size: 28px; color: #F05A28; margin-bottom: 8px;">{{programName}}</h3>
+    <p style="font-size: 14px; color: #4A4A4A;">{{programDescription}}</p>
+  </div>
+
+  <div class="card">
+    <div class="label">Pricing Strategy</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0;">
+      <div>
+        <div style="font-size: 32px; font-family: 'DM Serif Display', serif; color: #F05A28;">${{startingPrice}}</div>
+        <div style="font-size: 12px; color: #4A4A4A;">Starting Price</div>
+      </div>
+      <div>
+        <div style="font-size: 20px; font-family: 'DM Serif Display', serif; color: #0A0A0A;">{{sweetSpotRange}}</div>
+        <div style="font-size: 12px; color: #4A4A4A;">Sweet Spot Range</div>
+      </div>
+    </div>
+    <div style="margin-top: 12px;">
+      <strong>Justification:</strong> {{priceJustification}}
+    </div>
+    <div style="margin-top: 8px;">
+      <strong>Market Insight:</strong> {{marketInsight}}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">Price Evolution</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Milestone</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Launch</td>
+          <td>${{launchPrice}}</td>
+        </tr>
+        <tr>
+          <td>After 10 Students</td>
+          <td>{{after10Students}}</td>
+        </tr>
+        <tr>
+          <td>Premium Tier</td>
+          <td>{{premiumTier}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="label">Revenue Milestones</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Students</th>
+          <th>Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10 Students</td>
+          <td>${{revenue10}}</td>
+        </tr>
+        <tr>
+          <td>50 Students</td>
+          <td>${{revenue50}}</td>
+        </tr>
+        <tr>
+          <td>100 Students</td>
+          <td>${{revenue100}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="page">
+  <h2 class="section-title">Your Ideal Audience</h2>
+  <div class="accent-line"></div>
+
+  <div class="card">
+    <div class="label">Audience Persona</div>
+    <h3 style="font-size: 22px; margin-bottom: 16px;">{{personaName}}</h3>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <div>
+        <div class="label">Age Range</div>
+        <p>{{personaAgeRange}}</p>
+      </div>
+      <div>
+        <div class="label">Role</div>
+        <p>{{personaRole}}</p>
+      </div>
+      <div>
+        <div class="label">Location</div>
+        <p>{{personaLocation}}</p>
+      </div>
+      <div>
+        <div class="label">Paying Capacity</div>
+        <p>{{personaPayingCapacity}}</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <div class="label">Current Situation</div>
+      <p>{{personaCurrentSituation}}</p>
+    </div>
+
+    <div style="margin-top: 12px;">
+      <div class="label">Online Platforms</div>
+      <p>{{personaPlatforms}}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">Pain Points</div>
+    <ul>
+      {{painPoints}}
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="label">Desires & Goals</div>
+    <div style="margin-bottom: 10px;">
+      <strong>Biggest Desire:</strong> {{personaBiggestDesire}}
+    </div>
+    <ul>
+      {{goals}}
+    </ul>
+  </div>
+
+  {{personaQuoteBlock}}
+</div>

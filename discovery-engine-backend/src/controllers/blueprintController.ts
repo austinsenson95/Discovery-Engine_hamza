@@ -21,6 +21,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { llmService } from '../services/llmService';
 import { pdfService } from '../services/pdfService';
+import { validateBlueprintForPDF, compileBlueprintTemplate } from '../services/templateEngine';
+import { invalidatePDFCache } from '../services/pdfService';
 import { creditService } from '../services/creditService';
 import {
   dummyBlueprint,
@@ -166,6 +168,9 @@ export const updateBlueprintById = async (
       res.status(404).json({ success: false, message: 'Blueprint not found' });
       return;
     }
+
+    // Invalidate cached PDF if blueprint data changed
+    invalidatePDFCache(id);
 
     sendSuccess(res, updated);
   } catch (error) {
@@ -622,17 +627,29 @@ export const downloadPDF = async (
     if (!blueprint) {
       res.status(404).json({
         success: false,
-        message: 'Blueprint PDF not found.',
+        message: 'Blueprint not found.',
       });
       return;
     }
 
-    const pdfBuffer = await pdfService.streamPDF(id);
+    // Validate blueprint completeness before generating PDF
+    const missingFields = validateBlueprintForPDF(blueprint);
+    if (missingFields.length > 0) {
+      res.status(400).json({
+        success: false,
+        message: `Blueprint is incomplete. Missing: ${missingFields.join(', ')}. Please complete all wizard steps before downloading.`,
+        data: { missingFields },
+      });
+      return;
+    }
+
+    const pdfBuffer = await pdfService.streamPDF(id, blueprint);
+    const { filename } = compileBlueprintTemplate(blueprint);
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader(
       'Content-Disposition',
-      `attachment; filename="discovery-engine-blueprint-${id}.pdf"`
+      `attachment; filename="${filename}"`
     );
     res.send(pdfBuffer);
   } catch (error) {
