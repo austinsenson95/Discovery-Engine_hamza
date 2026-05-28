@@ -38,7 +38,7 @@ import {
   fetchAllBlueprints,
   updateBlueprint,
   deleteBlueprint,
-  API_BASE,
+  downloadPDF,
 } from '@/lib/api';
 import { mockNiches, mockPersona, mockProgramNames, mockPricing, mockRoadmap, mockProblems } from '@/lib/mockData';
 
@@ -166,6 +166,7 @@ export default function Blueprint() {
   const [roadmap, setRoadmap] = useState<RoadmapPhase[]>([]);
   const [credits, setCredits] = useState(100);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [blueprintId, setBlueprintId] = useState<string | null>(null);
   const [showBooking, setShowBooking] = useState(false);
 
@@ -227,7 +228,6 @@ export default function Blueprint() {
             }
             if (target.roadmap) {
               setRoadmap(target.roadmap.phases);
-              setPdfDownloaded(true);
             }
           }
         }
@@ -434,27 +434,37 @@ export default function Blueprint() {
   };
 
   // ─── Step 4: Download PDF ───
-  const handleDownloadPDF = () => {
-    if (!blueprintId) return;
+  const handleDownloadPDF = async () => {
+    if (!blueprintId || isPdfLoading) return;
 
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#F97316', '#22C55E', '#FFD700', '#FFFFFF'],
-    });
-    setPdfDownloaded(true);
-
-    // Update blueprint status in the background
+    setIsPdfLoading(true);
     try {
-      updateBlueprint(blueprintId, {
-        status: 'completed',
-        currentStep: 7,
-        progress: 100,
-      });
-    } catch { /* ignore */ }
+      await downloadPDF(blueprintId);
 
-    success('Your Blueprint PDF is downloading!');
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#F97316', '#22C55E', '#FFD700', '#FFFFFF'],
+      });
+      setPdfDownloaded(true);
+
+      try {
+        await updateBlueprint(blueprintId, {
+          status: 'completed',
+          currentStep: 7,
+          progress: 100,
+        });
+      } catch { /* ignore */ }
+
+      success('Your Blueprint PDF is ready for download!');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to download PDF';
+      console.error('[Blueprint] PDF download failed:', message);
+      alert(`PDF download failed: ${message}`);
+    } finally {
+      setIsPdfLoading(false);
+    }
   };
 
   // ═══ RENDER ═══
@@ -1180,16 +1190,20 @@ export default function Blueprint() {
                         transition={{ delay: 0.5 }}
                         className="text-center"
                       >
-                        <motion.a
-                          href={blueprintId ? `${API_BASE}/blueprint/pdf/${blueprintId}` : '#'}
+                        <motion.button
                           onClick={handleDownloadPDF}
-                          whileHover={{ scale: 1.03 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="py-4 px-10 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-lg font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange inline-flex items-center gap-3"
+                          whileHover={isPdfLoading ? {} : { scale: 1.03 }}
+                          whileTap={isPdfLoading ? {} : { scale: 0.98 }}
+                          disabled={isPdfLoading}
+                          className="py-4 px-10 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-lg font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange inline-flex items-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
-                          <Download className="w-5 h-5" />
-                          Download My Blueprint PDF
-                        </motion.a>
+                          {isPdfLoading ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <Download className="w-5 h-5" />
+                          )}
+                          {isPdfLoading ? 'Generating PDF...' : 'Download My Blueprint PDF'}
+                        </motion.button>
                         <p className="text-sm text-gray-400 mt-4">This will deduct 15 credits</p>
                       </motion.div>
                     ) : !showBooking ? (
