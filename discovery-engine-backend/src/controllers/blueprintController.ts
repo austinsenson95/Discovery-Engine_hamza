@@ -212,8 +212,8 @@ export const submitNiche = async (
 ) => {
   const startTime = Date.now();
   try {
-    const { skills, experience, passions } = req.body;
-    console.log(`[Blueprint] POST /api/blueprint/niche — skills="${skills}"`);
+    const { skills, experience, passions, domains } = req.body;
+    console.log(`[Blueprint] POST /api/blueprint/niche — skills="${skills}" domains="${domains?.join(', ') ?? ''}"`);
 
     const userId = dummyUser.id;
 
@@ -229,7 +229,8 @@ export const submitNiche = async (
     const niches = await llmService.generateNicheRecommendations(
       skills,
       experience,
-      passions
+      passions,
+      domains
     );
 
     const { deducted, remaining } = await creditService.deductCredits(
@@ -252,6 +253,7 @@ export const submitNiche = async (
           skills,
           experience,
           passions,
+          domains,
         },
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -266,6 +268,7 @@ export const submitNiche = async (
           skills,
           experience,
           passions,
+          domains,
         },
       })!;
     }

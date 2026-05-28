@@ -60,20 +60,25 @@ class LLMService {
   async generateNicheRecommendations(
     skills: string,
     experience: string,
-    passions: string
+    passions: string,
+    domains?: string[]
   ): Promise<NicheOption[]> {
     console.log(`[LLM] Generating niche recommendations...`);
     console.log(`[LLM]   Skills: ${skills}`);
     console.log(`[LLM]   Experience: ${experience}`);
     console.log(`[LLM]   Passions: ${passions}`);
+    console.log(`[LLM]   Domains: ${domains?.join(', ') ?? 'none'}`);
 
     await this.simulateDelay(2000);
 
     // TODO: Replace with actual LLM API call (OpenAI, Claude, Cohere, etc.)
-    // Return enriched dummy data with user context
+    // Pass domains as additional context for niche generation
+    const domainContext = domains && domains.length > 0
+      ? ` Your selected coaching domain(s): ${domains.join(', ')}.`
+      : '';
     return dummyNiches.map((niche) => ({
       ...niche,
-      fitExplanation: `${niche.fitExplanation} Your background in "${skills}" and passion for "${passions}" strongly aligns with this niche.`,
+      fitExplanation: `${niche.fitExplanation} Your background in "${skills}" and passion for "${passions}" strongly aligns with this niche.${domainContext}`,
     }));
   }
 

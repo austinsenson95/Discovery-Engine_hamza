@@ -50,7 +50,7 @@ export const updateBlueprint = (id: string, updates: Partial<Blueprint>): Promis
 export const deleteBlueprint = (id: string): Promise<{ deleted: boolean }> =>
   fetchJson<{ data: { deleted: boolean } }>(`/blueprint/${id}`, { method: 'DELETE' }).then(r => r.data);
 
-export const submitNicheForm = async (data: { skills: string; experience: string; passions: string }) => {
+export const submitNicheForm = async (data: { skills: string; experience: string; passions: string; domains: string[] }) => {
   const res = await fetchJson<{
     data: { niches: NicheOption[]; blueprint: Blueprint };
     meta?: { creditsDeducted?: number; remainingCredits?: number };

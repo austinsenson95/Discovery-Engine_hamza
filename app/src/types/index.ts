@@ -70,7 +70,7 @@ export interface Blueprint {
   status: 'in_progress' | 'completed';
   currentStep: number;
   progress: number;
-  niche?: { selectedNiche: NicheOption; skills: string; experience: string; passions: string };
+  niche?: { selectedNiche: NicheOption; skills: string; experience: string; passions: string; domains?: string[] };
   audience?: { persona: Persona };
   program?: { selectedProblems: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[] };
   roadmap?: { phases: RoadmapPhase[]; pdfUrl: string; completedAt?: Date };

@@ -153,6 +153,7 @@ export default function Blueprint() {
   const [skills, setSkills] = useState('');
   const [experience, setExperience] = useState('');
   const [passions, setPassions] = useState('');
+  const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
 
   // Data state
   const [nicheOptions, setNicheOptions] = useState<NicheOption[]>([]);
@@ -215,6 +216,7 @@ export default function Blueprint() {
               setSkills(target.niche.skills);
               setExperience(target.niche.experience);
               setPassions(target.niche.passions);
+              setSelectedDomains(target.niche.domains || []);
               setSelectedNiche(target.niche.selectedNiche);
               setNicheOptions([target.niche.selectedNiche]);
             }
@@ -268,13 +270,18 @@ export default function Blueprint() {
     setSkills('');
     setExperience('');
     setPassions('');
+    setSelectedDomains([]);
     setBlueprintId(null);
     info('Blueprint progress has been reset. Start fresh!');
   };
 
   const handleCategoryClick = (category: string) => {
     const clean = category.replace(/^[\p{Emoji}\uFE0F]+\s*/u, '');
-    setPassions(prev => prev ? `${prev}, ${clean}` : clean);
+    setSelectedDomains(prev =>
+      prev.includes(clean)
+        ? prev.filter(d => d !== clean)
+        : [...prev, clean]
+    );
   };
 
   // ─── Step 1: Submit Niche Form ───
@@ -285,7 +292,7 @@ export default function Blueprint() {
     }
     setLoading(true);
     try {
-      const result = await submitNicheForm({ skills, experience, passions });
+      const result = await submitNicheForm({ skills, experience, passions, domains: selectedDomains });
       setNicheOptions(result.niches);
       setBlueprintId(result.blueprint.id);
       setCredits(prev => prev - result.creditsDeducted);
@@ -300,7 +307,7 @@ export default function Blueprint() {
     if (blueprintId) {
       try {
         await updateBlueprint(blueprintId, {
-          niche: { selectedNiche: niche, skills, experience, passions },
+          niche: { selectedNiche: niche, skills, experience, passions, domains: selectedDomains },
           currentStep: 2,
           progress: 20,
         });
@@ -529,15 +536,23 @@ export default function Blueprint() {
                         Choose Your Coaching Domain
                       </label>
                       <div className="flex flex-wrap gap-2">
-                        {coachingCategories.map(cat => (
-                          <button
-                            key={cat}
-                            onClick={() => handleCategoryClick(cat)}
-                            className="text-xs font-medium border border-gray-200 rounded-full px-3 py-1.5 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 transition-all active:scale-95 bg-white text-gray-600"
-                          >
-                            {cat}
-                          </button>
-                        ))}
+                        {coachingCategories.map(cat => {
+                          const clean = cat.replace(/^[\p{Emoji}\uFE0F]+\s*/u, '');
+                          const isSelected = selectedDomains.includes(clean);
+                          return (
+                            <button
+                              key={cat}
+                              onClick={() => handleCategoryClick(cat)}
+                              className={`text-xs font-medium border rounded-full px-3 py-1.5 transition-all active:scale-95 ${
+                                isSelected
+                                  ? 'bg-orange-500 text-white border-orange-500 shadow-sm'
+                                  : 'bg-white text-gray-600 border-gray-200 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50'
+                              }`}
+                            >
+                              {cat}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 

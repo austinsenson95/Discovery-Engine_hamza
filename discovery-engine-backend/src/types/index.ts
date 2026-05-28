@@ -92,6 +92,7 @@ export interface Blueprint {
     skills: string;
     experience: string;
     passions: string;
+    domains?: string[];
   };
   audience?: {
     persona: Persona;
