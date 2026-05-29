@@ -106,6 +106,64 @@ function buildProgramPage(blueprint: Blueprint): string {
 }
 
 // ---------------------------------------------------------------------------
+// Curriculum Page
+// ---------------------------------------------------------------------------
+function buildCurriculumPage(blueprint: Blueprint): string {
+  const curriculum = blueprint.program?.curriculum;
+  if (!curriculum) return '';
+
+  const modulesHtml = curriculum.modules
+    .map((mod) => {
+      const lessonsHtml = mod.lessons
+        .map(
+          (lesson) => `
+            <tr>
+              <td style="font-size: 13px; color: #0A0A0A; padding-bottom: 2px;">${escapeHtml(lesson.title)}</td>
+              <td style="font-size: 12px; color: #4A4A4A; text-align: right; white-space: nowrap; padding-bottom: 2px;">${escapeHtml(lesson.duration || '—')}</td>
+            </tr>
+            ${lesson.learningOutcome ? `<tr>
+              <td colspan="2" style="font-size: 11px; color: #6B7280; padding-bottom: 8px; border-bottom: 1px solid #F3F4F6;">
+                <span style="font-weight: 600; color: #4A4A4A;">Outcome:</span> ${escapeHtml(lesson.learningOutcome)}
+              </td>
+            </tr>` : '<tr><td colspan="2" style="padding-bottom: 8px; border-bottom: 1px solid #F3F4F6;"></td></tr>'}
+          `
+        )
+        .join('\n');
+
+      const outputBlock = mod.output
+        ? `<div style="margin-top: 10px; padding: 10px 12px; background: #FFF7ED; border-left: 3px solid #F05A28; border-radius: 0 6px 6px 0;">
+             <span style="font-size: 11px; font-weight: 600; color: #F05A28; text-transform: uppercase; letter-spacing: 0.08em;">Output</span>
+             <p style="font-size: 12px; color: #4A4A4A; margin: 4px 0 0;">${escapeHtml(mod.output)}</p>
+           </div>`
+        : '';
+
+      const subtitleBlock = mod.subtitle
+        ? `<p style="font-size: 12px; color: #4A4A4A; font-style: italic; margin: 4px 0 8px;">${escapeHtml(mod.subtitle)}</p>`
+        : '';
+
+      return `
+        <div style="margin-bottom: 18px; page-break-inside: avoid;">
+          <h3 style="font-size: 16px; color: #0A0A0A; margin-bottom: 4px;">${escapeHtml(mod.title)}</h3>
+          ${subtitleBlock}
+          <table style="margin: 0;">
+            <tbody>
+              ${lessonsHtml}
+            </tbody>
+          </table>
+          ${outputBlock}
+        </div>
+      `;
+    })
+    .join('\n');
+
+  const meta = `${curriculum.totalLessons} lessons · ${curriculum.totalDuration}`;
+
+  return readPartial('curriculum.html')
+    .replace(/{{curriculumMeta}}/g, escapeHtml(meta))
+    .replace(/{{curriculumModules}}/g, modulesHtml);
+}
+
+// ---------------------------------------------------------------------------
 // Roadmap Page
 // ---------------------------------------------------------------------------
 function buildRoadmapPage(blueprint: Blueprint): string {
@@ -183,6 +241,7 @@ export function compileBlueprintTemplate(blueprint: Blueprint): CompiledTemplate
     buildCoverPage(blueprint),
     buildPersonaPage(blueprint),
     buildProgramPage(blueprint),
+    buildCurriculumPage(blueprint),
     buildRoadmapPage(blueprint),
     buildNextStepsPage(blueprint),
   ].join('\n');

@@ -13,6 +13,7 @@
  *   POST /api/blueprint/problems     → Save selected audience problems
  *   POST /api/blueprint/program-name → Generate program name suggestions
  *   POST /api/blueprint/pricing      → Generate pricing strategy
+ *   POST /api/blueprint/curriculum   → Generate course curriculum
  *   POST /api/blueprint/roadmap      → Generate 12-week roadmap + PDF
  *   GET  /api/blueprint/pdf/:id      → Download generated PDF
  * ============================================================================
@@ -30,6 +31,7 @@ import {
   submitProblems,
   generateProgramNames,
   generatePricing,
+  generateCurriculum,
   generateRoadmap,
   downloadPDF,
 } from '../controllers/blueprintController';
@@ -50,6 +52,7 @@ router.post('/audience', generateAudience);
 router.post('/problems', submitProblems);
 router.post('/program-name', generateProgramNames);
 router.post('/pricing', generatePricing);
+router.post('/curriculum', generateCurriculum);
 router.post('/roadmap', generateRoadmap);
 
 // PDF download

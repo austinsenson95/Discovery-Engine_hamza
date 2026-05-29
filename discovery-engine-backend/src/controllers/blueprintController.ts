@@ -536,6 +536,86 @@ export const generatePricing = async (
 };
 
 // ---------------------------------------------------------------------------
+// POST /api/blueprint/curriculum
+// ---------------------------------------------------------------------------
+export const generateCurriculum = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const startTime = Date.now();
+  try {
+    console.log(`[Blueprint] POST /api/blueprint/curriculum — generating course curriculum`);
+
+    const userId = dummyUser.id;
+
+    const canAfford = await creditService.hasEnoughCredits(userId, 'curriculum');
+    if (!canAfford) {
+      res.status(402).json({
+        success: false,
+        message: 'Insufficient credits. Please top up your credits to continue.',
+      });
+      return;
+    }
+
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
+    if (!blueprint) {
+      res.status(404).json({
+        success: false,
+        message: 'Blueprint not found. Please complete previous steps first.',
+      });
+      return;
+    }
+
+    const niche = blueprint.niche?.selectedNiche?.name || 'Career Coaching';
+    const program = blueprint.program?.selectedName?.name || 'Coaching Program';
+    const problems = blueprint.program?.selectedProblems || [];
+
+    const curriculum = await llmService.generateCurriculum(niche, program, problems);
+
+    const { deducted, remaining } = await creditService.deductCredits(
+      userId,
+      'curriculum'
+    );
+
+    if (blueprint && blueprint.program) {
+      blueprint.program.curriculum = curriculum;
+      updateBlueprint(blueprint.id, {
+        program: blueprint.program,
+        currentStep: 7,
+        progress: 80,
+      });
+    }
+
+    addActivity({
+      userId,
+      blueprintId: blueprint.id,
+      title: 'Generated Course Curriculum',
+      description: `${curriculum.totalLessons} lessons across ${curriculum.modules.length} modules`,
+      type: 'program',
+      createdAt: new Date(),
+    });
+
+    const processingTime = Date.now() - startTime;
+    console.log(`[Blueprint] Curriculum generated in ${processingTime}ms`);
+
+    sendSuccess(
+      res,
+      { curriculum },
+      200,
+      {
+        creditsDeducted: deducted,
+        remainingCredits: remaining,
+        processingTime,
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
 // POST /api/blueprint/roadmap
 // ---------------------------------------------------------------------------
 export const generateRoadmap = async (
@@ -583,7 +663,7 @@ export const generateRoadmap = async (
         completedAt: new Date(),
       },
       status: 'completed',
-      currentStep: 7,
+      currentStep: 8,
       progress: 100,
     });
 

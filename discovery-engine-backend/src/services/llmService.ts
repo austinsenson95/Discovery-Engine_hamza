@@ -22,6 +22,7 @@ import {
   PricingStrategy,
   Blueprint,
   RoadmapPhase,
+  CourseCurriculum,
 } from '../types';
 import {
   dummyNiches,
@@ -30,6 +31,7 @@ import {
   dummyModules,
   dummyPricing,
   dummyRoadmapPhases,
+  dummyCurriculum,
 } from '../data/dummyData';
 
 class LLMService {
@@ -155,6 +157,36 @@ class LLMService {
     // TODO: Replace with actual LLM API that generates personalized roadmap
     // based on blueprint niche, audience, and program data
     return { phases: dummyRoadmapPhases };
+  }
+
+  /**
+   * Generate a detailed course curriculum based on program, niche, and audience.
+   *
+   * TODO: Replace with actual LLM API call for curriculum generation
+   */
+  async generateCurriculum(
+    niche: string,
+    program: string,
+    problems: string[]
+  ): Promise<CourseCurriculum> {
+    console.log(`[LLM] Generating course curriculum...`);
+    console.log(`[LLM]   Program: ${program}`);
+    console.log(`[LLM]   Niche: ${niche}`);
+    console.log(`[LLM]   Problems: ${problems.join(', ')}`);
+
+    await this.simulateDelay(2500);
+
+    // TODO: Replace with actual LLM-generated curriculum
+    // Enrich dummy curriculum with program context
+    return {
+      ...dummyCurriculum,
+      modules: dummyCurriculum.modules.map((mod) => ({
+        ...mod,
+        subtitle: mod.subtitle
+          ? `${mod.subtitle} Tailored for ${program}.`
+          : undefined,
+      })),
+    };
   }
 
   /**

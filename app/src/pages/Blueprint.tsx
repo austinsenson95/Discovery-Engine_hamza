@@ -21,7 +21,7 @@ import {
   Phone,
   ChevronLeft,
 } from 'lucide-react';
-import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase } from '@/types';
+import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, CourseCurriculum } from '@/types';
 import Stepper from '@/components/Stepper';
 import NicheCard from '@/components/NicheCard';
 import PersonaCard from '@/components/PersonaCard';
@@ -32,6 +32,7 @@ import {
   generatePersona,
   generateProgramNames,
   generatePricing,
+  generateCurriculum,
   generateRoadmap,
   fetchProblems,
   fetchBlueprint,
@@ -40,7 +41,7 @@ import {
   deleteBlueprint,
   downloadPDF,
 } from '@/lib/api';
-import { mockNiches, mockPersona, mockProgramNames, mockPricing, mockRoadmap, mockProblems } from '@/lib/mockData';
+import { mockNiches, mockPersona, mockProgramNames, mockPricing, mockRoadmap, mockProblems, mockCurriculum } from '@/lib/mockData';
 
 const steps = ['Niche Discovery', 'Audience Mapping', 'Program Builder', 'Roadmap & PDF'];
 
@@ -164,6 +165,7 @@ export default function Blueprint() {
   const [programNames, setProgramNames] = useState<ProgramName[]>([]);
   const [selectedProgramName, setSelectedProgramName] = useState<ProgramName | null>(null);
   const [pricing, setPricing] = useState<PricingStrategy | null>(null);
+  const [curriculum, setCurriculum] = useState<CourseCurriculum | null>(null);
   const [roadmap, setRoadmap] = useState<RoadmapPhase[]>([]);
   const [credits, setCredits] = useState(100);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
@@ -205,12 +207,14 @@ export default function Blueprint() {
           setBlueprintId(target.id);
           if (target.currentStep > 1) {
             // Restore step based on backend currentStep
-            const restoredStep = Math.min(target.currentStep, 4);
-            setStep(restoredStep <= 3 ? restoredStep : 4);
-            if (target.currentStep >= 3 && target.currentStep <= 5) {
-              setSubStep(target.currentStep - 2); // 3->1, 4->2, 5->3
-            } else if (target.currentStep >= 6) {
-              setSubStep(3);
+            if (target.currentStep === 2) {
+              setStep(2);
+            } else if (target.currentStep >= 3 && target.currentStep <= 6) {
+              setStep(3);
+              setSubStep(target.currentStep - 2); // 3->1, 4->2, 5->3, 6->4
+            } else if (target.currentStep >= 7) {
+              setStep(4);
+              setSubStep(4);
             }
             if (target.niche) {
               setSkills(target.niche.skills);
@@ -227,6 +231,7 @@ export default function Blueprint() {
               setSelectedProblems(target.program.selectedProblems || []);
               setSelectedProgramName(target.program.selectedName);
               if (target.program.pricing) setPricing(target.program.pricing);
+              if (target.program.curriculum) setCurriculum(target.program.curriculum);
             }
             if (target.roadmap) {
               setRoadmap(target.roadmap.phases);
@@ -264,6 +269,7 @@ export default function Blueprint() {
     setProgramNames([]);
     setSelectedProgramName(null);
     setPricing(null);
+    setCurriculum(null);
     setRoadmap([]);
     setPdfDownloaded(false);
     setShowBooking(false);
@@ -414,9 +420,9 @@ export default function Blueprint() {
     setLoading(false);
   };
 
-  // ─── Step 3c: Continue to Roadmap ───
-  const handleContinueToRoadmap = async () => {
-    goToStep(4);
+  // ─── Step 3c: Build Course Curriculum ───
+  const handleBuildCurriculum = async () => {
+    setSubStep(4);
     if (blueprintId) {
       try {
         const bp = await fetchBlueprint();
@@ -425,7 +431,33 @@ export default function Blueprint() {
         await updateBlueprint(blueprintId, {
           program,
           currentStep: 6,
-          progress: 70,
+          progress: 65,
+        });
+      } catch { /* ignore */ }
+    }
+    setLoading(true);
+    try {
+      const result = await generateCurriculum();
+      setCurriculum(result.curriculum);
+      setCredits(prev => prev - result.creditsDeducted);
+    } catch {
+      setCurriculum(mockCurriculum);
+    }
+    setLoading(false);
+  };
+
+  // ─── Step 3d: Continue to Roadmap ───
+  const handleContinueToRoadmap = async () => {
+    goToStep(4);
+    if (blueprintId) {
+      try {
+        const bp = await fetchBlueprint();
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
+        if (curriculum) program.curriculum = curriculum;
+        await updateBlueprint(blueprintId, {
+          program,
+          currentStep: 7,
+          progress: 80,
         });
       } catch { /* ignore */ }
     }
@@ -459,7 +491,7 @@ export default function Blueprint() {
       try {
         await updateBlueprint(blueprintId, {
           status: 'completed',
-          currentStep: 7,
+          currentStep: 8,
           progress: 100,
         });
       } catch { /* ignore */ }
@@ -795,7 +827,7 @@ export default function Blueprint() {
 
                 <MiniStepper
                   subStep={subStep}
-                  labels={['Problems', 'Naming', 'Pricing']}
+                  labels={['Problems', 'Naming', 'Pricing', 'Curriculum']}
                 />
 
                 {/* ─── 3a: Problem Identification ─── */}
@@ -1071,6 +1103,131 @@ export default function Blueprint() {
                       >
                         <ChevronLeft className="w-4 h-4" />
                         Back to Naming
+                      </button>
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleBuildCurriculum}
+                        className="py-3.5 px-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-base font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange inline-flex items-center gap-2"
+                      >
+                        Build Course Curriculum
+                        <ArrowRight className="w-5 h-5" />
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* ─── 3d: Course Curriculum ─── */}
+                {subStep === 4 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <h3 className="text-2xl font-serif text-gray-900 mb-2">
+                      Design Your <span className="italic text-orange-500">Course</span> Curriculum
+                    </h3>
+                    <p className="text-gray-500 mb-6">
+                      AI-generated lesson plan structured into modules with clear learning outcomes.
+                    </p>
+
+                    {loading && !curriculum && (
+                      <div className="flex items-center justify-center py-12">
+                        <Loader2 className="w-5 h-5 animate-spin text-orange-500 mr-2" />
+                        <span className="text-sm text-orange-500">AI is building your curriculum...</span>
+                      </div>
+                    )}
+
+                    {!loading && !curriculum && (
+                      <div className="text-center py-12 mb-8">
+                        <div className="bg-orange-50 border border-orange-200 rounded-xl p-8 max-w-md mx-auto">
+                          <Sparkles className="w-8 h-8 text-orange-500 mx-auto mb-3" />
+                          <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                            Generate Your Course Curriculum
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-4">
+                            Our AI will design a structured curriculum with modules, lessons, durations, and learning outcomes tailored to your niche and program.
+                          </p>
+                          <p className="text-xs text-gray-500 mb-4">
+                            This will deduct <span className="font-semibold text-orange-600">10 credits</span> from your balance.
+                          </p>
+                          <motion.button
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleBuildCurriculum}
+                            className="py-2.5 px-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange inline-flex items-center gap-2"
+                          >
+                            <Sparkles className="w-4 h-4" />
+                            Generate Curriculum
+                          </motion.button>
+                        </div>
+                      </div>
+                    )}
+
+                    {curriculum && (
+                      <div className="space-y-6 mb-8">
+                        <div className="flex items-center gap-3 text-sm text-gray-500">
+                          <span className="bg-orange-50 text-orange-600 border border-orange-200 rounded-full px-3 py-1 font-medium">
+                            {curriculum.totalLessons} lessons
+                          </span>
+                          <span className="bg-gray-50 text-gray-600 border border-gray-200 rounded-full px-3 py-1 font-medium">
+                            {curriculum.totalDuration}
+                          </span>
+                        </div>
+
+                        {curriculum.modules.map((mod, i) => (
+                          <motion.div
+                            key={mod.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.08 }}
+                            className="bg-white border border-gray-200 rounded-xl p-5"
+                          >
+                            <h4 className="text-base font-semibold text-gray-900 mb-1">
+                              {mod.title}
+                            </h4>
+                            {mod.subtitle && (
+                              <p className="text-sm text-gray-500 italic mb-3">{mod.subtitle}</p>
+                            )}
+                            <ul className="space-y-3">
+                              {mod.lessons.map((lesson) => (
+                                <li key={lesson.id} className="text-sm">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-gray-700 flex items-center gap-2">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                                      {lesson.title}
+                                    </span>
+                                    {lesson.duration && (
+                                      <span className="text-xs text-gray-400">{lesson.duration}</span>
+                                    )}
+                                  </div>
+                                  {lesson.learningOutcome && (
+                                    <p className="text-xs text-gray-500 mt-1 ml-3.5 leading-relaxed">
+                                      <span className="font-medium text-gray-600">Outcome:</span>{' '}
+                                      {lesson.learningOutcome}
+                                    </p>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                            {mod.output && (
+                              <div className="mt-3 p-3 bg-orange-50 border-l-4 border-orange-500 rounded-r-lg">
+                                <p className="text-[11px] font-semibold text-orange-600 uppercase tracking-wider mb-0.5">Output</p>
+                                <p className="text-sm text-gray-700">{mod.output}</p>
+                              </div>
+                            )}
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={() => setSubStep(3)}
+                        className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        Back to Pricing
                       </button>
                       <motion.button
                         whileHover={{ scale: 1.03 }}

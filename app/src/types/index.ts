@@ -55,6 +55,28 @@ export interface PricingStrategy {
   sweetSpotRange: string;
 }
 
+export interface CurriculumLesson {
+  id: string;
+  title: string;
+  duration?: string;
+  learningOutcome?: string;
+}
+
+export interface CurriculumModule {
+  id: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  lessons: CurriculumLesson[];
+  output?: string;
+}
+
+export interface CourseCurriculum {
+  modules: CurriculumModule[];
+  totalLessons: number;
+  totalDuration: string;
+}
+
 export interface RoadmapPhase {
   phase: number;
   weeks: string;
@@ -72,7 +94,7 @@ export interface Blueprint {
   progress: number;
   niche?: { selectedNiche: NicheOption; skills: string; experience: string; passions: string; domains?: string[] };
   audience?: { persona: Persona };
-  program?: { selectedProblems: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[] };
+  program?: { selectedProblems: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[]; curriculum?: CourseCurriculum };
   roadmap?: { phases: RoadmapPhase[]; pdfUrl: string; completedAt?: Date };
   createdAt: Date;
   updatedAt: Date;

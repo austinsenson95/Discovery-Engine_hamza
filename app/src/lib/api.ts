@@ -1,4 +1,4 @@
-import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, User, Blueprint } from '@/types';
+import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, User, Blueprint, CourseCurriculum } from '@/types';
 
 export const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
@@ -88,6 +88,14 @@ export const generatePricing = async () => {
     meta?: { creditsDeducted?: number; remainingCredits?: number };
   }>('/blueprint/pricing', { method: 'POST' });
   return { pricing: res.data.pricing, creditsDeducted: res.meta?.creditsDeducted ?? 5 };
+};
+
+export const generateCurriculum = async () => {
+  const res = await fetchJson<{
+    data: { curriculum: CourseCurriculum };
+    meta?: { creditsDeducted?: number; remainingCredits?: number };
+  }>('/blueprint/curriculum', { method: 'POST' });
+  return { curriculum: res.data.curriculum, creditsDeducted: res.meta?.creditsDeducted ?? 10 };
 };
 
 export const generateRoadmap = async () => {

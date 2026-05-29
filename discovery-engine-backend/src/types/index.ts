@@ -72,6 +72,28 @@ export interface PricingStrategy {
   sweetSpotRange: string;
 }
 
+export interface CurriculumLesson {
+  id: string;
+  title: string;
+  duration?: string;
+  learningOutcome?: string;
+}
+
+export interface CurriculumModule {
+  id: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  lessons: CurriculumLesson[];
+  output?: string;
+}
+
+export interface CourseCurriculum {
+  modules: CurriculumModule[];
+  totalLessons: number;
+  totalDuration: string;
+}
+
 export interface RoadmapPhase {
   phase: number;
   weeks: string;
@@ -102,6 +124,7 @@ export interface Blueprint {
     selectedName: ProgramName;
     pricing: PricingStrategy;
     modules: ModuleItem[];
+    curriculum?: CourseCurriculum;
   };
   roadmap?: {
     phases: RoadmapPhase[];
@@ -135,6 +158,7 @@ export interface CreditDeductions {
   audience: number;
   program: number;
   pricing: number;
+  curriculum: number;
   roadmap: number;
 }
 

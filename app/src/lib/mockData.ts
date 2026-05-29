@@ -1,4 +1,4 @@
-import type { User, NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, ActivityItem } from '@/types';
+import type { User, NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, ActivityItem, CourseCurriculum } from '@/types';
 
 export const mockUser: User = {
   id: '1',
@@ -121,6 +121,67 @@ export const mockPricing: PricingStrategy = {
     premiumTier: '₹24,999 - ₹34,999',
   },
   sweetSpotRange: '₹2,999 - ₹4,999',
+};
+
+export const mockCurriculum: CourseCurriculum = {
+  modules: [
+    {
+      id: 'mod_welcome',
+      title: 'Welcome',
+      lessons: [
+        { id: 'les_001', title: 'The Coaching Blueprint Roadmap', duration: '15 min', learningOutcome: 'Understand the complete coaching business blueprint and your path to ₹1L+ months' },
+        { id: 'les_002', title: 'Your ₹1K Commitment', duration: '10 min', learningOutcome: 'Commit to your first revenue milestone and understand the psychology of paid coaching' },
+      ],
+    },
+    {
+      id: 'mod_day1',
+      title: 'Day 1: Mindset and High-Value Positioning',
+      subtitle: 'Shift from a "worker" mindset to an "expert" and pick a profitable niche.',
+      lessons: [
+        { id: 'les_003', title: 'Killing the Freelancer Trap', duration: '25 min', learningOutcome: 'Identify and break free from freelancer mindset patterns that limit coaching income' },
+        { id: 'les_004', title: 'Niche Selection Matrix', duration: '35 min', learningOutcome: 'Use a structured framework to select a profitable, high-ticket coaching niche' },
+        { id: 'les_005', title: 'The Future of AI Automation', duration: '20 min', learningOutcome: 'Leverage AI tools to automate 70% of repetitive coaching business tasks' },
+        { id: 'les_006', title: 'Your Expert Identity Quiz', duration: '15 min', learningOutcome: 'Define your expert identity and positioning statement for premium clients' },
+      ],
+      output: 'A defined high-ticket niche and a professional expert profile.',
+    },
+    {
+      id: 'mod_day2',
+      title: 'Day 2: Building Your Irresistible Offer',
+      subtitle: 'Create a service package that businesses feel stupid saying no to.',
+      lessons: [
+        { id: 'les_007', title: 'The ₹1,000 Offer Framework', duration: '30 min', learningOutcome: 'Design a high-ticket coaching offer using the value-first framework' },
+        { id: 'les_008', title: 'The "Value-First" Demo Secret', duration: '25 min', learningOutcome: 'Create a compelling demo session that converts 50%+ of prospects into paying clients' },
+        { id: 'les_009', title: 'Real Results Case Study', duration: '20 min', learningOutcome: 'Analyze successful coaching case studies and extract repeatable success patterns' },
+        { id: 'les_010', title: 'Pricing for Profit', duration: '20 min', learningOutcome: 'Set profitable pricing tiers using market research and value-based pricing principles' },
+      ],
+      output: 'A ready-to-sell offer with a clear price tag.',
+    },
+    {
+      id: 'mod_day3',
+      title: 'Day 3: The Lead Machine and Closing',
+      subtitle: 'Launch your outreach system and learn how to handle the sales call.',
+      lessons: [
+        { id: 'les_011', title: 'LinkedIn Authority Blueprint', duration: '30 min', learningOutcome: 'Build a LinkedIn presence that attracts inbound coaching inquiries weekly' },
+        { id: 'les_012', title: 'The 3-Step Closing Script', duration: '25 min', learningOutcome: 'Use a proven 3-step script to close discovery calls without being pushy' },
+        { id: 'les_013', title: 'Your Next Chapter: The 90-Day Scale', duration: '20 min', learningOutcome: 'Create a 90-day action plan to scale from first client to consistent monthly revenue' },
+        { id: 'les_014', title: 'First Outreach Sprint', duration: '15 min', learningOutcome: 'Execute your first outreach sprint and generate 5+ qualified leads within 48 hours' },
+      ],
+      output: 'Your first 10 active leads and a proven script to close them.',
+    },
+    {
+      id: 'mod_grad',
+      title: 'Graduation',
+      lessons: [
+        { id: 'les_015', title: 'Recap & Celebration', duration: '10 min', learningOutcome: 'Consolidate all learnings into a personal coaching business action checklist' },
+        { id: 'les_016', title: 'Your Achievement Summary', duration: '10 min', learningOutcome: 'Document your achievements and articulate your unique coaching methodology' },
+        { id: 'les_017', title: 'Your Growth Path', duration: '10 min', learningOutcome: 'Map your 6-month and 12-month growth milestones for scaling your coaching business' },
+        { id: 'les_018', title: 'Certificate & Celebration', duration: '10 min', learningOutcome: 'Celebrate completion and commit to your first 30-day implementation sprint' },
+      ],
+    },
+  ],
+  totalLessons: 18,
+  totalDuration: '6 hours',
 };
 
 export const mockRoadmap: RoadmapPhase[] = [
