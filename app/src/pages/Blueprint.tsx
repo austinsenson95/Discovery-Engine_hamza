@@ -20,6 +20,9 @@ import {
   Calendar,
   Phone,
   ChevronLeft,
+  Plus,
+  Trash2,
+  Wand2,
 } from 'lucide-react';
 import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, CourseCurriculum } from '@/types';
 import Stepper from '@/components/Stepper';
@@ -161,6 +164,8 @@ export default function Blueprint() {
   const [selectedNiche, setSelectedNiche] = useState<NicheOption | null>(null);
   const [persona, setPersona] = useState<Persona | null>(null);
   const [problems, setProblems] = useState<string[]>([]);
+  const [customProblems, setCustomProblems] = useState<string[]>([]);
+  const [customInput, setCustomInput] = useState('');
   const [selectedProblems, setSelectedProblems] = useState<string[]>([]);
   const [programNames, setProgramNames] = useState<ProgramName[]>([]);
   const [selectedProgramName, setSelectedProgramName] = useState<ProgramName | null>(null);
@@ -362,6 +367,27 @@ export default function Blueprint() {
     setSelectedProblems(prev =>
       prev.includes(problem) ? prev.filter(p => p !== problem) : [...prev, problem]
     );
+  };
+
+  const handleAddCustomProblem = () => {
+    const trimmed = customInput.trim();
+    if (!trimmed) {
+      info('Please enter a problem description');
+      return;
+    }
+    const allExisting = [...problems, ...customProblems];
+    if (allExisting.some(p => p.toLowerCase() === trimmed.toLowerCase())) {
+      info('This problem already exists in your list');
+      return;
+    }
+    setCustomProblems(prev => [...prev, trimmed]);
+    setSelectedProblems(prev => [...prev, trimmed]);
+    setCustomInput('');
+  };
+
+  const handleRemoveCustomProblem = (problem: string) => {
+    setCustomProblems(prev => prev.filter(p => p !== problem));
+    setSelectedProblems(prev => prev.filter(p => p !== problem));
   };
 
   const handleConfirmProblems = async () => {
@@ -851,43 +877,171 @@ export default function Blueprint() {
                       </div>
                     ) : (
                       <>
-                        <div className="space-y-3 mb-6">
-                          {problems.map((problem, i) => (
-                            <motion.label
-                              key={i}
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: i * 0.05 }}
-                              className={`flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                                selectedProblems.includes(problem)
-                                  ? 'border-orange-500 bg-orange-50'
-                                  : 'border-gray-200 bg-white hover:border-gray-300'
-                              }`}
-                            >
-                              <div className="relative flex items-center mt-0.5">
-                                <input
-                                  type="checkbox"
-                                  checked={selectedProblems.includes(problem)}
-                                  onChange={() => handleToggleProblem(problem)}
-                                  className="sr-only"
-                                />
-                                <div
-                                  className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
-                                    selectedProblems.includes(problem)
-                                      ? 'bg-orange-500 border-orange-500'
-                                      : 'border-gray-300'
-                                  }`}
-                                >
-                                  {selectedProblems.includes(problem) && (
-                                    <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                                  )}
+                        {/* ── Suggested Problems ── */}
+                        <div className="mb-2">
+                          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.12em] mb-3">
+                            Suggested Problems
+                          </p>
+                          <div className="space-y-3">
+                            {problems.map((problem, i) => (
+                              <motion.label
+                                key={problem}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.05 }}
+                                className={`flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                                  selectedProblems.includes(problem)
+                                    ? 'border-orange-500 bg-orange-50'
+                                    : 'border-gray-200 bg-white hover:border-gray-300'
+                                }`}
+                              >
+                                <div className="relative flex items-center mt-0.5">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedProblems.includes(problem)}
+                                    onChange={() => handleToggleProblem(problem)}
+                                    className="sr-only"
+                                  />
+                                  <div
+                                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
+                                      selectedProblems.includes(problem)
+                                        ? 'bg-orange-500 border-orange-500'
+                                        : 'border-gray-300'
+                                    }`}
+                                  >
+                                    {selectedProblems.includes(problem) && (
+                                      <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              <span className="text-sm text-gray-700 leading-relaxed">{problem}</span>
-                            </motion.label>
-                          ))}
+                                <span className="text-sm text-gray-700 leading-relaxed">{problem}</span>
+                              </motion.label>
+                            ))}
+                          </div>
                         </div>
 
+                        {/* ── Add Custom Problem ── */}
+                        <div className="mt-6 mb-6">
+                          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.12em] mb-3">
+                            Add Your Own
+                          </p>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={customInput}
+                              onChange={e => setCustomInput(e.target.value)}
+                              onKeyDown={e => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleAddCustomProblem();
+                                }
+                              }}
+                              placeholder="e.g. Struggling to set boundaries with clients..."
+                              className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 placeholder:text-gray-300 focus:border-orange-500 focus:ring-[0_0_0_3px_rgba(249,115,22,0.15)] outline-none transition-all"
+                            />
+                            <motion.button
+                              whileHover={{ scale: 1.03 }}
+                              whileTap={{ scale: 0.97 }}
+                              onClick={handleAddCustomProblem}
+                              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#0A0A0A] text-white text-sm font-medium rounded-lg hover:bg-[#1F1F1F] transition-colors flex-shrink-0"
+                            >
+                              <Plus className="w-4 h-4" />
+                              Add
+                            </motion.button>
+                          </div>
+                        </div>
+
+                        {/* ── Custom Problems List ── */}
+                        <AnimatePresence>
+                          {customProblems.length > 0 && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="space-y-3 mb-6"
+                            >
+                              <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.12em] mb-3">
+                                Your Custom Problems
+                              </p>
+                              {customProblems.map((problem, i) => (
+                                <motion.div
+                                  key={problem}
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, x: -20 }}
+                                  transition={{ delay: i * 0.05 }}
+                                  className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all ${
+                                    selectedProblems.includes(problem)
+                                      ? 'border-orange-500 bg-orange-50'
+                                      : 'border-dashed border-gray-300 bg-white hover:border-gray-400'
+                                  }`}
+                                >
+                                  <label className="relative flex items-center mt-0.5 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedProblems.includes(problem)}
+                                      onChange={() => handleToggleProblem(problem)}
+                                      className="sr-only"
+                                    />
+                                    <div
+                                      className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
+                                        selectedProblems.includes(problem)
+                                          ? 'bg-orange-500 border-orange-500'
+                                          : 'border-gray-300'
+                                      }`}
+                                    >
+                                      {selectedProblems.includes(problem) && (
+                                        <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                                      )}
+                                    </div>
+                                  </label>
+                                  <span className="text-sm text-gray-700 leading-relaxed flex-1">{problem}</span>
+                                  <button
+                                    onClick={() => handleRemoveCustomProblem(problem)}
+                                    className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors flex-shrink-0"
+                                    title="Remove custom problem"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </motion.div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        {/* ── Selected Summary ── */}
+                        {selectedProblems.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-orange-50/50 border border-orange-200 rounded-xl p-4 mb-6"
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <Wand2 className="w-4 h-4 text-orange-500" />
+                              <p className="text-sm font-semibold text-orange-600">
+                                {selectedProblems.length} problem{selectedProblems.length !== 1 ? 's' : ''} selected
+                              </p>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {selectedProblems.map(problem => (
+                                <span
+                                  key={problem}
+                                  className="inline-flex items-center gap-1.5 text-xs font-medium bg-white text-gray-700 border border-orange-200 rounded-full px-3 py-1"
+                                >
+                                  {problem.length > 50 ? problem.slice(0, 50) + '...' : problem}
+                                  <button
+                                    onClick={() => handleToggleProblem(problem)}
+                                    className="text-gray-400 hover:text-orange-500 transition-colors"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </button>
+                                </span>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+
+                        {/* ── Bottom Actions ── */}
                         <div className="flex items-center justify-between">
                           <button
                             onClick={() => goToStep(2)}
@@ -897,7 +1051,7 @@ export default function Blueprint() {
                             Back to Audience
                           </button>
                           <p className="text-sm text-gray-500 hidden sm:block">
-                            <span className="font-semibold text-gray-700">{selectedProblems.length}</span> of {problems.length} selected
+                            <span className="font-semibold text-gray-700">{selectedProblems.length}</span> selected
                           </p>
                           <motion.button
                             whileHover={{ scale: 1.03 }}
@@ -952,7 +1106,7 @@ export default function Blueprint() {
                               {name.isAiRecommended && (
                                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-50 border border-yellow-300 rounded-full px-3 py-0.5 flex items-center gap-1.5">
                                   <Crown className="w-3.5 h-3.5 text-yellow-600" />
-                                  <span className="text-[11px] font-semibold text-yellow-700 uppercase tracking-wider">AI Recommended</span>
+                                  <span className="text-[11px] font-semibold text-yellow-700 uppercase tracking-wider">HAMZA RECOMMENDED</span>
                                 </div>
                               )}
                               <h4 className="text-base font-semibold text-gray-900 mb-3 mt-2">{name.name}</h4>
