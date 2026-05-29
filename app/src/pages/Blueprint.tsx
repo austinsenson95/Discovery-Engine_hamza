@@ -526,7 +526,7 @@ export default function Blueprint() {
       </div>
 
       {/* Stepper */}
-      <Stepper currentStep={step} steps={steps} />
+      <Stepper currentStep={step} steps={steps} onStepClick={goToStep} />
 
       {/* Content */}
       <div className="max-w-4xl mx-auto py-8">
