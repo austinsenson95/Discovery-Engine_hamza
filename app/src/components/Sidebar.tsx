@@ -38,17 +38,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 h-16">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="flex-shrink-0">
-          <rect x="2" y="2" width="24" height="24" rx="4" fill="#F97316" />
-          <path d="M8 14L12 10L16 14L12 18L8 14Z" fill="white" opacity="0.9" />
-          <path d="M12 14L16 10L20 14L16 18L12 14Z" fill="white" opacity="0.6" />
-        </svg>
-        <div>
-          <span className="font-serif text-base tracking-tight text-white" style={{ fontFamily: '"DM Serif Display", Georgia, serif' }}>
-            DISCOVERY ENGINE
-          </span>
-          <p className="text-[10px] text-gray-500 -mt-0.5">Build your blueprint</p>
-        </div>
+        <img
+          src="/logo-hamza.png"
+          alt="Discovery Engine"
+          className="h-8 w-auto flex-shrink-0"
+        />
       </div>
 
       {/* Close button on mobile */}

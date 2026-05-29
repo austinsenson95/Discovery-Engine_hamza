@@ -18,6 +18,22 @@ import type { Blueprint } from '../types';
 const TEMPLATES_DIR = path.resolve(__dirname, '../templates/pdf');
 
 // ---------------------------------------------------------------------------
+// Logo (base64-embedded for PDF generation)
+// ---------------------------------------------------------------------------
+function getLogoBase64(): string {
+  const logoPath = path.resolve(__dirname, '../templates/pdf/logo-hamza.png');
+  try {
+    const buffer = fs.readFileSync(logoPath);
+    return `data:image/png;base64,${buffer.toString('base64')}`;
+  } catch {
+    console.warn('[TemplateEngine] Logo file not found, using fallback SVG');
+    return '';
+  }
+}
+
+const LOGO_BASE64 = getLogoBase64();
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 function escapeHtml(unsafe: string): string {
@@ -217,7 +233,8 @@ function buildCoverPage(blueprint: Blueprint): string {
   const nicheName = blueprint.niche?.selectedNiche?.name || 'Your Coaching Blueprint';
   return readPartial('cover.html')
     .replace(/{{nicheName}}/g, escapeHtml(nicheName))
-    .replace(/{{generationDate}}/g, formatDate(new Date()));
+    .replace(/{{generationDate}}/g, formatDate(new Date()))
+    .replace(/{{logo}}/g, LOGO_BASE64);
 }
 
 // ---------------------------------------------------------------------------
