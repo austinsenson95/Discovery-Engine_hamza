@@ -23,6 +23,7 @@ import {
   Blueprint,
   RoadmapPhase,
   CourseCurriculum,
+  CourseDuration,
 } from '../types';
 import {
   dummyNiches,
@@ -32,6 +33,12 @@ import {
   dummyPricing,
   dummyRoadmapPhases,
   dummyCurriculum,
+  dummyCurriculum4Weeks,
+  dummyCurriculum8Weeks,
+  dummyCurriculum12Weeks,
+  dummyRoadmap4Weeks,
+  dummyRoadmap8Weeks,
+  dummyRoadmap12Weeks,
 } from '../data/dummyData';
 
 class LLMService {
@@ -149,14 +156,19 @@ class LLMService {
    *
    * TODO: Replace with actual LLM API call for detailed week-by-week planning
    */
-  async generateRoadmap(blueprint: Blueprint): Promise<{ phases: RoadmapPhase[] }> {
-    console.log(`[LLM] Generating 12-week roadmap for blueprint: ${blueprint.id}`);
+  async generateRoadmap(blueprint: Blueprint, duration?: CourseDuration): Promise<{ phases: RoadmapPhase[] }> {
+    console.log(`[LLM] Generating roadmap for blueprint: ${blueprint.id}, duration: ${duration || '12_weeks'}`);
 
     await this.simulateDelay(3000);
 
     // TODO: Replace with actual LLM API that generates personalized roadmap
-    // based on blueprint niche, audience, and program data
-    return { phases: dummyRoadmapPhases };
+    // based on blueprint niche, audience, program data, and duration
+    const roadmapMap: Record<string, RoadmapPhase[]> = {
+      '4_weeks': dummyRoadmap4Weeks,
+      '8_weeks': dummyRoadmap8Weeks,
+      '12_weeks': dummyRoadmapPhases,
+    };
+    return { phases: roadmapMap[duration || '12_weeks'] || dummyRoadmapPhases };
   }
 
   /**
@@ -167,20 +179,28 @@ class LLMService {
   async generateCurriculum(
     niche: string,
     program: string,
-    problems: string[]
+    problems: string[],
+    duration?: CourseDuration
   ): Promise<CourseCurriculum> {
     console.log(`[LLM] Generating course curriculum...`);
     console.log(`[LLM]   Program: ${program}`);
     console.log(`[LLM]   Niche: ${niche}`);
     console.log(`[LLM]   Problems: ${problems.join(', ')}`);
+    console.log(`[LLM]   Duration: ${duration || '12_weeks'}`);
 
     await this.simulateDelay(2500);
 
     // TODO: Replace with actual LLM-generated curriculum
-    // Enrich dummy curriculum with program context
+    // Enrich dummy curriculum with program context and duration
+    const curriculumMap: Record<string, CourseCurriculum> = {
+      '4_weeks': dummyCurriculum4Weeks,
+      '8_weeks': dummyCurriculum8Weeks,
+      '12_weeks': dummyCurriculum,
+    };
+    const base = curriculumMap[duration || '12_weeks'] || dummyCurriculum;
     return {
-      ...dummyCurriculum,
-      modules: dummyCurriculum.modules.map((mod) => ({
+      ...base,
+      modules: base.modules.map((mod) => ({
         ...mod,
         subtitle: mod.subtitle
           ? `${mod.subtitle} Tailored for ${program}.`

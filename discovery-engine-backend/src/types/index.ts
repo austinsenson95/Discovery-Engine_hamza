@@ -57,6 +57,7 @@ export interface ProgramName {
 
 export interface PricingStrategy {
   startingPrice: number;
+  aiRecommendedPrice?: number;
   priceJustification: string;
   marketInsight: string;
   milestones: {
@@ -71,6 +72,8 @@ export interface PricingStrategy {
   };
   sweetSpotRange: string;
 }
+
+export type CourseDuration = '4_weeks' | '8_weeks' | '12_weeks';
 
 export interface CurriculumLesson {
   id: string;
@@ -125,6 +128,7 @@ export interface Blueprint {
     pricing: PricingStrategy;
     modules: ModuleItem[];
     curriculum?: CourseCurriculum;
+    duration?: CourseDuration;
   };
   roadmap?: {
     phases: RoadmapPhase[];

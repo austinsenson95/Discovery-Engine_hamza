@@ -1,0 +1,170 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e161]: "ID: bp_1780075310032"
+        - generic [ref=e85]:
+          - button "Niche Discovery" [ref=e163] [cursor=pointer]:
+            - img [ref=e165]
+            - generic [ref=e89]: Niche Discovery
+          - button "Audience Mapping" [ref=e167] [cursor=pointer]:
+            - img [ref=e169]
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e172]:
+          - heading "Build Your Signature Program" [level=2] [ref=e174]
+          - generic [ref=e175]:
+            - generic [ref=e177]:
+              - img [ref=e179]
+              - generic [ref=e181]: Problems
+            - generic [ref=e184]:
+              - img [ref=e186]
+              - generic [ref=e188]: Naming
+            - generic [ref=e191]:
+              - img [ref=e193]
+              - generic [ref=e195]: Pricing
+            - generic [ref=e198]:
+              - generic [ref=e199]: "4"
+              - generic [ref=e200]: Curriculum
+          - generic [ref=e201]:
+            - heading "Design Your Course Curriculum" [level=3] [ref=e202]
+            - paragraph [ref=e203]: AI-generated lesson plan structured into modules with clear learning outcomes.
+            - generic [ref=e252]:
+              - generic [ref=e253]:
+                - generic [ref=e254]: 11 lessons
+                - generic [ref=e255]: 5.5 hours
+              - generic [ref=e256]:
+                - heading "Welcome & Setup" [level=4] [ref=e257]
+                - list [ref=e258]:
+                  - listitem [ref=e259]:
+                    - generic [ref=e260]:
+                      - generic [ref=e261]: The Intensive Blueprint
+                      - generic [ref=e263]: 20 min
+                    - paragraph [ref=e264]: "Outcome: Understand the accelerated 4-week path to your first paying client"
+                  - listitem [ref=e265]:
+                    - generic [ref=e266]:
+                      - generic [ref=e267]: Your ₹10K Commitment
+                      - generic [ref=e269]: 15 min
+                    - paragraph [ref=e270]: "Outcome: Set an aggressive revenue target and commit to daily action"
+              - generic [ref=e271]:
+                - 'heading "Week 1-2: Niche & Offer Intensive" [level=4] [ref=e272]'
+                - paragraph [ref=e273]: Rapidly define your niche, build your offer, and validate demand. Tailored for Leader Launchpad.
+                - list [ref=e274]:
+                  - listitem [ref=e275]:
+                    - generic [ref=e276]:
+                      - generic [ref=e277]: Niche Selection Sprint
+                      - generic [ref=e279]: 45 min
+                    - paragraph [ref=e280]: "Outcome: Pick a profitable niche in 48 hours using the urgency framework"
+                  - listitem [ref=e281]:
+                    - generic [ref=e282]:
+                      - generic [ref=e283]: The ₹5,000 Offer Blueprint
+                      - generic [ref=e285]: 40 min
+                    - paragraph [ref=e286]: "Outcome: Design a high-converting offer with urgency baked in"
+                  - listitem [ref=e287]:
+                    - generic [ref=e288]:
+                      - generic [ref=e289]: Pricing for Quick Sales
+                      - generic [ref=e291]: 30 min
+                    - paragraph [ref=e292]: "Outcome: Set a price that converts fast without undermining value"
+                  - listitem [ref=e293]:
+                    - generic [ref=e294]:
+                      - generic [ref=e295]: Validation Outreach Sprint
+                      - generic [ref=e297]: 35 min
+                    - paragraph [ref=e298]: "Outcome: Get 5+ validation calls booked in 72 hours"
+                - generic [ref=e299]:
+                  - paragraph [ref=e300]: Output
+                  - paragraph [ref=e301]: A validated niche, a priced offer, and 5+ scheduled discovery calls.
+              - generic [ref=e302]:
+                - 'heading "Week 3-4: Launch & Close" [level=4] [ref=e303]'
+                - paragraph [ref=e304]: Execute your launch, close your first clients, and systematize. Tailored for Leader Launchpad.
+                - list [ref=e305]:
+                  - listitem [ref=e306]:
+                    - generic [ref=e307]:
+                      - generic [ref=e308]: The 48-Hour Launch Framework
+                      - generic [ref=e310]: 40 min
+                    - paragraph [ref=e311]: "Outcome: Launch your program with urgency and social proof"
+                  - listitem [ref=e312]:
+                    - generic [ref=e313]:
+                      - generic [ref=e314]: Closing Without Being Pushy
+                      - generic [ref=e316]: 35 min
+                    - paragraph [ref=e317]: "Outcome: Use the 2-step close to convert discovery calls into sales"
+                  - listitem [ref=e318]:
+                    - generic [ref=e319]:
+                      - generic [ref=e320]: Delivery & Testimonials
+                      - generic [ref=e322]: 30 min
+                    - paragraph [ref=e323]: "Outcome: Deliver exceptional results and capture powerful testimonials"
+                  - listitem [ref=e324]:
+                    - generic [ref=e325]:
+                      - generic [ref=e326]: Next 90 Days Scale Plan
+                      - generic [ref=e328]: 25 min
+                    - paragraph [ref=e329]: "Outcome: Map your path from first client to consistent monthly revenue"
+                - generic [ref=e330]:
+                  - paragraph [ref=e331]: Output
+                  - paragraph [ref=e332]: Your first 3-5 paying clients and a testimonial collection system.
+              - generic [ref=e333]:
+                - heading "Graduation" [level=4] [ref=e334]
+                - list [ref=e335]:
+                  - listitem [ref=e336]:
+                    - generic [ref=e337]:
+                      - generic [ref=e338]: Recap & Celebration
+                      - generic [ref=e340]: 15 min
+                    - paragraph [ref=e341]: "Outcome: Celebrate your first revenue milestone and plan your scale"
+            - generic [ref=e242]:
+              - button "Back to Pricing" [ref=e243] [cursor=pointer]:
+                - img [ref=e244]
+                - text: Back to Pricing
+              - button "Continue to Roadmap" [ref=e246] [cursor=pointer]:
+                - text: Continue to Roadmap
+                - img [ref=e247]

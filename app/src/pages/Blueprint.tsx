@@ -24,7 +24,8 @@ import {
   Trash2,
   Wand2,
 } from 'lucide-react';
-import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, CourseCurriculum } from '@/types';
+import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, CourseCurriculum, CourseDuration } from '@/types';
+import { Slider } from '@/components/ui/slider';
 import Stepper from '@/components/Stepper';
 import NicheCard from '@/components/NicheCard';
 import PersonaCard from '@/components/PersonaCard';
@@ -170,7 +171,9 @@ export default function Blueprint() {
   const [programNames, setProgramNames] = useState<ProgramName[]>([]);
   const [selectedProgramName, setSelectedProgramName] = useState<ProgramName | null>(null);
   const [pricing, setPricing] = useState<PricingStrategy | null>(null);
+  const [adjustedPrice, setAdjustedPrice] = useState<number | null>(null);
   const [curriculum, setCurriculum] = useState<CourseCurriculum | null>(null);
+  const [duration, setDuration] = useState<CourseDuration>('12_weeks');
   const [roadmap, setRoadmap] = useState<RoadmapPhase[]>([]);
   const [credits, setCredits] = useState(100);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
@@ -235,7 +238,11 @@ export default function Blueprint() {
             if (target.program) {
               setSelectedProblems(target.program.selectedProblems || []);
               setSelectedProgramName(target.program.selectedName);
-              if (target.program.pricing) setPricing(target.program.pricing);
+              if (target.program.pricing) {
+                setPricing(target.program.pricing);
+                setAdjustedPrice(target.program.pricing.startingPrice);
+              }
+              if (target.program.duration) setDuration(target.program.duration);
               if (target.program.curriculum) setCurriculum(target.program.curriculum);
             }
             if (target.roadmap) {
@@ -439,26 +446,45 @@ export default function Blueprint() {
     try {
       const result = await generatePricing();
       setPricing(result.pricing);
+      setAdjustedPrice(result.pricing.startingPrice);
       setCredits(prev => prev - result.creditsDeducted);
     } catch {
       setPricing(mockPricing);
+      setAdjustedPrice(mockPricing.startingPrice);
     }
     setLoading(false);
   };
 
-  // ─── Step 3c: Build Course Curriculum ───
-  const handleBuildCurriculum = async () => {
+  // ─── Step 3c: Navigate to Curriculum (saves adjusted price + duration) ───
+  const handleNavigateToCurriculum = async () => {
     setSubStep(4);
     if (blueprintId) {
       try {
         const bp = await fetchBlueprint();
         const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
-        if (pricing) program.pricing = pricing;
+        if (pricing) {
+          const updatedPricing = { ...pricing, startingPrice: adjustedPrice ?? pricing.startingPrice };
+          program.pricing = updatedPricing;
+          setPricing(updatedPricing);
+        }
+        program.duration = duration;
         await updateBlueprint(blueprintId, {
           program,
           currentStep: 6,
           progress: 65,
         });
+      } catch { /* ignore */ }
+    }
+  };
+
+  // ─── Step 3d: Generate Curriculum ───
+  const handleBuildCurriculum = async () => {
+    if (blueprintId) {
+      try {
+        const bp = await fetchBlueprint();
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
+        program.duration = duration;
+        await updateBlueprint(blueprintId, { program });
       } catch { /* ignore */ }
     }
     setLoading(true);
@@ -479,7 +505,13 @@ export default function Blueprint() {
       try {
         const bp = await fetchBlueprint();
         const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
+        if (pricing) {
+          const updatedPricing = { ...pricing, startingPrice: adjustedPrice ?? pricing.startingPrice };
+          program.pricing = updatedPricing;
+          setPricing(updatedPricing);
+        }
         if (curriculum) program.curriculum = curriculum;
+        program.duration = duration;
         await updateBlueprint(blueprintId, {
           program,
           currentStep: 7,
@@ -1167,12 +1199,43 @@ export default function Blueprint() {
                     <div className="text-center mb-8">
                       <div className="inline-flex items-baseline gap-1">
                         <span className="text-5xl font-mono font-medium text-orange-500">
-                          ₹{pricing.startingPrice.toLocaleString('en-IN')}
+                          ₹{(adjustedPrice ?? pricing.startingPrice).toLocaleString('en-IN')}
                         </span>
                         <span className="text-lg text-gray-400">/student</span>
                       </div>
                       <p className="text-sm text-gray-400 mt-2">Starting price (Launch tier)</p>
+                      {pricing.aiRecommendedPrice && adjustedPrice !== pricing.aiRecommendedPrice && (
+                        <p className="text-xs text-gray-400 mt-1">
+                          AI recommended: ₹{pricing.aiRecommendedPrice.toLocaleString('en-IN')}
+                        </p>
+                      )}
                     </div>
+
+                    {/* Price Adjuster Slider */}
+                    {pricing.aiRecommendedPrice && (
+                      <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                        <div className="flex items-center justify-between mb-3">
+                          <p className="text-sm font-semibold text-gray-800">Adjust Your Price</p>
+                          <span className="text-xs text-gray-400">
+                            ₹{Math.round(pricing.aiRecommendedPrice * 0.5).toLocaleString('en-IN')} — ₹{(pricing.aiRecommendedPrice * 2).toLocaleString('en-IN')}
+                          </span>
+                        </div>
+                        <Slider
+                          defaultValue={[pricing.startingPrice]}
+                          min={Math.round(pricing.aiRecommendedPrice * 0.5)}
+                          max={pricing.aiRecommendedPrice * 2}
+                          step={100}
+                          value={[adjustedPrice ?? pricing.startingPrice]}
+                          onValueChange={(vals) => setAdjustedPrice(vals[0])}
+                          className="mb-3"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400">
+                          <span>-50%</span>
+                          <span>AI Price</span>
+                          <span>+200%</span>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Price Justification */}
                     <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
@@ -1199,9 +1262,9 @@ export default function Blueprint() {
                     {/* Revenue Projections */}
                     <div className="grid grid-cols-3 gap-4 mb-8">
                       {([
-                        { label: '10 Students', value: pricing.milestones.students10, icon: Zap },
-                        { label: '50 Students', value: pricing.milestones.students50, icon: Target },
-                        { label: '100 Students', value: pricing.milestones.students100, icon: Rocket },
+                        { label: '10 Students', value: (adjustedPrice ?? pricing.startingPrice) * 10, icon: Zap },
+                        { label: '50 Students', value: (adjustedPrice ?? pricing.startingPrice) * 50, icon: Target },
+                        { label: '100 Students', value: (adjustedPrice ?? pricing.startingPrice) * 100, icon: Rocket },
                       ]).map(({ label, value, icon: Icon }) => (
                         <motion.div
                           key={label}
@@ -1261,7 +1324,7 @@ export default function Blueprint() {
                       <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={handleBuildCurriculum}
+                        onClick={handleNavigateToCurriculum}
                         className="py-3.5 px-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-base font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transition-all shadow-orange inline-flex items-center gap-2"
                       >
                         Build Course Curriculum
@@ -1284,6 +1347,43 @@ export default function Blueprint() {
                     <p className="text-gray-500 mb-6">
                       AI-generated lesson plan structured into modules with clear learning outcomes.
                     </p>
+
+                    {/* Duration Selector */}
+                    {!curriculum && (
+                      <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
+                        <p className="text-sm font-semibold text-gray-800 mb-3">Choose Course Duration</p>
+                        <div className="grid grid-cols-3 gap-3">
+                          {([
+                            { value: '4_weeks' as CourseDuration, label: '4 Weeks', desc: 'Intensive sprint', icon: Zap },
+                            { value: '8_weeks' as CourseDuration, label: '8 Weeks', desc: 'Standard pace', icon: Target },
+                            { value: '12_weeks' as CourseDuration, label: '12 Weeks', desc: 'Comprehensive', icon: Rocket },
+                          ]).map(({ value, label, desc, icon: Icon }) => (
+                            <motion.button
+                              key={value}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => setDuration(value)}
+                              className={`relative rounded-xl border p-4 text-left transition-all ${
+                                duration === value
+                                  ? 'border-orange-500 bg-orange-50 ring-1 ring-orange-500'
+                                  : 'border-gray-200 bg-white hover:border-gray-300'
+                              }`}
+                            >
+                              <Icon className={`w-5 h-5 mb-2 ${duration === value ? 'text-orange-500' : 'text-gray-400'}`} />
+                              <p className={`text-sm font-semibold ${duration === value ? 'text-orange-700' : 'text-gray-800'}`}>
+                                {label}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-0.5">{desc}</p>
+                              {duration === value && (
+                                <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-orange-500 flex items-center justify-center">
+                                  <Check className="w-3 h-3 text-white" />
+                                </div>
+                              )}
+                            </motion.button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {loading && !curriculum && (
                       <div className="flex items-center justify-center py-12">
@@ -1408,7 +1508,7 @@ export default function Blueprint() {
                     Your <span className="italic text-orange-500">Business</span> Roadmap
                   </h2>
                   <p className="text-gray-500 max-w-lg mx-auto">
-                    A 12-week execution plan to take you from zero to your first paying coaching clients.
+                    A {duration.replace('_', '-').replace('s', '')} execution plan to take you from zero to your first paying coaching clients.
                   </p>
                 </div>
 

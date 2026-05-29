@@ -48,12 +48,15 @@ export interface ProgramName {
 
 export interface PricingStrategy {
   startingPrice: number;
+  aiRecommendedPrice?: number;
   priceJustification: string;
   marketInsight: string;
   milestones: { students10: number; students50: number; students100: number };
   priceEvolution: { launch: number; after10Students: string; premiumTier: string };
   sweetSpotRange: string;
 }
+
+export type CourseDuration = '4_weeks' | '8_weeks' | '12_weeks';
 
 export interface CurriculumLesson {
   id: string;
@@ -94,7 +97,7 @@ export interface Blueprint {
   progress: number;
   niche?: { selectedNiche: NicheOption; skills: string; experience: string; passions: string; domains?: string[] };
   audience?: { persona: Persona };
-  program?: { selectedProblems: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[]; curriculum?: CourseCurriculum };
+  program?: { selectedProblems: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[]; curriculum?: CourseCurriculum; duration?: CourseDuration };
   roadmap?: { phases: RoadmapPhase[]; pdfUrl: string; completedAt?: Date };
   createdAt: Date;
   updatedAt: Date;

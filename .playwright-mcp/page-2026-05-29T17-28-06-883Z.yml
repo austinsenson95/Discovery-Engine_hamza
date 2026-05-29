@@ -1,0 +1,212 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e161]: "ID: bp_1780075310032"
+        - generic [ref=e85]:
+          - button "Niche Discovery" [ref=e163] [cursor=pointer]:
+            - img [ref=e165]
+            - generic [ref=e89]: Niche Discovery
+          - button "Audience Mapping" [ref=e167] [cursor=pointer]:
+            - img [ref=e169]
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e172]:
+          - heading "Build Your Signature Program" [level=2] [ref=e174]
+          - generic [ref=e175]:
+            - generic [ref=e177]:
+              - img [ref=e179]
+              - generic [ref=e181]: Problems
+            - generic [ref=e184]:
+              - img [ref=e186]
+              - generic [ref=e188]: Naming
+            - generic [ref=e191]:
+              - img [ref=e291]
+              - generic [ref=e193]: Pricing
+            - generic [ref=e196]:
+              - generic [ref=e197]: "4"
+              - generic [ref=e198]: Curriculum
+          - generic [ref=e293]:
+            - heading "Design Your Course Curriculum" [level=3] [ref=e294]
+            - paragraph [ref=e295]: AI-generated lesson plan structured into modules with clear learning outcomes.
+            - generic [ref=e344]:
+              - generic [ref=e345]:
+                - generic [ref=e346]: 18 lessons
+                - generic [ref=e347]: 6 hours
+              - generic [ref=e348]:
+                - heading "Welcome" [level=4] [ref=e349]
+                - list [ref=e350]:
+                  - listitem [ref=e351]:
+                    - generic [ref=e352]:
+                      - generic [ref=e353]: The Coaching Blueprint Roadmap
+                      - generic [ref=e355]: 15 min
+                    - paragraph [ref=e356]: "Outcome: Understand the complete coaching business blueprint and your path to ₹1L+ months"
+                  - listitem [ref=e357]:
+                    - generic [ref=e358]:
+                      - generic [ref=e359]: Your ₹1K Commitment
+                      - generic [ref=e361]: 10 min
+                    - paragraph [ref=e362]: "Outcome: Commit to your first revenue milestone and understand the psychology of paid coaching"
+              - generic [ref=e363]:
+                - 'heading "Day 1: Mindset and High-Value Positioning" [level=4] [ref=e364]'
+                - paragraph [ref=e365]: Shift from a "worker" mindset to an "expert" and pick a profitable niche. Tailored for Leader Launchpad.
+                - list [ref=e366]:
+                  - listitem [ref=e367]:
+                    - generic [ref=e368]:
+                      - generic [ref=e369]: Killing the Freelancer Trap
+                      - generic [ref=e371]: 25 min
+                    - paragraph [ref=e372]: "Outcome: Identify and break free from freelancer mindset patterns that limit coaching income"
+                  - listitem [ref=e373]:
+                    - generic [ref=e374]:
+                      - generic [ref=e375]: Niche Selection Matrix
+                      - generic [ref=e377]: 35 min
+                    - paragraph [ref=e378]: "Outcome: Use a structured framework to select a profitable, high-ticket coaching niche"
+                  - listitem [ref=e379]:
+                    - generic [ref=e380]:
+                      - generic [ref=e381]: The Future of AI Automation
+                      - generic [ref=e383]: 20 min
+                    - paragraph [ref=e384]: "Outcome: Leverage AI tools to automate 70% of repetitive coaching business tasks"
+                  - listitem [ref=e385]:
+                    - generic [ref=e386]:
+                      - generic [ref=e387]: Your Expert Identity Quiz
+                      - generic [ref=e389]: 15 min
+                    - paragraph [ref=e390]: "Outcome: Define your expert identity and positioning statement for premium clients"
+                - generic [ref=e391]:
+                  - paragraph [ref=e392]: Output
+                  - paragraph [ref=e393]: A defined high-ticket niche and a professional expert profile.
+              - generic [ref=e394]:
+                - 'heading "Day 2: Building Your Irresistible Offer" [level=4] [ref=e395]'
+                - paragraph [ref=e396]: Create a service package that businesses feel stupid saying no to. Tailored for Leader Launchpad.
+                - list [ref=e397]:
+                  - listitem [ref=e398]:
+                    - generic [ref=e399]:
+                      - generic [ref=e400]: The ₹1,000 Offer Framework
+                      - generic [ref=e402]: 30 min
+                    - paragraph [ref=e403]: "Outcome: Design a high-ticket coaching offer using the value-first framework"
+                  - listitem [ref=e404]:
+                    - generic [ref=e405]:
+                      - generic [ref=e406]: The "Value-First" Demo Secret
+                      - generic [ref=e408]: 25 min
+                    - paragraph [ref=e409]: "Outcome: Create a compelling demo session that converts 50%+ of prospects into paying clients"
+                  - listitem [ref=e410]:
+                    - generic [ref=e411]:
+                      - generic [ref=e412]: Real Results Case Study
+                      - generic [ref=e414]: 20 min
+                    - paragraph [ref=e415]: "Outcome: Analyze successful coaching case studies and extract repeatable success patterns"
+                  - listitem [ref=e416]:
+                    - generic [ref=e417]:
+                      - generic [ref=e418]: Pricing for Profit
+                      - generic [ref=e420]: 20 min
+                    - paragraph [ref=e421]: "Outcome: Set profitable pricing tiers using market research and value-based pricing principles"
+                - generic [ref=e422]:
+                  - paragraph [ref=e423]: Output
+                  - paragraph [ref=e424]: A ready-to-sell offer with a clear price tag.
+              - generic [ref=e425]:
+                - 'heading "Day 3: The Lead Machine and Closing" [level=4] [ref=e426]'
+                - paragraph [ref=e427]: Launch your outreach system and learn how to handle the sales call. Tailored for Leader Launchpad.
+                - list [ref=e428]:
+                  - listitem [ref=e429]:
+                    - generic [ref=e430]:
+                      - generic [ref=e431]: LinkedIn Authority Blueprint
+                      - generic [ref=e433]: 30 min
+                    - paragraph [ref=e434]: "Outcome: Build a LinkedIn presence that attracts inbound coaching inquiries weekly"
+                  - listitem [ref=e435]:
+                    - generic [ref=e436]:
+                      - generic [ref=e437]: The 3-Step Closing Script
+                      - generic [ref=e439]: 25 min
+                    - paragraph [ref=e440]: "Outcome: Use a proven 3-step script to close discovery calls without being pushy"
+                  - listitem [ref=e441]:
+                    - generic [ref=e442]:
+                      - generic [ref=e443]: "Your Next Chapter: The 90-Day Scale"
+                      - generic [ref=e445]: 20 min
+                    - paragraph [ref=e446]: "Outcome: Create a 90-day action plan to scale from first client to consistent monthly revenue"
+                  - listitem [ref=e447]:
+                    - generic [ref=e448]:
+                      - generic [ref=e449]: First Outreach Sprint
+                      - generic [ref=e451]: 15 min
+                    - paragraph [ref=e452]: "Outcome: Execute your first outreach sprint and generate 5+ qualified leads within 48 hours"
+                - generic [ref=e453]:
+                  - paragraph [ref=e454]: Output
+                  - paragraph [ref=e455]: Your first 10 active leads and a proven script to close them.
+              - generic [ref=e456]:
+                - heading "Graduation" [level=4] [ref=e457]
+                - list [ref=e458]:
+                  - listitem [ref=e459]:
+                    - generic [ref=e460]:
+                      - generic [ref=e461]: Recap & Celebration
+                      - generic [ref=e463]: 10 min
+                    - paragraph [ref=e464]: "Outcome: Consolidate all learnings into a personal coaching business action checklist"
+                  - listitem [ref=e465]:
+                    - generic [ref=e466]:
+                      - generic [ref=e467]: Your Achievement Summary
+                      - generic [ref=e469]: 10 min
+                    - paragraph [ref=e470]: "Outcome: Document your achievements and articulate your unique coaching methodology"
+                  - listitem [ref=e471]:
+                    - generic [ref=e472]:
+                      - generic [ref=e473]: Your Growth Path
+                      - generic [ref=e475]: 10 min
+                    - paragraph [ref=e476]: "Outcome: Map your 6-month and 12-month growth milestones for scaling your coaching business"
+                  - listitem [ref=e477]:
+                    - generic [ref=e478]:
+                      - generic [ref=e479]: Certificate & Celebration
+                      - generic [ref=e481]: 10 min
+                    - paragraph [ref=e482]: "Outcome: Celebrate completion and commit to your first 30-day implementation sprint"
+            - generic [ref=e334]:
+              - button "Back to Pricing" [ref=e335] [cursor=pointer]:
+                - img [ref=e336]
+                - text: Back to Pricing
+              - button "Continue to Roadmap" [ref=e338] [cursor=pointer]:
+                - text: Continue to Roadmap
+                - img [ref=e339]

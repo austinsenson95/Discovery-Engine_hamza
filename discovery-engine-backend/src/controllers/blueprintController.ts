@@ -571,8 +571,9 @@ export const generateCurriculum = async (
     const niche = blueprint.niche?.selectedNiche?.name || 'Career Coaching';
     const program = blueprint.program?.selectedName?.name || 'Coaching Program';
     const problems = blueprint.program?.selectedProblems || [];
+    const duration = blueprint.program?.duration || '12_weeks';
 
-    const curriculum = await llmService.generateCurriculum(niche, program, problems);
+    const curriculum = await llmService.generateCurriculum(niche, program, problems, duration);
 
     const { deducted, remaining } = await creditService.deductCredits(
       userId,
@@ -592,7 +593,7 @@ export const generateCurriculum = async (
       userId,
       blueprintId: blueprint.id,
       title: 'Generated Course Curriculum',
-      description: `${curriculum.totalLessons} lessons across ${curriculum.modules.length} modules`,
+      description: `${curriculum.totalLessons} lessons across ${curriculum.modules.length} modules (${duration})`,
       type: 'program',
       createdAt: new Date(),
     });
@@ -648,7 +649,8 @@ export const generateRoadmap = async (
       return;
     }
 
-    const { phases } = await llmService.generateRoadmap(blueprint);
+    const duration = blueprint.program?.duration || '12_weeks';
+    const { phases } = await llmService.generateRoadmap(blueprint, duration);
     const pdfUrl = await pdfService.generateBlueprintPDF(blueprint);
 
     const { deducted, remaining } = await creditService.deductCredits(
@@ -671,7 +673,7 @@ export const generateRoadmap = async (
       userId,
       blueprintId: blueprint.id,
       title: 'Completed Blueprint Roadmap',
-      description: '12-week roadmap generated and PDF ready',
+      description: `${duration.replace('_', '-')} roadmap generated and PDF ready`,
       type: 'roadmap',
       createdAt: new Date(),
     });
