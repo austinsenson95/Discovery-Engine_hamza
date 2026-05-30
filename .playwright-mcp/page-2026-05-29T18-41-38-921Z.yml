@@ -1,0 +1,165 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e195]: "ID: bp_1780080078752"
+        - generic [ref=e85]:
+          - button "1 Niche Discovery" [ref=e87] [cursor=pointer]:
+            - generic [ref=e88]: "1"
+            - generic [ref=e89]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e90]:
+            - generic [ref=e91]: "2"
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e162]:
+          - generic [ref=e163]:
+            - heading "Let's Find Your Perfect Niche" [level=2] [ref=e164]
+            - paragraph [ref=e165]: Tell us about your background and we will use AI to discover coaching niches perfectly suited to your experience.
+          - generic [ref=e196]:
+            - generic [ref=e197]:
+              - paragraph [ref=e198]: We found 3 recommended niches based on your profile
+              - generic [ref=e199]:
+                - button "Edit My Answers" [ref=e200] [cursor=pointer]:
+                  - img [ref=e201]
+                  - text: Edit My Answers
+                - button "Regenerate" [ref=e203] [cursor=pointer]:
+                  - img [ref=e204]
+                  - text: Regenerate
+            - generic [ref=e207]:
+              - generic [ref=e209]:
+                - generic [ref=e210]:
+                  - heading "Executive Leadership & Team Building Coach" [level=3] [ref=e211]
+                  - generic [ref=e212]:
+                    - img [ref=e213]
+                    - generic [ref=e216]: ₹1.5L - ₹4.5L/month
+                - generic [ref=e217]:
+                  - generic [ref=e218]:
+                    - paragraph [ref=e219]: Who You Help
+                    - paragraph [ref=e220]: Mid-level to senior managers (5-15 years experience) struggling to transition from individual contributors to effective leaders
+                  - generic [ref=e221]:
+                    - paragraph [ref=e222]: Problem Solved
+                    - paragraph [ref=e223]: Lack of confidence in leadership decisions, difficulty building high-performing teams, imposter syndrome in new leadership roles, and struggles with delegation
+                  - generic [ref=e224]:
+                    - paragraph [ref=e225]: Result Delivered
+                    - paragraph [ref=e226]: Clients develop a personalized leadership framework, build psychologically safe teams, improve team productivity by 30-40%, and gain clarity on their leadership vision
+                - generic [ref=e228]:
+                  - generic [ref=e229]: Market Demand
+                  - generic [ref=e230]: 8.8/100
+                - generic [ref=e233]:
+                  - generic [ref=e234]: executive coaching
+                  - generic [ref=e235]: leadership development
+                  - generic [ref=e236]: team building
+                  - generic [ref=e237]: manager training
+                  - generic [ref=e238]: leadership skills
+                - paragraph [ref=e239]: Your 12+ years of HR experience, proven track record of scaling teams from 5 to 50 people, and strong leadership skills directly align with what aspiring leaders need. Your passion for helping professionals find clarity perfectly addresses the confusion new leaders face.
+                - paragraph [ref=e240]: "Competition: Medium-High"
+                - button "Select This Niche" [ref=e241] [cursor=pointer]
+              - generic [ref=e243]:
+                - generic [ref=e244]:
+                  - heading "Career Transition & Strategic Planning Coach" [level=3] [ref=e245]
+                  - generic [ref=e246]:
+                    - img [ref=e247]
+                    - generic [ref=e250]: ₹80K - ₹3L/month
+                - generic [ref=e251]:
+                  - generic [ref=e252]:
+                    - paragraph [ref=e253]: Who You Help
+                    - paragraph [ref=e254]: Professionals (7-15 years experience) planning mid-career shifts, wanting to move into leadership, or seeking clarity on their next career move
+                  - generic [ref=e255]:
+                    - paragraph [ref=e256]: Problem Solved
+                    - paragraph [ref=e257]: Career stagnation, uncertainty about next steps, fear of wrong decisions, lack of clear career strategy, and difficulty aligning career with life goals
+                  - generic [ref=e258]:
+                    - paragraph [ref=e259]: Result Delivered
+                    - paragraph [ref=e260]: A personalized 2-3 year career roadmap, clarity on strengths and opportunities, confidence in career decisions, and actionable steps to reach next career milestone
+                - generic [ref=e262]:
+                  - generic [ref=e263]: Market Demand
+                  - generic [ref=e264]: 8.5/100
+                - generic [ref=e267]:
+                  - generic [ref=e268]: career coaching
+                  - generic [ref=e269]: career transition
+                  - generic [ref=e270]: career planning
+                  - generic [ref=e271]: professional development
+                  - generic [ref=e272]: career clarity
+                - paragraph [ref=e273]: Your strategic planning expertise, 12+ years of observation of career trajectories in corporates, and genuine passion for helping professionals find clarity make you uniquely positioned. Your writing about career growth shows you already understand this audience deeply.
+                - paragraph [ref=e274]: "Competition: Medium"
+                - button "Select This Niche" [ref=e275] [cursor=pointer]
+              - generic [ref=e277]:
+                - generic [ref=e278]:
+                  - heading "Corporate Communication & Influence Coach" [level=3] [ref=e279]
+                  - generic [ref=e280]:
+                    - img [ref=e281]
+                    - generic [ref=e284]: ₹1.2L - ₹4L/month
+                - generic [ref=e285]:
+                  - generic [ref=e286]:
+                    - paragraph [ref=e287]: Who You Help
+                    - paragraph [ref=e288]: Senior professionals and emerging leaders who need to master public speaking, boardroom presence, and strategic communication to accelerate their careers
+                  - generic [ref=e289]:
+                    - paragraph [ref=e290]: Problem Solved
+                    - paragraph [ref=e291]: Fear of public speaking, lack of executive presence, inability to influence stakeholders, weak communication during high-stakes presentations, and difficulty articulating vision clearly
+                  - generic [ref=e292]:
+                    - paragraph [ref=e293]: Result Delivered
+                    - paragraph [ref=e294]: Enhanced public speaking confidence, commanding boardroom presence, ability to influence key stakeholders, persuasive communication skills, and increased visibility within organization
+                - generic [ref=e296]:
+                  - generic [ref=e297]: Market Demand
+                  - generic [ref=e298]: 8.2/100
+                - generic [ref=e301]:
+                  - generic [ref=e302]: public speaking coaching
+                  - generic [ref=e303]: executive presence
+                  - generic [ref=e304]: communication skills
+                  - generic [ref=e305]: boardroom presentation
+                  - generic [ref=e306]: influence and persuasion
+                - paragraph [ref=e307]: Your expert-level public speaking skills and 12+ years of managing stakeholders across organizational levels give you credibility. Your passion for teaching and community building shows you can create engaging learning experiences. This niche leverages both your HR insights and communication mastery.
+                - paragraph [ref=e308]: "Competition: Medium-High"
+                - button "Select This Niche" [ref=e309] [cursor=pointer]

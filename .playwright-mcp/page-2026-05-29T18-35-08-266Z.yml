@@ -1,0 +1,105 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e161]: "ID: bp_1780075310032"
+        - generic [ref=e85]:
+          - button "Niche Discovery" [ref=e163] [cursor=pointer]:
+            - img [ref=e165]
+            - generic [ref=e89]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e90] [cursor=pointer]:
+            - generic [ref=e91]: "2"
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e168]:
+          - generic [ref=e169]:
+            - heading "Meet Your Ideal Student" [level=2] [ref=e170]
+            - paragraph [ref=e171]: Here is a detailed persona of the person most likely to buy your coaching program.
+          - generic [ref=e172]:
+            - img [ref=e173]
+            - generic [ref=e177]:
+              - paragraph [ref=e178]: Selected Niche
+              - paragraph [ref=e179]: Clarity & Confidence Coach for Mid-Career Professionals
+          - generic [ref=e182]:
+            - generic [ref=e184]:
+              - heading "Aspiring Leaders" [level=3] [ref=e185]
+              - paragraph [ref=e186]: 28-40 years old
+              - paragraph
+              - img [ref=e188]
+            - generic [ref=e192]:
+              - paragraph [ref=e193]: Current Situation
+              - paragraph
+            - generic [ref=e194]:
+              - paragraph [ref=e195]: Biggest Desire
+              - paragraph [ref=e196]: "\"\""
+            - paragraph [ref=e198]: "\"\""
+            - generic [ref=e199]:
+              - paragraph [ref=e200]: Pain Points
+              - generic [ref=e202]: Feeling stuck
+            - generic [ref=e203]:
+              - paragraph [ref=e204]: Goals
+              - generic [ref=e206]: Get promoted
+            - paragraph [ref=e208]: Where to Find Them
+            - button "Yes, This Is My Student!" [ref=e209] [cursor=pointer]:
+              - text: Yes, This Is My Student!
+              - img [ref=e210]
+          - generic [ref=e212]:
+            - button "Regenerate Avatar" [ref=e213] [cursor=pointer]:
+              - img [ref=e214]
+              - text: Regenerate Avatar
+            - button "Back to Niche" [ref=e217] [cursor=pointer]:
+              - img [ref=e218]
+              - text: Back to Niche

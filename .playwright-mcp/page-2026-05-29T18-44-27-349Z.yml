@@ -1,0 +1,127 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e195]: "ID: bp_1780080078752"
+        - generic [ref=e85]:
+          - button "Niche Discovery" [ref=e311] [cursor=pointer]:
+            - img [ref=e313]
+            - generic [ref=e89]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e90] [cursor=pointer]:
+            - generic [ref=e91]: "2"
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e316]:
+          - generic [ref=e317]:
+            - heading "Meet Your Ideal Student" [level=2] [ref=e318]
+            - paragraph [ref=e319]: Here is a detailed persona of the person most likely to buy your coaching program.
+          - generic [ref=e320]:
+            - img [ref=e321]
+            - generic [ref=e325]:
+              - paragraph [ref=e326]: Selected Niche
+              - paragraph [ref=e327]: Executive Leadership & Team Building Coach
+          - generic [ref=e344]:
+            - generic [ref=e345]:
+              - generic [ref=e346]:
+                - heading "Rajesh" [level=3] [ref=e347]
+                - paragraph [ref=e348]: 38-48 years old
+                - paragraph [ref=e349]: Senior Manager / Department Head
+                - generic [ref=e350]:
+                  - img [ref=e351]
+                  - generic [ref=e354]: Bangalore, India
+              - generic [ref=e355]: ₹75,000 - ₹2,00,000 for a structured 3-6 month coaching program
+            - generic [ref=e356]:
+              - paragraph [ref=e357]: Current Situation
+              - paragraph [ref=e358]: Rajesh manages a team of 12-15 people in a mid-sized IT services company. Despite his technical expertise and 15 years in the industry, he struggles with team conflicts, high attrition rates, and feels overwhelmed when handling performance management conversations. His team respects his technical knowledge but sees him as distant and unprepared for their career aspirations.
+            - generic [ref=e359]:
+              - paragraph [ref=e360]: Biggest Desire
+              - paragraph [ref=e361]: "\"He wants to be recognized as a visionary leader who can build a high-performing, loyal team that delivers exceptional results while genuinely caring for each member's growth. He dreams of being promoted to senior leadership where people management skills matter more than technical prowess.\""
+            - paragraph [ref=e363]: "\"I know I'm good at what I do technically, but I feel like I'm leaving so much potential on the table because I don't know how to really lead people. My team deserves better, and honestly, my career needs this breakthrough.\""
+            - generic [ref=e364]:
+              - paragraph [ref=e365]: Pain Points
+              - generic [ref=e366]:
+                - generic [ref=e367]: Unable to have difficult conversations with underperforming team members without feeling anxious
+                - generic [ref=e368]: Team turnover is high and exit interviews reveal people felt unheard and undervalued
+                - generic [ref=e369]: Struggles to delegate effectively, leading to burnout and bottlenecks
+                - generic [ref=e370]: Lacks confidence in strategic thinking and often defers to senior management instead of owning decisions
+                - generic [ref=e371]: Finds it difficult to balance being friendly with team members while maintaining authority and boundaries
+                - generic [ref=e372]: Receives feedback that he's not visible enough as a leader or advocate for his team
+            - generic [ref=e373]:
+              - paragraph [ref=e374]: Goals
+              - generic [ref=e375]:
+                - generic [ref=e376]: Build a cohesive, high-trust team culture where people voluntarily stay and recommend others
+                - generic [ref=e377]: Develop emotional intelligence and communication skills to lead difficult conversations confidently
+                - generic [ref=e378]: Create a succession plan and develop at least 2-3 high-potential team members for future roles
+                - generic [ref=e379]: Establish a clear personal leadership brand and be seen as a strategic thinker, not just a doer
+                - generic [ref=e380]: Achieve promotion to senior leadership or senior manager role within 18-24 months
+            - generic [ref=e381]:
+              - paragraph [ref=e382]: Where to Find Them
+              - generic [ref=e383]:
+                - generic [ref=e384]: LinkedIn (daily)
+                - generic [ref=e385]: WhatsApp Business (frequently)
+                - generic [ref=e386]: YouTube (weekly)
+                - generic [ref=e387]: Podcasts (during commute)
+                - generic [ref=e388]: Email newsletters (2-3 times weekly)
+            - button "Yes, This Is My Student!" [ref=e389] [cursor=pointer]:
+              - text: Yes, This Is My Student!
+              - img [ref=e390]
+          - generic [ref=e334]:
+            - button "Regenerate Avatar" [ref=e335] [cursor=pointer]:
+              - img [ref=e336]
+              - text: Regenerate Avatar
+            - button "Back to Niche" [ref=e339] [cursor=pointer]:
+              - img [ref=e340]
+              - text: Back to Niche
