@@ -56,7 +56,7 @@ export default function PersonaCard({ persona, onConfirm }: PersonaCardProps) {
         <div className="mb-6">
           <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Pain Points</p>
           <div className="flex flex-wrap gap-2">
-            {persona.painPoints.map(point => (
+            {(persona.painPoints || []).map(point => (
               <span
                 key={point}
                 className="text-xs font-medium text-gray-600 bg-gray-100 border border-gray-200 rounded-full px-3 py-1.5"
@@ -71,7 +71,7 @@ export default function PersonaCard({ persona, onConfirm }: PersonaCardProps) {
         <div className="mb-6">
           <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Goals</p>
           <div className="flex flex-wrap gap-2">
-            {persona.goals.map(goal => (
+            {(persona.goals || []).map(goal => (
               <span
                 key={goal}
                 className="text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded-full px-3 py-1.5"
@@ -86,7 +86,7 @@ export default function PersonaCard({ persona, onConfirm }: PersonaCardProps) {
         <div className="mb-8">
           <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Where to Find Them</p>
           <div className="flex flex-wrap gap-2">
-            {persona.onlinePlatforms.map(platform => (
+            {(persona.onlinePlatforms || []).map(platform => (
               <span
                 key={platform}
                 className="text-xs font-medium text-gray-500 border border-gray-300 rounded-full px-3 py-1.5"

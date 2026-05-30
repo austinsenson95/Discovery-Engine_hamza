@@ -1,0 +1,107 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e195]: "ID: bp_1780080078752"
+        - generic [ref=e85]:
+          - button "Niche Discovery" [ref=e311] [cursor=pointer]:
+            - img [ref=e313]
+            - generic [ref=e89]: Niche Discovery
+          - button "Audience Mapping" [ref=e392] [cursor=pointer]:
+            - img [ref=e394]
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e397]:
+          - heading "Build Your Signature Program" [level=2] [ref=e399]
+          - generic [ref=e400]:
+            - generic [ref=e402]:
+              - img [ref=e484]
+              - generic [ref=e404]: Problems
+            - generic [ref=e407]:
+              - generic [ref=e408]: "2"
+              - generic [ref=e409]: Naming
+            - generic [ref=e412]:
+              - generic [ref=e413]: "3"
+              - generic [ref=e414]: Pricing
+            - generic [ref=e417]:
+              - generic [ref=e418]: "4"
+              - generic [ref=e419]: Curriculum
+          - generic [ref=e486]:
+            - heading "Name Your Signature Program" [level=3] [ref=e487]
+            - paragraph [ref=e488]: Choose a name that resonates with your audience and reflects the transformation you provide.
+            - generic [ref=e489]:
+              - generic [ref=e490]:
+                - heading "Leadership Catalyst" [level=4] [ref=e491]
+                - paragraph [ref=e492]: A comprehensive program that transforms executives into visionary leaders while building high-performing teams through strategic communication and trust-building frameworks.
+                - button "Select" [ref=e493] [cursor=pointer]
+              - generic [ref=e494]:
+                - generic [ref=e495]:
+                  - img [ref=e496]
+                  - generic [ref=e498]: HAMZA RECOMMENDED
+                - heading "The Executive Alignment Blueprint" [level=4] [ref=e499]
+                - paragraph [ref=e500]: "AI-recommended: This program equips executives like Rajesh with proven methodologies to align their teams, amplify their influence, and drive organizational success through intentional leadership practices."
+                - button "Select" [ref=e501] [cursor=pointer]
+              - generic [ref=e502]:
+                - heading "Command & Cohesion" [level=4] [ref=e503]
+                - paragraph [ref=e504]: A powerful coaching program designed to help leaders master executive presence while creating unified, motivated teams that exceed performance targets.
+                - button "Select" [ref=e505] [cursor=pointer]
+            - generic [ref=e506]:
+              - button "Back to Problems" [ref=e507] [cursor=pointer]:
+                - img [ref=e508]
+                - text: Back to Problems
+              - button "Regenerate Names" [ref=e510] [cursor=pointer]:
+                - img [ref=e511]
+                - text: Regenerate Names

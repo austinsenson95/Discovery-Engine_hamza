@@ -1,0 +1,326 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e195]: "ID: bp_1780080078752"
+        - generic [ref=e85]:
+          - button "Niche Discovery" [ref=e311] [cursor=pointer]:
+            - img [ref=e313]
+            - generic [ref=e89]: Niche Discovery
+          - button "Audience Mapping" [ref=e392] [cursor=pointer]:
+            - img [ref=e394]
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e397]:
+          - heading "Build Your Signature Program" [level=2] [ref=e399]
+          - generic [ref=e400]:
+            - generic [ref=e402]:
+              - img [ref=e484]
+              - generic [ref=e404]: Problems
+            - generic [ref=e407]:
+              - img [ref=e514]
+              - generic [ref=e409]: Naming
+            - generic [ref=e412]:
+              - img [ref=e608]
+              - generic [ref=e414]: Pricing
+            - generic [ref=e417]:
+              - generic [ref=e418]: "4"
+              - generic [ref=e419]: Curriculum
+          - generic [ref=e610]:
+            - heading "Design Your Course Curriculum" [level=3] [ref=e611]
+            - paragraph [ref=e612]: AI-generated lesson plan structured into modules with clear learning outcomes.
+            - generic [ref=e662]:
+              - generic [ref=e663]:
+                - generic [ref=e664]: 34 lessons
+                - generic [ref=e665]: 42 hours
+              - generic [ref=e666]:
+                - heading "Welcome to The Executive Alignment Blueprint" [level=4] [ref=e667]
+                - paragraph [ref=e668]: Setting the Foundation for Your Leadership Transformation
+                - list [ref=e669]:
+                  - listitem [ref=e670]:
+                    - generic [ref=e671]:
+                      - generic [ref=e672]: "Your Journey Begins: Program Overview & Success Roadmap"
+                      - generic [ref=e674]: 15 min
+                    - paragraph [ref=e675]: "Outcome: Understand the program structure, your coach's approach, and how to maximize your 12-week transformation"
+                  - listitem [ref=e676]:
+                    - generic [ref=e677]:
+                      - generic [ref=e678]: "The Executive Alignment Framework: Your North Star"
+                      - generic [ref=e680]: 20 min
+                    - paragraph [ref=e681]: "Outcome: Learn the core philosophy and four pillars that will guide your alignment journey"
+                  - listitem [ref=e682]:
+                    - generic [ref=e683]:
+                      - generic [ref=e684]: "Assessment: Where You Are Today"
+                      - generic [ref=e686]: 25 min
+                    - paragraph [ref=e687]: "Outcome: Complete a comprehensive career clarity assessment to identify your baseline and unique challenges"
+                - generic [ref=e688]:
+                  - paragraph [ref=e689]: Output
+                  - paragraph [ref=e690]: Completed baseline assessment and clarity on program expectations
+              - generic [ref=e691]:
+                - 'heading "Module 1: Self-Awareness & Career Clarity" [level=4] [ref=e692]'
+                - paragraph [ref=e693]: Discovering Your True Professional Identity and Values
+                - list [ref=e694]:
+                  - listitem [ref=e695]:
+                    - generic [ref=e696]:
+                      - generic [ref=e697]: "Uncovering Your Executive Identity: Beyond Job Titles"
+                      - generic [ref=e699]: 30 min
+                    - paragraph [ref=e700]: "Outcome: Identify your core professional identity separate from your current role or company"
+                  - listitem [ref=e701]:
+                    - generic [ref=e702]:
+                      - generic [ref=e703]: "Values Alignment Exercise: What Truly Matters to You"
+                      - generic [ref=e705]: 35 min
+                    - paragraph [ref=e706]: "Outcome: Define your non-negotiable values and assess alignment with your current situation"
+                  - listitem [ref=e707]:
+                    - generic [ref=e708]:
+                      - generic [ref=e709]: "Strengths, Gaps & Growth: Your Leadership Audit"
+                      - generic [ref=e711]: 40 min
+                    - paragraph [ref=e712]: "Outcome: Map your core strengths, skill gaps, and areas for intentional growth as a leader"
+                  - listitem [ref=e713]:
+                    - generic [ref=e714]:
+                      - generic [ref=e715]: "Live Q&A: Clarity Breakthrough Session"
+                      - generic [ref=e717]: 45 min
+                    - paragraph [ref=e718]: "Outcome: Get personalized guidance on your biggest career clarity blockers"
+                - generic [ref=e719]:
+                  - paragraph [ref=e720]: Output
+                  - paragraph [ref=e721]: Personal Leadership Profile documenting your identity, values, strengths, and growth areas
+              - generic [ref=e722]:
+                - 'heading "Module 2: Vision Setting & Strategic Direction" [level=4] [ref=e723]'
+                - paragraph [ref=e724]: Creating Your 3-Year Executive Roadmap
+                - list [ref=e725]:
+                  - listitem [ref=e726]:
+                    - generic [ref=e727]:
+                      - generic [ref=e728]: "Crafting Your Executive Vision: The Compelling Future"
+                      - generic [ref=e730]: 35 min
+                    - paragraph [ref=e731]: "Outcome: Develop a vivid, actionable vision for your ideal career and leadership impact"
+                  - listitem [ref=e732]:
+                    - generic [ref=e733]:
+                      - generic [ref=e734]: "Strategic Goal Framework: From Vision to Milestones"
+                      - generic [ref=e736]: 40 min
+                    - paragraph [ref=e737]: "Outcome: Build SMART goals aligned with your vision across leadership, career, and impact dimensions"
+                  - listitem [ref=e738]:
+                    - generic [ref=e739]:
+                      - generic [ref=e740]: "The 90-Day Quick Win Plan: Momentum Building"
+                      - generic [ref=e742]: 30 min
+                    - paragraph [ref=e743]: "Outcome: Create your first 90-day action plan to demonstrate progress and build confidence"
+                  - listitem [ref=e744]:
+                    - generic [ref=e745]:
+                      - generic [ref=e746]: "Workshop: Overcoming Limiting Beliefs About Your Future"
+                      - generic [ref=e748]: 45 min
+                    - paragraph [ref=e749]: "Outcome: Identify and reframe self-limiting beliefs that could derail your vision"
+                - generic [ref=e750]:
+                  - paragraph [ref=e751]: Output
+                  - paragraph [ref=e752]: 3-Year Executive Roadmap with vision statement, strategic goals, and 90-day action plan
+              - generic [ref=e753]:
+                - 'heading "Module 3: Executive Presence & Influence" [level=4] [ref=e754]'
+                - paragraph [ref=e755]: Building Authority, Credibility, and Leadership Impact
+                - list [ref=e756]:
+                  - listitem [ref=e757]:
+                    - generic [ref=e758]:
+                      - generic [ref=e759]: "Executive Presence Mastery: How Leaders Show Up"
+                      - generic [ref=e761]: 35 min
+                    - paragraph [ref=e762]: "Outcome: Understand the components of powerful executive presence and your current presence baseline"
+                  - listitem [ref=e763]:
+                    - generic [ref=e764]:
+                      - generic [ref=e765]: "Communication Excellence: From Good to Compelling"
+                      - generic [ref=e767]: 40 min
+                    - paragraph [ref=e768]: "Outcome: Master key communication techniques that amplify your influence and leadership credibility"
+                  - listitem [ref=e769]:
+                    - generic [ref=e770]:
+                      - generic [ref=e771]: "Emotional Intelligence for Leaders: Self-Regulation & Empathy"
+                      - generic [ref=e773]: 35 min
+                    - paragraph [ref=e774]: "Outcome: Develop emotional intelligence capabilities critical for executive-level influence"
+                  - listitem [ref=e775]:
+                    - generic [ref=e776]:
+                      - generic [ref=e777]: "Live Coaching: Presence & Communication Breakthrough"
+                      - generic [ref=e779]: 50 min
+                    - paragraph [ref=e780]: "Outcome: Receive personalized feedback on your presence and communication style with actionable improvements"
+                  - listitem [ref=e781]:
+                    - generic [ref=e782]:
+                      - generic [ref=e783]: "Personal Brand Strategy: Positioning Yourself for Opportunity"
+                      - generic [ref=e785]: 30 min
+                    - paragraph [ref=e786]: "Outcome: Define and articulate your unique executive brand both internally and externally"
+                - generic [ref=e787]:
+                  - paragraph [ref=e788]: Output
+                  - paragraph [ref=e789]: Executive Presence Action Plan with communication techniques and personal brand positioning
+              - generic [ref=e790]:
+                - 'heading "Module 4: Building Aligned High-Performance Teams" [level=4] [ref=e791]'
+                - paragraph [ref=e792]: Developing Trust, Clarity, and Accountability in Your Organization
+                - list [ref=e793]:
+                  - listitem [ref=e794]:
+                    - generic [ref=e795]:
+                      - generic [ref=e796]: "The Alignment Advantage: Why Team Clarity Drives Results"
+                      - generic [ref=e798]: 30 min
+                    - paragraph [ref=e799]: "Outcome: Understand the business impact of team alignment and common misalignment patterns"
+                  - listitem [ref=e800]:
+                    - generic [ref=e801]:
+                      - generic [ref=e802]: "Creating Psychological Safety: Foundation for High Performance"
+                      - generic [ref=e804]: 40 min
+                    - paragraph [ref=e805]: "Outcome: Build teams where people feel safe to take risks, contribute ideas, and challenge respectfully"
+                  - listitem [ref=e806]:
+                    - generic [ref=e807]:
+                      - generic [ref=e808]: "Clarity by Design: Vision, Roles, and Expectations Framework"
+                      - generic [ref=e810]: 35 min
+                    - paragraph [ref=e811]: "Outcome: Create organizational clarity documents that cascade vision into actionable team objectives"
+                  - listitem [ref=e812]:
+                    - generic [ref=e813]:
+                      - generic [ref=e814]: "Accountability Without Blame: The Coaching Conversation Model"
+                      - generic [ref=e816]: 45 min
+                    - paragraph [ref=e817]: "Outcome: Master high-performance conversations that build accountability while strengthening relationships"
+                  - listitem [ref=e818]:
+                    - generic [ref=e819]:
+                      - generic [ref=e820]: "Workshop: Designing Your Team Alignment Initiative"
+                      - generic [ref=e822]: 50 min
+                    - paragraph [ref=e823]: "Outcome: Build your customized team alignment strategy including stakeholder mapping and communication plan"
+                - generic [ref=e824]:
+                  - paragraph [ref=e825]: Output
+                  - paragraph [ref=e826]: Team Alignment Blueprint with psychological safety strategy, clarity documents, and implementation roadmap
+              - generic [ref=e827]:
+                - 'heading "Module 5: Navigating Change & Building Resilience" [level=4] [ref=e828]'
+                - paragraph [ref=e829]: Leading Through Uncertainty With Confidence and Adaptability
+                - list [ref=e830]:
+                  - listitem [ref=e831]:
+                    - generic [ref=e832]:
+                      - generic [ref=e833]: "Change Leadership: Guiding Your Organization Through Transition"
+                      - generic [ref=e835]: 35 min
+                    - paragraph [ref=e836]: "Outcome: Understand change dynamics and your role as a change agent and steady presence"
+                  - listitem [ref=e837]:
+                    - generic [ref=e838]:
+                      - generic [ref=e839]: "Building Executive Resilience: Stress Management & Recovery"
+                      - generic [ref=e841]: 40 min
+                    - paragraph [ref=e842]: "Outcome: Develop personal resilience practices that sustain you through high-pressure periods"
+                  - listitem [ref=e843]:
+                    - generic [ref=e844]:
+                      - generic [ref=e845]: "Decision-Making in Uncertainty: The Adaptive Leader's Playbook"
+                      - generic [ref=e847]: 35 min
+                    - paragraph [ref=e848]: "Outcome: Make confident decisions with incomplete information and adjust course as new data emerges"
+                  - listitem [ref=e849]:
+                    - generic [ref=e850]:
+                      - generic [ref=e851]: "Navigating Career Pivots: When Your Direction Needs Adjustment"
+                      - generic [ref=e853]: 30 min
+                    - paragraph [ref=e854]: "Outcome: Recognize when recalibration is needed and pivot strategically without losing momentum"
+                  - listitem [ref=e855]:
+                    - generic [ref=e856]:
+                      - generic [ref=e857]: "Live Coaching: Your Resilience Action Plan"
+                      - generic [ref=e859]: 45 min
+                    - paragraph [ref=e860]: "Outcome: Create personalized resilience strategies for your current challenges and future obstacles"
+                - generic [ref=e861]:
+                  - paragraph [ref=e862]: Output
+                  - paragraph [ref=e863]: Resilience & Change Leadership Playbook with personal sustainability practices and adaptive strategies
+              - generic [ref=e864]:
+                - 'heading "Module 6: Advanced Leadership Mastery & Legacy" [level=4] [ref=e865]'
+                - paragraph [ref=e866]: Elevating to Strategic Influence and Lasting Impact
+                - list [ref=e867]:
+                  - listitem [ref=e868]:
+                    - generic [ref=e869]:
+                      - generic [ref=e870]: "Strategic Influence at the C-Suite: Executive Dynamics"
+                      - generic [ref=e872]: 40 min
+                    - paragraph [ref=e873]: "Outcome: Navigate senior leadership dynamics and position yourself as a strategic business partner"
+                  - listitem [ref=e874]:
+                    - generic [ref=e875]:
+                      - generic [ref=e876]: "Building Your Leadership Legacy: Impact Beyond Title"
+                      - generic [ref=e878]: 35 min
+                    - paragraph [ref=e879]: "Outcome: Define the lasting legacy you want to create as a leader and organization builder"
+                  - listitem [ref=e880]:
+                    - generic [ref=e881]:
+                      - generic [ref=e882]: "Mentoring & Developing Future Leaders: Your Succession Strategy"
+                      - generic [ref=e884]: 30 min
+                    - paragraph [ref=e885]: "Outcome: Intentionally develop emerging leaders and create systems for sustainable organizational leadership"
+                  - listitem [ref=e886]:
+                    - generic [ref=e887]:
+                      - generic [ref=e888]: "The Aligned Executive: Integration & Continuous Evolution"
+                      - generic [ref=e890]: 35 min
+                    - paragraph [ref=e891]: "Outcome: Integrate all alignment work into a cohesive, sustainable leadership practice"
+                  - listitem [ref=e892]:
+                    - generic [ref=e893]:
+                      - generic [ref=e894]: "Capstone Workshop: Your 12-Month Execution Blueprint"
+                      - generic [ref=e896]: 50 min
+                    - paragraph [ref=e897]: "Outcome: Create a detailed 12-month plan translating everything learned into tangible organizational outcomes"
+                - generic [ref=e898]:
+                  - paragraph [ref=e899]: Output
+                  - paragraph [ref=e900]: Advanced Leadership Mastery Roadmap including legacy vision, succession strategy, and 12-month execution blueprint
+              - generic [ref=e901]:
+                - heading "Graduation & Lifetime Mastery" [level=4] [ref=e902]
+                - paragraph [ref=e903]: Celebrating Your Transformation and Sustaining Momentum
+                - list [ref=e904]:
+                  - listitem [ref=e905]:
+                    - generic [ref=e906]:
+                      - generic [ref=e907]: "Reflection & Celebration: Your 12-Week Transformation"
+                      - generic [ref=e909]: 25 min
+                    - paragraph [ref=e910]: "Outcome: Acknowledge your progress, celebrate wins, and recognize your growth as an aligned executive"
+                  - listitem [ref=e911]:
+                    - generic [ref=e912]:
+                      - generic [ref=e913]: "Sustaining Your Alignment: Beyond the Program"
+                      - generic [ref=e915]: 30 min
+                    - paragraph [ref=e916]: "Outcome: Build systems and practices to maintain alignment and continue evolving as a leader"
+                  - listitem [ref=e917]:
+                    - generic [ref=e918]:
+                      - generic [ref=e919]: "Your Lifetime Mastery Path: Continued Growth & Community"
+                      - generic [ref=e921]: 20 min
+                    - paragraph [ref=e922]: "Outcome: Explore advanced coaching options, alumni community, and resources for ongoing development"
+                  - listitem [ref=e923]:
+                    - generic [ref=e924]:
+                      - generic [ref=e925]: "Live Celebration: Graduation Ceremony with Peer Leaders"
+                      - generic [ref=e927]: 45 min
+                    - paragraph [ref=e928]: "Outcome: Celebrate with fellow executives, share insights, and strengthen your leadership network"
+                - generic [ref=e929]:
+                  - paragraph [ref=e930]: Output
+                  - paragraph [ref=e931]: Personalized Lifetime Mastery Plan and transition to ongoing executive leadership development
+            - generic [ref=e651]:
+              - button "Back to Pricing" [ref=e652] [cursor=pointer]:
+                - img [ref=e653]
+                - text: Back to Pricing
+              - button "Continue to Roadmap" [ref=e655] [cursor=pointer]:
+                - text: Continue to Roadmap
+                - img [ref=e656]

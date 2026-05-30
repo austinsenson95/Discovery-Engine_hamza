@@ -1,0 +1,17 @@
+[     104ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:20102
+[     459ms] TypeError: Cannot read properties of undefined (reading 'map')
+    at PersonaCard (http://localhost:3000/src/components/PersonaCard.tsx:196:167)
+    at Object.react_stack_bottom_frame (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:18509:20)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:5654:24)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:7475:21)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:8525:20)
+    at runWithFiberInDEV (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:997:72)
+    at performUnitOfWork (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:12561:98)
+    at workLoopSync (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:12424:43)
+    at renderRootSync (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:12408:13)
+    at performWorkOnRoot (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:11827:37)
+[     459ms] [WARNING] %s
+
+%s
+ An error occurred in the <PersonaCard> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=5ba0e5ab:6965

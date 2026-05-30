@@ -1,0 +1,165 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e291]: "ID: bp_1780079786927"
+        - generic [ref=e85]:
+          - button "1 Niche Discovery" [ref=e229] [cursor=pointer]:
+            - generic [ref=e88]: "1"
+            - generic [ref=e89]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e90]:
+            - generic [ref=e91]: "2"
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e231]:
+          - generic [ref=e232]:
+            - heading "Let's Find Your Perfect Niche" [level=2] [ref=e233]
+            - paragraph [ref=e234]: Tell us about your background and we will use AI to discover coaching niches perfectly suited to your experience.
+          - generic [ref=e292]:
+            - generic [ref=e293]:
+              - paragraph [ref=e294]: We found 3 recommended niches based on your profile
+              - generic [ref=e295]:
+                - button "Edit My Answers" [ref=e296] [cursor=pointer]:
+                  - img [ref=e297]
+                  - text: Edit My Answers
+                - button "Regenerate" [ref=e299] [cursor=pointer]:
+                  - img [ref=e300]
+                  - text: Regenerate
+            - generic [ref=e303]:
+              - generic [ref=e305]:
+                - generic [ref=e306]:
+                  - heading "Clarity & Confidence Coach for Mid-Career Professionals" [level=3] [ref=e307]
+                  - generic [ref=e308]:
+                    - img [ref=e309]
+                    - generic [ref=e312]: ₹50K - ₹2L/month through 1:1 coaching and group programs
+                - generic [ref=e313]:
+                  - generic [ref=e314]:
+                    - paragraph [ref=e315]: Who You Help
+                    - paragraph [ref=e316]: Working professionals aged 30-45 who feel stuck in their careers
+                  - generic [ref=e317]:
+                    - paragraph [ref=e318]: Problem Solved
+                    - paragraph [ref=e319]: Lack of clarity about next career move, imposter syndrome, and inability to advocate for themselves
+                  - generic [ref=e320]:
+                    - paragraph [ref=e321]: Result Delivered
+                    - paragraph [ref=e322]: Clear career direction, renewed confidence, and a concrete action plan within 90 days
+                - generic [ref=e324]:
+                  - generic [ref=e325]: Market Demand
+                  - generic [ref=e326]: 8.5/100
+                - generic [ref=e329]:
+                  - generic [ref=e330]: career clarity
+                  - generic [ref=e331]: confidence building
+                  - generic [ref=e332]: mid-career transition
+                  - generic [ref=e333]: leadership coaching
+                  - generic [ref=e334]: imposter syndrome
+                - paragraph [ref=e335]: "Your HR background gives you insider knowledge about what companies look for, and your passion for helping people shines through Your background in \"Leadership, Public Speaking, Strategic Planning, Team Management\" and passion for \"Helping professionals find clarity, teaching, building communities, writing about career growth\" strongly aligns with this niche. The user has selected these coaching domain(s): Business & Career."
+                - paragraph [ref=e336]: "Competition: Medium"
+                - button "Select This Niche" [ref=e337] [cursor=pointer]
+              - generic [ref=e339]:
+                - generic [ref=e340]:
+                  - heading "Wellness Coach for Busy Entrepreneurs" [level=3] [ref=e341]
+                  - generic [ref=e342]:
+                    - img [ref=e343]
+                    - generic [ref=e346]: ₹75K - ₹3L/month through high-ticket 1:1 and masterminds
+                - generic [ref=e347]:
+                  - generic [ref=e348]:
+                    - paragraph [ref=e349]: Who You Help
+                    - paragraph [ref=e350]: Startup founders and small business owners burning out
+                  - generic [ref=e351]:
+                    - paragraph [ref=e352]: Problem Solved
+                    - paragraph [ref=e353]: Chronic stress, poor work-life balance, declining health due to neglect
+                  - generic [ref=e354]:
+                    - paragraph [ref=e355]: Result Delivered
+                    - paragraph [ref=e356]: Sustainable wellness routines, increased energy, better productivity without burnout
+                - generic [ref=e358]:
+                  - generic [ref=e359]: Market Demand
+                  - generic [ref=e360]: 9.2/100
+                - generic [ref=e363]:
+                  - generic [ref=e364]: entrepreneur wellness
+                  - generic [ref=e365]: burnout prevention
+                  - generic [ref=e366]: high-performance health
+                  - generic [ref=e367]: stress management
+                  - generic [ref=e368]: founder fitness
+                - paragraph [ref=e369]: "Entrepreneurs have purchasing power and urgency; your wellness expertise meets a critical pain point Your background in \"Leadership, Public Speaking, Strategic Planning, Team Management\" and passion for \"Helping professionals find clarity, teaching, building communities, writing about career growth\" strongly aligns with this niche. The user has selected these coaching domain(s): Business & Career."
+                - paragraph [ref=e370]: "Competition: Low-Medium"
+                - button "Select This Niche" [ref=e371] [cursor=pointer]
+              - generic [ref=e373]:
+                - generic [ref=e374]:
+                  - heading "Parenting Coach for Working Parents" [level=3] [ref=e375]
+                  - generic [ref=e376]:
+                    - img [ref=e377]
+                    - generic [ref=e380]: ₹30K - ₹1.5L/month through courses and community memberships
+                - generic [ref=e381]:
+                  - generic [ref=e382]:
+                    - paragraph [ref=e383]: Who You Help
+                    - paragraph [ref=e384]: Dual-income families struggling with parenting guilt and work-life balance
+                  - generic [ref=e385]:
+                    - paragraph [ref=e386]: Problem Solved
+                    - paragraph [ref=e387]: Parenting overwhelm, guilt about not spending enough time, conflicting parenting styles
+                  - generic [ref=e388]:
+                    - paragraph [ref=e389]: Result Delivered
+                    - paragraph [ref=e390]: Harmonious family routines, confident parenting approach, quality time strategies
+                - generic [ref=e392]:
+                  - generic [ref=e393]: Market Demand
+                  - generic [ref=e394]: 7.8/100
+                - generic [ref=e397]:
+                  - generic [ref=e398]: working parent
+                  - generic [ref=e399]: parenting guilt
+                  - generic [ref=e400]: family routines
+                  - generic [ref=e401]: conscious parenting
+                  - generic [ref=e402]: work-life balance
+                - paragraph [ref=e403]: "Growing market with strong community potential; working parents actively seek solutions Your background in \"Leadership, Public Speaking, Strategic Planning, Team Management\" and passion for \"Helping professionals find clarity, teaching, building communities, writing about career growth\" strongly aligns with this niche. The user has selected these coaching domain(s): Business & Career."
+                - paragraph [ref=e404]: "Competition: Medium-High"
+                - button "Select This Niche" [ref=e405] [cursor=pointer]
