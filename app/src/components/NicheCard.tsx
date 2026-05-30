@@ -51,12 +51,12 @@ export default function NicheCard({ niche, index, onSelect }: NicheCardProps) {
         <div className="mb-4">
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-xs font-medium text-gray-500">Market Demand</span>
-            <span className="text-xs font-semibold text-orange-500">{niche.marketDemand}/100</span>
+            <span className="text-xs font-semibold text-orange-500">{niche.marketDemand}/10</span>
           </div>
           <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: `${niche.marketDemand}%` }}
+              animate={{ width: `${Math.min(niche.marketDemand * 10, 100)}%` }}
               transition={{ duration: 0.8, delay: index * 0.15 + 0.3, ease: 'easeOut' }}
               className="h-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-full"
             />
