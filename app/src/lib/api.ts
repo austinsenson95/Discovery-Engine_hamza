@@ -1,4 +1,4 @@
-import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, User, Blueprint, CourseCurriculum } from '@/types';
+import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, User, Blueprint, CourseCurriculum, ReadinessQuiz } from '@/types';
 
 export const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
@@ -104,6 +104,14 @@ export const generateRoadmap = async () => {
     meta?: { creditsDeducted?: number; remainingCredits?: number };
   }>('/blueprint/roadmap', { method: 'POST' });
   return { phases: res.data.phases, pdfUrl: res.data.pdfUrl, creditsDeducted: res.meta?.creditsDeducted ?? 15 };
+};
+
+export const submitQuiz = async (answers: number[]) => {
+  const res = await fetchJson<{
+    data: { readinessQuiz: ReadinessQuiz };
+    meta?: { creditsDeducted?: number; remainingCredits?: number };
+  }>('/blueprint/quiz', { method: 'POST', body: JSON.stringify({ answers }) });
+  return { readinessQuiz: res.data.readinessQuiz, creditsDeducted: res.meta?.creditsDeducted ?? 5 };
 };
 
 export const fetchProblems = async (): Promise<string[]> => {

@@ -88,6 +88,30 @@ export interface RoadmapPhase {
   items: { week: string; tasks: string[] }[];
 }
 
+export interface QuizOption {
+  id: string;
+  text: string;
+  points: number;
+}
+
+export interface QuizQuestion {
+  id: string;
+  category: string;
+  question: string;
+  options: QuizOption[];
+}
+
+export interface ReadinessQuiz {
+  answers: number[];
+  rawScore: number;
+  score: number;
+  persona: string;
+  weakestArea: string;
+  actionTips: string[];
+  completedAt: Date;
+  retakeCount: number;
+}
+
 export interface Blueprint {
   id: string;
   userId: string;
@@ -99,6 +123,7 @@ export interface Blueprint {
   audience?: { persona: Persona };
   program?: { selectedProblems: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[]; curriculum?: CourseCurriculum; duration?: CourseDuration };
   roadmap?: { phases: RoadmapPhase[]; pdfUrl: string; completedAt?: Date };
+  readinessQuiz?: ReadinessQuiz;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -114,5 +139,5 @@ export interface ActivityItem {
   title: string;
   description: string;
   timestamp: Date;
-  type: 'blueprint' | 'niche' | 'audience' | 'program' | 'roadmap' | 'credit';
+  type: 'blueprint' | 'niche' | 'audience' | 'program' | 'roadmap' | 'credit' | 'quiz';
 }

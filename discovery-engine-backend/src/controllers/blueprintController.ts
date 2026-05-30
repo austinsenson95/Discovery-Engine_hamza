@@ -34,6 +34,8 @@ import {
   dummyModules,
   dummyRoadmapPhases,
   dummyUser,
+  quizQuestions,
+  quizActionTips,
 } from '../data/dummyData';
 import { Blueprint, NicheOption } from '../types';
 import {
@@ -604,6 +606,136 @@ export const generateCurriculum = async (
     sendSuccess(
       res,
       { curriculum },
+      200,
+      {
+        creditsDeducted: deducted,
+        remainingCredits: remaining,
+        processingTime,
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
+// POST /api/blueprint/quiz
+// ---------------------------------------------------------------------------
+export const submitQuiz = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const startTime = Date.now();
+  try {
+    console.log(`[Blueprint] POST /api/blueprint/quiz — submitting readiness quiz`);
+
+    const { answers } = req.body as { answers: number[] };
+
+    if (!answers || !Array.isArray(answers) || answers.length !== 5 || answers.some((a) => a < 0 || a > 3)) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid quiz submission. Expected 5 answers with values 0–3.',
+      });
+      return;
+    }
+
+    const userId = dummyUser.id;
+
+    const canAfford = await creditService.hasEnoughCredits(userId, 'quiz');
+    if (!canAfford) {
+      res.status(402).json({
+        success: false,
+        message: 'Insufficient credits. Quiz submission requires 5 credits.',
+      });
+      return;
+    }
+
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
+    if (!blueprint) {
+      res.status(404).json({
+        success: false,
+        message: 'Blueprint not found. Please complete previous steps first.',
+      });
+      return;
+    }
+
+    if (blueprint.readinessQuiz && blueprint.readinessQuiz.retakeCount >= 1) {
+      res.status(409).json({
+        success: false,
+        message: 'Quiz retake limit reached. You can only retake the quiz once.',
+      });
+      return;
+    }
+
+    // Calculate score
+    const rawScore = answers.reduce((sum, answerIndex, qIndex) => {
+      return sum + quizQuestions[qIndex].options[answerIndex].points;
+    }, 0);
+
+    let score: number;
+    let persona: string;
+    if (rawScore <= 8) {
+      score = 3;
+      persona = 'Early Explorer';
+    } else if (rawScore <= 12) {
+      score = 5;
+      persona = 'Building Momentum';
+    } else if (rawScore <= 16) {
+      score = 7.5;
+      persona = 'Almost Ready';
+    } else {
+      score = 9;
+      persona = 'Launch-Ready';
+    }
+
+    // Identify weakest area
+    let weakestIndex = 0;
+    let minAnswer = answers[0];
+    for (let i = 1; i < answers.length; i++) {
+      if (answers[i] < minAnswer) {
+        minAnswer = answers[i];
+        weakestIndex = i;
+      }
+    }
+    const weakestArea = quizQuestions[weakestIndex].category;
+    const actionTips = quizActionTips[weakestArea] || [];
+
+    const retakeCount = (blueprint.readinessQuiz?.retakeCount ?? -1) + 1;
+
+    const readinessQuiz = {
+      answers,
+      rawScore,
+      score,
+      persona,
+      weakestArea,
+      actionTips,
+      completedAt: new Date(),
+      retakeCount,
+    };
+
+    const { deducted, remaining } = await creditService.deductCredits(userId, 'quiz');
+
+    updateBlueprint(blueprint.id, {
+      readinessQuiz,
+    });
+
+    addActivity({
+      userId,
+      blueprintId: blueprint.id,
+      title: 'Completed Coach Readiness Quiz',
+      description: `Scored ${score}/10 — ${persona}`,
+      type: 'quiz',
+      createdAt: new Date(),
+    });
+
+    const processingTime = Date.now() - startTime;
+    console.log(`[Blueprint] Quiz submitted in ${processingTime}ms — Score: ${score}/10 (${persona})`);
+
+    sendSuccess(
+      res,
+      { readinessQuiz },
       200,
       {
         creditsDeducted: deducted,
