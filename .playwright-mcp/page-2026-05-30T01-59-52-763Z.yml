@@ -1,0 +1,165 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Discovery Engine" [ref=e7]
+      - navigation [ref=e8]:
+        - generic [ref=e9]:
+          - paragraph [ref=e10]: PROGRAM
+          - generic [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /
+              - img [ref=e13]
+              - generic [ref=e18]: Dashboard
+            - link "Blueprint" [ref=e19] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e20]
+              - generic [ref=e23]: Blueprint
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: MY STUFF
+          - generic [ref=e26]:
+            - link "MY Journey" [ref=e27] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e28]
+              - generic [ref=e32]: MY Journey
+            - link "Profile" [ref=e33] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e34]
+              - generic [ref=e37]: Profile
+      - generic [ref=e40]:
+        - img [ref=e42]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: John Doe
+          - paragraph [ref=e47]: john.doe@example.com
+        - button [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - banner [ref=e53]:
+      - heading "Coach Blueprint" [level=2] [ref=e55]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e60]: 100 credits
+        - button [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - img [ref=e71]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - button "Reset Blueprint" [ref=e77] [cursor=pointer]:
+            - img [ref=e78]
+            - text: Reset Blueprint
+          - generic [ref=e307]: "ID: bp_1780106381418"
+        - generic [ref=e85]:
+          - button "1 Niche Discovery" [ref=e87] [cursor=pointer]:
+            - generic [ref=e88]: "1"
+            - generic [ref=e89]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e90]:
+            - generic [ref=e91]: "2"
+            - generic [ref=e92]: Audience Mapping
+          - button "3 Program Builder" [ref=e93]:
+            - generic [ref=e94]: "3"
+            - generic [ref=e95]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e96]:
+            - generic [ref=e97]: "4"
+            - generic [ref=e98]: Roadmap & PDF
+        - generic [ref=e163]:
+          - generic [ref=e164]:
+            - heading "Let's Find Your Perfect Niche" [level=2] [ref=e165]
+            - paragraph [ref=e166]: Tell us about your background and we will use AI to discover coaching niches perfectly suited to your experience.
+          - generic [ref=e308]:
+            - generic [ref=e309]:
+              - paragraph [ref=e310]: We found 3 recommended niches based on your profile
+              - generic [ref=e311]:
+                - button "Edit My Answers" [ref=e312] [cursor=pointer]:
+                  - img [ref=e313]
+                  - text: Edit My Answers
+                - button "Regenerate" [ref=e315] [cursor=pointer]:
+                  - img [ref=e316]
+                  - text: Regenerate
+            - generic [ref=e319]:
+              - generic [ref=e321]:
+                - generic [ref=e322]:
+                  - heading "First-Time Manager Coaching" [level=3] [ref=e323]
+                  - generic [ref=e324]:
+                    - img [ref=e325]
+                    - generic [ref=e328]: ₹75K - ₹3L/month
+                - generic [ref=e329]:
+                  - generic [ref=e330]:
+                    - paragraph [ref=e331]: Who You Help
+                    - paragraph [ref=e332]: Mid-level professionals transitioning into their first management role who struggle with leadership confidence and team dynamics.
+                  - generic [ref=e333]:
+                    - paragraph [ref=e334]: Problem Solved
+                    - paragraph [ref=e335]: New managers lack practical frameworks for handling team conflicts, delegation, performance management, and the shift from individual contributor to leader.
+                  - generic [ref=e336]:
+                    - paragraph [ref=e337]: Result Delivered
+                    - paragraph [ref=e338]: Clients gain clarity on their leadership style, build confidence in team management, and create high-performing teams within their first 12 months.
+                - generic [ref=e340]:
+                  - generic [ref=e341]: Market Demand
+                  - generic [ref=e342]: 9.2/10
+                - generic [ref=e345]:
+                  - generic [ref=e346]: first-time manager
+                  - generic [ref=e347]: new leadership coaching
+                  - generic [ref=e348]: team management training
+                  - generic [ref=e349]: manager confidence building
+                  - generic [ref=e350]: leadership transition
+                - paragraph [ref=e351]: Your 10 years of HR experience combined with hands-on team management of 50+ people makes you uniquely qualified to guide new managers through common pitfalls and accelerate their transition.
+                - paragraph [ref=e352]: "Competition: Medium"
+                - button "Select This Niche" [ref=e353] [cursor=pointer]
+              - generic [ref=e355]:
+                - generic [ref=e356]:
+                  - heading "Startup Leadership & Scaling Teams" [level=3] [ref=e357]
+                  - generic [ref=e358]:
+                    - img [ref=e359]
+                    - generic [ref=e362]: ₹1L - ₹5L/month
+                - generic [ref=e363]:
+                  - generic [ref=e364]:
+                    - paragraph [ref=e365]: Who You Help
+                    - paragraph [ref=e366]: Startup founders and early-stage leaders (Series A/B) who need to scale their teams from 20-100+ employees while maintaining culture and performance.
+                  - generic [ref=e367]:
+                    - paragraph [ref=e368]: Problem Solved
+                    - paragraph [ref=e369]: Rapid growth creates chaos in hiring, culture dilution, process breakdown, and leaders struggle to delegate and build effective management layers.
+                  - generic [ref=e370]:
+                    - paragraph [ref=e371]: Result Delivered
+                    - paragraph [ref=e372]: Clients successfully scale their teams, establish strong management structures, maintain company culture, and build sustainable high-performance organizations.
+                - generic [ref=e374]:
+                  - generic [ref=e375]: Market Demand
+                  - generic [ref=e376]: 8.8/10
+                - generic [ref=e379]:
+                  - generic [ref=e380]: startup scaling
+                  - generic [ref=e381]: team building for startups
+                  - generic [ref=e382]: scaling leadership
+                  - generic [ref=e383]: startup HR strategy
+                  - generic [ref=e384]: growth-stage management
+                - paragraph [ref=e385]: Your direct experience scaling startups from 10 to 200 employees gives you authentic case studies and battle-tested strategies that startup leaders desperately need.
+                - paragraph [ref=e386]: "Competition: Medium-High"
+                - button "Select This Niche" [ref=e387] [cursor=pointer]
+              - generic [ref=e389]:
+                - generic [ref=e390]:
+                  - heading "Executive Presence & Public Speaking for Corporate Leaders" [level=3] [ref=e391]
+                  - generic [ref=e392]:
+                    - img [ref=e393]
+                    - generic [ref=e396]: ₹1.5L - ₹4L/month
+                - generic [ref=e397]:
+                  - generic [ref=e398]:
+                    - paragraph [ref=e399]: Who You Help
+                    - paragraph [ref=e400]: Senior professionals and executives who need to enhance their executive presence, communication skills, and public speaking ability for board presentations and company-wide communications.
+                  - generic [ref=e401]:
+                    - paragraph [ref=e402]: Problem Solved
+                    - paragraph [ref=e403]: High-potential leaders lack confidence in presenting to senior stakeholders, struggle with public speaking anxiety, and don't know how to project executive presence.
+                  - generic [ref=e404]:
+                    - paragraph [ref=e405]: Result Delivered
+                    - paragraph [ref=e406]: Clients master executive communication, deliver impactful presentations, build credibility with C-suite stakeholders, and advance their career trajectory.
+                - generic [ref=e408]:
+                  - generic [ref=e409]: Market Demand
+                  - generic [ref=e410]: 8.6/10
+                - generic [ref=e413]:
+                  - generic [ref=e414]: executive coaching
+                  - generic [ref=e415]: public speaking training
+                  - generic [ref=e416]: executive presence
+                  - generic [ref=e417]: leadership communication
+                  - generic [ref=e418]: board presentation skills
+                - paragraph [ref=e419]: Your proven expertise in public speaking and mentoring, combined with 10 years of HR perspective on what executives need, positions you perfectly to transform leaders' communication impact.
+                - paragraph [ref=e420]: "Competition: Medium-High"
+                - button "Select This Niche" [ref=e421] [cursor=pointer]
