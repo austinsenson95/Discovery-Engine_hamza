@@ -8,7 +8,7 @@
 
 DISCOVERY ENGINE is an AI-assisted coaching blueprint platform. It helps coaches and consultants discover their niche, define their ideal audience, build a signature program, set pricing, and generate a 12-week launch roadmap — culminating in a downloadable PDF blueprint.
 
-The project is a **full-stack TypeScript application** with a React frontend and an Express.js backend. Both frontend and backend currently run on **dummy data with simulated AI processing delays** (1–3 seconds). The backend API is fully built but the frontend is not yet wired to it; it uses local mock data instead.
+The project is a **full-stack TypeScript application** with a React frontend and an Express.js backend. The backend uses the real Anthropic Claude API for AI generation. The **Blueprint wizard frontend is fully wired to the backend** — all AI steps call real endpoints and surface explicit errors on failure. Other pages (Dashboard, Journey) may still use local mock data.
 
 **Key Concept — The 4-Step Blueprint Wizard:**
 1. **Niche Discovery** — User inputs skills, experience, and passions; AI returns 3 recommended niches.
@@ -74,8 +74,8 @@ The project is a **full-stack TypeScript application** with a React frontend and
 │   │   │   └── use-mobile.ts     # Mobile breakpoint detection
 │   │   ├── lib/                  # Utilities and data
 │   │   │   ├── utils.ts          # `cn()` helper (clsx + tailwind-merge)
-│   │   │   ├── api.ts            # API functions (CURRENTLY MOCK — returns local dummy data)
-│   │   │   └── mockData.ts       # All frontend dummy data
+│   │   │   ├── api.ts            # API functions (wired to real backend; no mock fallbacks in wizard)
+│   │   │   └── mockData.ts       # Frontend dummy data (used by non-wizard pages)
 │   │   └── public/               # Static assets (logo, avatar images)
 │   ├── index.html                # HTML entry point
 │   ├── vite.config.ts            # Vite config with `@/` alias → `./src`
@@ -100,7 +100,7 @@ The project is a **full-stack TypeScript application** with a React frontend and
 │   │   │   ├── blueprint.ts      # /api/blueprint/*
 │   │   │   └── user.ts           # /api/user/*
 │   │   ├── services/
-│   │   │   ├── llmService.ts     # LLM integration PLACEHOLDER (returns dummy data)
+│   │   │   ├── llmService.ts     # Real Claude API integration (throws explicit errors on failure)
 │   │   │   ├── pdfService.ts     # PDF generation PLACEHOLDER
 │   │   │   └── creditService.ts  # Credit management (in-memory)
 │   │   ├── middleware/
@@ -200,14 +200,16 @@ All routes are prefixed with `/api`. The backend exposes 14 endpoints:
 
 ## Frontend Integration Notes
 
-### Current State: Mock Data
-The frontend's `src/lib/api.ts` currently **does NOT call the backend**. It imports from `mockData.ts` and returns promises that resolve after artificial delays. The backend API exists and is fully functional, but the two are not yet wired together.
+### Current State: Frontend-Backend Wiring
+The **Blueprint wizard** (`src/pages/Blueprint.tsx`) is **fully wired to the backend**. All AI generation steps (niche, persona, problems, program names, pricing, curriculum, roadmap) call real backend endpoints via `src/lib/api.ts`. There are **no silent mock fallbacks** — API failures surface explicit error toasts.
 
-To connect the frontend to the backend:
-1. Replace `src/lib/api.ts` functions with real `fetch()` or `axios` calls to `http://localhost:3001/api`
-2. Include `Authorization: Bearer <token>` headers if implementing real auth
+Other pages (Dashboard, Journey, Profile) may still reference `mockData.ts` for development purposes.
+
+To ensure the backend AI works:
+1. Set `ANTHROPIC_API_KEY` in `discovery-engine-backend/.env`
+2. The backend `llmService.ts` will throw explicit errors if the API key is missing or the Claude API fails
 3. Handle `402` responses to show credit top-up UI
-4. Add loading states for the 1–3 second AI processing delays
+4. AI processing takes 1–3 seconds depending on prompt complexity
 
 ### Routing
 React Router v7 is used with `BrowserRouter` in `main.tsx`. Current routes (defined in `App.tsx`):
@@ -323,11 +325,11 @@ The frontend does not use environment variables yet.
 | File | Why It Matters |
 |------|----------------|
 | `app/src/App.tsx` | Only has the `/` route. Other routes (blueprint, journey, profile) need to be added here, likely inside `Layout`. |
-| `app/src/lib/api.ts` | All API calls are mocked. This is the file to modify when connecting to the real backend. |
+| `app/src/lib/api.ts` | All wizard API calls connect to the real backend. No mock fallbacks remain in the Blueprint flow. |
 | `app/src/lib/mockData.ts` | Single source of truth for frontend dummy data. |
 | `app/src/components/Layout.tsx` | Sidebar + Navbar wrapper. Not currently used in routing but should be. |
 | `discovery-engine-backend/src/index.ts` | Express server setup. Add new middleware/routes here. |
-| `discovery-engine-backend/src/services/llmService.ts` | The "AI" is just dummy data + `setTimeout`. Replace this to integrate OpenAI/Claude/etc. |
+| `discovery-engine-backend/src/services/llmService.ts` | Real Claude API integration. Throws explicit errors on API failure instead of silently falling back to dummy data. |
 | `discovery-engine-backend/src/services/pdfService.ts` | Returns a mock PDF buffer. Replace with Puppeteer/jsPDF/@react-pdf/renderer. |
 | `discovery-engine-backend/src/types/index.ts` | Shared contract. Keep in sync with `app/src/types/index.ts`. |
 

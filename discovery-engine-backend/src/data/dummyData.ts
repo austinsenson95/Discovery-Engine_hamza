@@ -18,6 +18,7 @@ export const creditDeductions: CreditDeductions = {
   audience: 10,
   program: 5,
   pricing: 5,
+  problems: 5,
   curriculum: 10,
   roadmap: 15,
   quiz: 5,

@@ -148,6 +148,7 @@ export interface Blueprint {
   };
   program?: {
     selectedProblems: string[];
+    generatedProblems?: string[];
     selectedName: ProgramName;
     pricing: PricingStrategy;
     modules: ModuleItem[];
@@ -187,6 +188,7 @@ export interface CreditDeductions {
   audience: number;
   program: number;
   pricing: number;
+  problems: number;
   curriculum: number;
   roadmap: number;
   quiz: number;

@@ -148,6 +148,7 @@ class CreditService {
       audience: balance >= this.deductions.audience,
       program: balance >= this.deductions.program,
       pricing: balance >= this.deductions.pricing,
+      problems: balance >= this.deductions.problems,
       curriculum: balance >= this.deductions.curriculum,
       roadmap: balance >= this.deductions.roadmap,
       quiz: balance >= this.deductions.quiz,

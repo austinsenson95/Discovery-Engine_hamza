@@ -121,7 +121,7 @@ export interface Blueprint {
   progress: number;
   niche?: { selectedNiche: NicheOption; skills: string; experience: string; passions: string; domains?: string[] };
   audience?: { persona: Persona };
-  program?: { selectedProblems: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[]; curriculum?: CourseCurriculum; duration?: CourseDuration };
+  program?: { selectedProblems: string[]; generatedProblems?: string[]; selectedName: ProgramName; pricing: PricingStrategy; modules: any[]; curriculum?: CourseCurriculum; duration?: CourseDuration };
   roadmap?: { phases: RoadmapPhase[]; pdfUrl: string; completedAt?: Date };
   readinessQuiz?: ReadinessQuiz;
   createdAt: Date;

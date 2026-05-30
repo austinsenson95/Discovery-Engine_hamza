@@ -413,6 +413,91 @@ export const submitProblems = async (
 };
 
 // ---------------------------------------------------------------------------
+// POST /api/blueprint/generate-problems
+// ---------------------------------------------------------------------------
+export const generateProblems = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const startTime = Date.now();
+  try {
+    console.log(`[Blueprint] POST /api/blueprint/generate-problems`);
+
+    const userId = dummyUser.id;
+
+    const canAfford = await creditService.hasEnoughCredits(userId, 'problems');
+    if (!canAfford) {
+      res.status(402).json({
+        success: false,
+        message: 'Insufficient credits. Please top up your credits to continue.',
+      });
+      return;
+    }
+
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
+    if (!blueprint) {
+      res.status(404).json({
+        success: false,
+        message: 'Blueprint not found. Please complete previous steps first.',
+      });
+      return;
+    }
+
+    const niche = blueprint.niche?.selectedNiche;
+    const persona = blueprint.audience?.persona;
+
+    if (!niche || !persona) {
+      res.status(400).json({
+        success: false,
+        message: 'Please complete Niche Discovery and Audience Mapping before generating problems.',
+      });
+      return;
+    }
+
+    const problems = await llmService.generateProblems(niche.name, persona);
+
+    const { deducted, remaining } = await creditService.deductCredits(
+      userId,
+      'problems'
+    );
+
+    if (blueprint && blueprint.program) {
+      blueprint.program.generatedProblems = problems;
+      updateBlueprint(blueprint.id, {
+        program: blueprint.program,
+      });
+    }
+
+    addActivity({
+      userId,
+      blueprintId: blueprint.id,
+      title: 'Generated Audience Problems',
+      description: `${problems.length} problems generated for ${niche.name}`,
+      type: 'program',
+      createdAt: new Date(),
+    });
+
+    const processingTime = Date.now() - startTime;
+    console.log(`[Blueprint] Problems generated in ${processingTime}ms`);
+
+    sendSuccess(
+      res,
+      { problems },
+      200,
+      {
+        creditsDeducted: deducted,
+        remainingCredits: remaining,
+        processingTime,
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
 // POST /api/blueprint/program-name
 // ---------------------------------------------------------------------------
 export const generateProgramNames = async (

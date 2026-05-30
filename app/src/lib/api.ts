@@ -114,17 +114,12 @@ export const submitQuiz = async (answers: number[]) => {
   return { readinessQuiz: res.data.readinessQuiz, creditsDeducted: res.meta?.creditsDeducted ?? 5 };
 };
 
-export const fetchProblems = async (): Promise<string[]> => {
-  // Backend does not have a dedicated fetch problems endpoint; return mock for now
-  await new Promise(r => setTimeout(r, 800));
-  return [
-    'Feeling stuck in their career with no clear direction',
-    'Lack of confidence when speaking up in meetings or presentations',
-    'Struggling to transition from individual contributor to leader',
-    'Burnout from trying to meet everyone\'s expectations',
-    'Difficulty building a personal brand and online presence',
-    'Not knowing how to negotiate salary or promotions effectively',
-  ];
+export const generateProblems = async () => {
+  const res = await fetchJson<{
+    data: { problems: string[] };
+    meta?: { creditsDeducted?: number; remainingCredits?: number };
+  }>('/blueprint/generate-problems', { method: 'POST' });
+  return { problems: res.data.problems, creditsDeducted: res.meta?.creditsDeducted ?? 5 };
 };
 
 export const downloadPDF = async (id: string): Promise<void> => {

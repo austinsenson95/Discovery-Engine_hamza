@@ -5,8 +5,8 @@
  * Real-time AI generation powered by Anthropic Claude API.
  *
  * Each method constructs a detailed prompt, calls Claude, and parses the
- * JSON response. If the API key is missing or the call fails, it gracefully
- * falls back to dummy data so the app never breaks.
+ * JSON response. If the API key is missing or the call fails, it throws
+ * an explicit error so the frontend can surface it to the user.
  *
  * Setup:
  *   1. Add ANTHROPIC_API_KEY to .env
@@ -172,6 +172,29 @@ Rules:
 - sweetSpotRange should be 2x-4x the starting price.
 - Do NOT wrap the JSON in markdown code blocks.`;
 
+const SYSTEM_PROMPT_PROBLEMS = `You are an expert coaching business strategist. Your job is to identify the specific, actionable problems that a target audience faces in a given coaching niche.
+
+Return ONLY a valid JSON object with this exact shape:
+{
+  "problems": [
+    "Problem statement 1",
+    "Problem statement 2",
+    "Problem statement 3",
+    "Problem statement 4",
+    "Problem statement 5",
+    "Problem statement 6",
+    "Problem statement 7",
+    "Problem statement 8"
+  ]
+}
+
+Rules:
+- Generate exactly 8 problems.
+- Each problem should be a specific, actionable statement (not vague or generic).
+- Problems should reflect the real struggles of the target audience in this niche.
+- Problems should be suitable for a coaching program to solve.
+- Do NOT wrap the JSON in markdown code blocks.`;
+
 const SYSTEM_PROMPT_CURRICULUM = `You are a curriculum designer for online coaching programs.
 
 Return ONLY a valid JSON object with this exact shape:
@@ -247,8 +270,8 @@ async function callClaude<T>(
   fallback: T
 ): Promise<T> {
   if (!anthropic || !config.anthropicApiKey) {
-    console.warn('[LLM] ANTHROPIC_API_KEY not set — using fallback dummy data');
-    return fallback;
+    console.error('[LLM] ANTHROPIC_API_KEY not set — cannot generate AI content');
+    throw new Error('AI service is not configured. Please contact support.');
   }
 
   try {
@@ -277,8 +300,8 @@ async function callClaude<T>(
     console.log(`[LLM] Claude responded in ${Date.now() - start}ms`);
     return parsed;
   } catch (error) {
-    console.error('[LLM] Claude API error — falling back to dummy data:', error);
-    return fallback;
+    console.error('[LLM] Claude API error:', error);
+    throw new Error('AI generation failed. Please try again in a moment.');
   }
 }
 
@@ -365,6 +388,40 @@ Return the result as a JSON object with a "persona" field.`;
     );
 
     return result.persona;
+  }
+
+  /**
+   * Generate 8 specific audience problems for the selected niche and persona.
+   */
+  async generateProblems(
+    nicheName: string,
+    persona: Persona
+  ): Promise<string[]> {
+    console.log(`[LLM] Generating audience problems for niche: ${nicheName}`);
+
+    const userPrompt = `Generate 8 specific problems for coaches in the "${nicheName}" niche.
+
+Target persona details:
+- Name: ${persona.name}
+- Role: ${persona.role}
+- Age: ${persona.ageRange}
+- Location: ${persona.location}
+- Current situation: ${persona.currentSituation}
+- Biggest desire: ${persona.biggestDesire}
+- Existing pain points: ${persona.painPoints.join(', ')}
+- Goals: ${persona.goals.join(', ')}
+
+Return the result as a JSON object with a "problems" array.`;
+
+    const fallback = { problems: persona.painPoints.slice(0, 8) };
+
+    const result = await callClaude<{ problems: string[] }>(
+      SYSTEM_PROMPT_PROBLEMS,
+      userPrompt,
+      fallback
+    );
+
+    return result.problems;
   }
 
   /**

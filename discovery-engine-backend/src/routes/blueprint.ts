@@ -10,7 +10,8 @@
  *   DELETE /api/blueprint/:id        → Delete a blueprint
  *   POST /api/blueprint/niche        → Submit niche form, get 3 AI niche options
  *   POST /api/blueprint/audience     → Generate audience persona
- *   POST /api/blueprint/problems     → Save selected audience problems
+ *   POST /api/blueprint/problems          → Save selected audience problems
+ *   POST /api/blueprint/generate-problems → Generate AI audience problems
  *   POST /api/blueprint/program-name → Generate program name suggestions
  *   POST /api/blueprint/pricing      → Generate pricing strategy
  *   POST /api/blueprint/curriculum   → Generate course curriculum
@@ -30,6 +31,7 @@ import {
   submitNiche,
   generateAudience,
   submitProblems,
+  generateProblems,
   generateProgramNames,
   generatePricing,
   generateCurriculum,
@@ -52,6 +54,7 @@ router.delete('/:id', deleteBlueprintById);
 router.post('/niche', validateNicheForm, submitNiche);
 router.post('/audience', generateAudience);
 router.post('/problems', submitProblems);
+router.post('/generate-problems', generateProblems);
 router.post('/program-name', generateProgramNames);
 router.post('/pricing', generatePricing);
 router.post('/curriculum', generateCurriculum);

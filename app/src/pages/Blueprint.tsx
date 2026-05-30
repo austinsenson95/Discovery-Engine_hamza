@@ -40,7 +40,7 @@ import {
   generatePricing,
   generateCurriculum,
   generateRoadmap,
-  fetchProblems,
+  generateProblems,
   fetchBlueprint,
   fetchAllBlueprints,
   updateBlueprint,
@@ -48,7 +48,7 @@ import {
   downloadPDF,
   submitQuiz,
 } from '@/lib/api';
-import { mockNiches, mockPersona, mockProgramNames, mockPricing, mockRoadmap, mockProblems, mockCurriculum } from '@/lib/mockData';
+
 
 const steps = ['Niche Discovery', 'Audience Mapping', 'Program Builder', 'Roadmap & PDF'];
 
@@ -185,7 +185,7 @@ export default function Blueprint() {
   const [blueprintId, setBlueprintId] = useState<string | null>(null);
   const [showBooking, setShowBooking] = useState(false);
 
-  const { toasts, removeToast, success, info } = useToast();
+  const { toasts, removeToast, success, error, info } = useToast();
 
   // Helper tags
   const skillTags = ['Leadership', 'Public Speaking', 'Team Management', 'Problem Solving', 'Mentoring'];
@@ -322,8 +322,8 @@ export default function Blueprint() {
       setNicheOptions(result.niches);
       setBlueprintId(result.blueprint.id);
       setCredits(prev => prev - result.creditsDeducted);
-    } catch {
-      setNicheOptions(mockNiches);
+    } catch (err) {
+      error(err instanceof Error ? err.message : 'Failed to generate niches');
     }
     setLoading(false);
   };
@@ -349,8 +349,8 @@ export default function Blueprint() {
       const result = await generatePersona(selectedNiche?.id || '1');
       setPersona(result.persona);
       setCredits(prev => prev - result.creditsDeducted);
-    } catch {
-      setPersona(mockPersona);
+    } catch (err) {
+      error(err instanceof Error ? err.message : 'Failed to generate persona');
     }
     setLoading(false);
   };
@@ -361,7 +361,7 @@ export default function Blueprint() {
     if (blueprintId) {
       try {
         await updateBlueprint(blueprintId, {
-          audience: { persona: persona || mockPersona },
+          audience: { persona: persona },
           currentStep: 3,
           progress: 35,
         });
@@ -369,10 +369,11 @@ export default function Blueprint() {
     }
     setLoading(true);
     try {
-      const fetchedProblems = await fetchProblems();
-      setProblems(fetchedProblems);
-    } catch {
-      setProblems(mockProblems);
+      const result = await generateProblems();
+      setProblems(result.problems);
+      setCredits(prev => prev - result.creditsDeducted);
+    } catch (err) {
+      error(err instanceof Error ? err.message : 'Failed to generate problems');
     }
     setLoading(false);
   };
@@ -414,7 +415,7 @@ export default function Blueprint() {
     if (blueprintId) {
       try {
         const bp = await fetchBlueprint();
-        const program = bp.program || { selectedProblems: selectedProblems, selectedName: mockProgramNames[1], pricing: mockPricing, modules: [] };
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: { id: '', name: '', description: '', isAiRecommended: false }, pricing: { startingPrice: 0, priceJustification: '', marketInsight: '', milestones: { students10: 0, students50: 0, students100: 0 }, priceEvolution: { launch: 0, after10Students: '', premiumTier: '' }, sweetSpotRange: '' }, modules: [] };
         program.selectedProblems = selectedProblems;
         await updateBlueprint(blueprintId, {
           program,
@@ -428,8 +429,8 @@ export default function Blueprint() {
       const result = await generateProgramNames();
       setProgramNames(result.names);
       setCredits(prev => prev - result.creditsDeducted);
-    } catch {
-      setProgramNames(mockProgramNames);
+    } catch (err) {
+      error(err instanceof Error ? err.message : 'Failed to generate program names');
     }
     setLoading(false);
   };
@@ -441,7 +442,7 @@ export default function Blueprint() {
     if (blueprintId) {
       try {
         const bp = await fetchBlueprint();
-        const program = bp.program || { selectedProblems: selectedProblems, selectedName: name, pricing: mockPricing, modules: [] };
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: name, pricing: { startingPrice: 0, priceJustification: '', marketInsight: '', milestones: { students10: 0, students50: 0, students100: 0 }, priceEvolution: { launch: 0, after10Students: '', premiumTier: '' }, sweetSpotRange: '' }, modules: [] };
         program.selectedName = name;
         await updateBlueprint(blueprintId, {
           program,
@@ -456,9 +457,8 @@ export default function Blueprint() {
       setPricing(result.pricing);
       setAdjustedPrice(result.pricing.startingPrice);
       setCredits(prev => prev - result.creditsDeducted);
-    } catch {
-      setPricing(mockPricing);
-      setAdjustedPrice(mockPricing.startingPrice);
+    } catch (err) {
+      error(err instanceof Error ? err.message : 'Failed to generate pricing');
     }
     setLoading(false);
   };
@@ -469,7 +469,7 @@ export default function Blueprint() {
     if (blueprintId) {
       try {
         const bp = await fetchBlueprint();
-        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || { id: '', name: '', description: '', isAiRecommended: false }, pricing: pricing || { startingPrice: 0, priceJustification: '', marketInsight: '', milestones: { students10: 0, students50: 0, students100: 0 }, priceEvolution: { launch: 0, after10Students: '', premiumTier: '' }, sweetSpotRange: '' }, modules: [] };
         if (pricing) {
           const updatedPricing = { ...pricing, startingPrice: adjustedPrice ?? pricing.startingPrice };
           program.pricing = updatedPricing;
@@ -490,7 +490,7 @@ export default function Blueprint() {
     if (blueprintId) {
       try {
         const bp = await fetchBlueprint();
-        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || { id: '', name: '', description: '', isAiRecommended: false }, pricing: pricing || { startingPrice: 0, priceJustification: '', marketInsight: '', milestones: { students10: 0, students50: 0, students100: 0 }, priceEvolution: { launch: 0, after10Students: '', premiumTier: '' }, sweetSpotRange: '' }, modules: [] };
         program.duration = duration;
         await updateBlueprint(blueprintId, { program });
       } catch { /* ignore */ }
@@ -500,8 +500,8 @@ export default function Blueprint() {
       const result = await generateCurriculum();
       setCurriculum(result.curriculum);
       setCredits(prev => prev - result.creditsDeducted);
-    } catch {
-      setCurriculum(mockCurriculum);
+    } catch (err) {
+      error(err instanceof Error ? err.message : 'Failed to generate curriculum');
     }
     setLoading(false);
   };
@@ -512,7 +512,7 @@ export default function Blueprint() {
     if (blueprintId) {
       try {
         const bp = await fetchBlueprint();
-        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || mockProgramNames[1], pricing: pricing || mockPricing, modules: [] };
+        const program = bp.program || { selectedProblems: selectedProblems, selectedName: selectedProgramName || { id: '', name: '', description: '', isAiRecommended: false }, pricing: pricing || { startingPrice: 0, priceJustification: '', marketInsight: '', milestones: { students10: 0, students50: 0, students100: 0 }, priceEvolution: { launch: 0, after10Students: '', premiumTier: '' }, sweetSpotRange: '' }, modules: [] };
         if (pricing) {
           const updatedPricing = { ...pricing, startingPrice: adjustedPrice ?? pricing.startingPrice };
           program.pricing = updatedPricing;
@@ -532,8 +532,8 @@ export default function Blueprint() {
       const result = await generateRoadmap();
       setRoadmap(result.phases);
       setCredits(prev => prev - result.creditsDeducted);
-    } catch {
-      setRoadmap(mockRoadmap);
+    } catch (err) {
+      error(err instanceof Error ? err.message : 'Failed to generate roadmap');
     }
     setLoading(false);
   };
@@ -1194,7 +1194,7 @@ export default function Blueprint() {
                             onClick={() => {
                               setLoading(true);
                               setTimeout(() => {
-                                setProgramNames([...mockProgramNames].sort(() => Math.random() - 0.5));
+                                setProgramNames([]);
                                 setLoading(false);
                               }, 1500);
                             }}
