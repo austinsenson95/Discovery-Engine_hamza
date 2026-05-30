@@ -14,6 +14,7 @@
  *   POST /api/blueprint/program-name → Generate program name suggestions
  *   POST /api/blueprint/pricing      → Generate pricing strategy
  *   POST /api/blueprint/curriculum   → Generate course curriculum
+ *   POST /api/blueprint/quiz         → Submit coach readiness quiz
  *   POST /api/blueprint/roadmap      → Generate 12-week roadmap + PDF
  *   GET  /api/blueprint/pdf/:id      → Download generated PDF
  * ============================================================================
@@ -32,6 +33,7 @@ import {
   generateProgramNames,
   generatePricing,
   generateCurriculum,
+  submitQuiz,
   generateRoadmap,
   downloadPDF,
 } from '../controllers/blueprintController';
@@ -53,6 +55,7 @@ router.post('/problems', submitProblems);
 router.post('/program-name', generateProgramNames);
 router.post('/pricing', generatePricing);
 router.post('/curriculum', generateCurriculum);
+router.post('/quiz', submitQuiz);
 router.post('/roadmap', generateRoadmap);
 
 // PDF download

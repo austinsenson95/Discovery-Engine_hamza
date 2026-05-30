@@ -150,6 +150,7 @@ class CreditService {
       pricing: balance >= this.deductions.pricing,
       curriculum: balance >= this.deductions.curriculum,
       roadmap: balance >= this.deductions.roadmap,
+      quiz: balance >= this.deductions.quiz,
     };
 
     return {

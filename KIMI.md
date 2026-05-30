@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/006-price-adjuster-duration/plan.md
+specs/007-coach-readiness-quiz/plan.md
 <!-- SPECKIT END -->

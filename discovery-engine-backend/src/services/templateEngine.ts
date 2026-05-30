@@ -221,6 +221,42 @@ function buildRoadmapPage(blueprint: Blueprint): string {
 // ---------------------------------------------------------------------------
 // Next Steps Page
 // ---------------------------------------------------------------------------
+function buildQuizPage(blueprint: Blueprint): string {
+  const quiz = blueprint.readinessQuiz;
+  if (!quiz) return '';
+
+  const tipsHtml = quiz.actionTips
+    .map((tip) => `<li style="font-size: 13px; color: #4A4A4A; margin-bottom: 6px;">${escapeHtml(tip)}</li>`)
+    .join('\n');
+
+  return `
+    <div class="page">
+      <div class="section-header">
+        <h2>Coach Readiness Assessment</h2>
+        <p class="subtitle">${quiz.score}/10 — ${escapeHtml(quiz.persona)}</p>
+      </div>
+      <div style="margin-bottom: 18px;">
+        <div style="display: inline-block; padding: 10px 20px; background: #FFF7ED; border: 2px solid #F05A28; border-radius: 12px; margin-bottom: 16px;">
+          <span style="font-size: 32px; font-weight: 700; color: #F05A28;">${quiz.score}</span>
+          <span style="font-size: 14px; color: #4A4A4A;"> / 10</span>
+        </div>
+        <p style="font-size: 14px; color: #4A4A4A; margin: 8px 0;">
+          <strong>Readiness Persona:</strong> ${escapeHtml(quiz.persona)}
+        </p>
+        <p style="font-size: 14px; color: #4A4A4A; margin: 8px 0;">
+          <strong>Weakest Area:</strong> ${escapeHtml(quiz.weakestArea.replace(/_/g, ' '))}
+        </p>
+      </div>
+      <div style="margin-bottom: 18px;">
+        <h3 style="font-size: 16px; color: #0A0A0A; margin-bottom: 10px;">Personalized Action Plan</h3>
+        <ul style="padding-left: 18px;">
+          ${tipsHtml}
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
 function buildNextStepsPage(blueprint: Blueprint): string {
   const personaName = blueprint.audience?.persona?.name || 'your ideal client';
   return readPartial('next-steps.html').replace(/{{personaName}}/g, escapeHtml(personaName));
@@ -260,6 +296,7 @@ export function compileBlueprintTemplate(blueprint: Blueprint): CompiledTemplate
     buildProgramPage(blueprint),
     buildCurriculumPage(blueprint),
     buildRoadmapPage(blueprint),
+    buildQuizPage(blueprint),
     buildNextStepsPage(blueprint),
   ].join('\n');
 

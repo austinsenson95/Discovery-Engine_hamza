@@ -20,6 +20,7 @@ export const creditDeductions: CreditDeductions = {
   pricing: 5,
   curriculum: 10,
   roadmap: 15,
+  quiz: 5,
 };
 
 // ---------------------------------------------------------------------------
@@ -641,3 +642,90 @@ export const dummyRoadmap8Weeks: RoadmapPhase[] = [
 ];
 
 export const dummyRoadmap12Weeks = dummyRoadmapPhases;
+
+
+export const quizQuestions = [
+  {
+    id: 'q1',
+    category: 'niche_clarity',
+    question: 'How clear are you on WHO you want to coach?',
+    options: [
+      { id: 'A', text: 'I have no idea', points: 1 },
+      { id: 'B', text: 'I have a broad industry in mind', points: 2 },
+      { id: 'C', text: 'I know the persona but not the niche', points: 3 },
+      { id: 'D', text: 'I have a specific niche and ideal client avatar', points: 4 },
+    ],
+  },
+  {
+    id: 'q2',
+    category: 'time_commitment',
+    question: 'How much time can you realistically dedicate to building your coaching business per week?',
+    options: [
+      { id: 'A', text: 'Less than 5 hours', points: 1 },
+      { id: 'B', text: '5–10 hours', points: 2 },
+      { id: 'C', text: '10–15 hours', points: 3 },
+      { id: 'D', text: '15+ hours or full-time', points: 4 },
+    ],
+  },
+  {
+    id: 'q3',
+    category: 'financial_runway',
+    question: 'What is your current financial runway / risk capacity?',
+    options: [
+      { id: 'A', text: 'I need income within 30 days', points: 1 },
+      { id: 'B', text: 'I can sustain 1–3 months without income', points: 2 },
+      { id: 'C', text: 'I have 3–6 months of savings', points: 3 },
+      { id: 'D', text: 'I have 6+ months or a parallel income stream', points: 4 },
+    ],
+  },
+  {
+    id: 'q4',
+    category: 'sales_comfort',
+    question: 'How comfortable are you with selling / promoting yourself?',
+    options: [
+      { id: 'A', text: 'I dread it and avoid it', points: 1 },
+      { id: 'B', text: 'I can do it but feel anxious', points: 2 },
+      { id: 'C', text: "I'm okay with it, just need a system", points: 3 },
+      { id: 'D', text: 'I enjoy it and have done it before', points: 4 },
+    ],
+  },
+  {
+    id: 'q5',
+    category: 'existing_assets',
+    question: 'Do you have any existing assets that can accelerate your launch?',
+    options: [
+      { id: 'A', text: 'Nothing at all', points: 1 },
+      { id: 'B', text: 'A small personal network or LinkedIn following', points: 2 },
+      { id: 'C', text: 'A strong professional network + some content', points: 3 },
+      { id: 'D', text: 'An audience, testimonials, or prior coaching experience', points: 4 },
+    ],
+  },
+];
+
+export const quizActionTips: Record<string, string[]> = {
+  niche_clarity: [
+    'Focus on niche clarity first — use the Niche Discovery step to define your ideal client avatar',
+    'Interview 5 potential clients to validate your niche before building your offer',
+    'Write a one-sentence niche statement and share it for feedback in coaching communities',
+  ],
+  time_commitment: [
+    'Block dedicated hours before starting — calendar 10+ hours/week for business-building activities',
+    'Audit your current schedule and eliminate 5+ hours of low-value tasks',
+    'Consider a phased approach: start with 1 module per week instead of full program creation',
+  ],
+  financial_runway: [
+    'Plan a financial safety net — secure 3 months of expenses before quitting your job',
+    'Start with a low-ticket offer (₹999–2,999) to generate quick cash flow',
+    'Explore part-time coaching alongside your current income source',
+  ],
+  sales_comfort: [
+    'Work on sales mindset and scripts — practice discovery calls with friends first',
+    'Study 3 successful coaches in your niche and model their sales conversations',
+    'Join a sales training workshop or find a mentor who excels at coaching sales',
+  ],
+  existing_assets: [
+    'Start building your personal brand now — post 3x/week on LinkedIn with valuable insights',
+    'Create a free lead magnet (checklist/template) to start growing your email list',
+    'Document your expertise through short-form content to establish credibility quickly',
+  ],
+};

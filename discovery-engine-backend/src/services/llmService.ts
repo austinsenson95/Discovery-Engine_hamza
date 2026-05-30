@@ -443,11 +443,25 @@ Return the result as a JSON object with a "pricing" field.`;
     const program = blueprint.program?.selectedName?.name || 'Coaching Program';
     const personaName = blueprint.audience?.persona?.name || 'your ideal client';
 
+    const quiz = blueprint.readinessQuiz;
+    const quizContext = quiz
+      ? `
+
+ADDITIONAL CONTEXT — Coach Readiness Assessment:
+- Readiness Score: ${quiz.score}/10 (${quiz.persona})
+- Weakest Area: ${quiz.weakestArea}
+
+INSTRUCTION: Tailor the roadmap tone, urgency, and action items to this readiness level.
+If score is low (< 5), emphasize foundational steps and conservative timelines.
+If score is high (> 7), emphasize acceleration, premium pricing, and aggressive launch tactics.
+Address the weakest area explicitly in Week 1 tasks.`
+      : '';
+
     const userPrompt = `Generate a ${dur.replace('_', '-')} launch roadmap for a coaching program called "${program}" in the "${niche}" niche.
 
 Target client: ${personaName}
 
-The roadmap should guide the coach from zero to their first paying clients.
+The roadmap should guide the coach from zero to their first paying clients.${quizContext}
 
 Return the result as a JSON object with a "phases" array.`;
 

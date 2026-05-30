@@ -24,11 +24,13 @@ import {
   Trash2,
   Wand2,
 } from 'lucide-react';
-import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, CourseCurriculum, CourseDuration } from '@/types';
+import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, CourseCurriculum, CourseDuration, ReadinessQuiz } from '@/types';
 import { Slider } from '@/components/ui/slider';
 import Stepper from '@/components/Stepper';
 import NicheCard from '@/components/NicheCard';
 import PersonaCard from '@/components/PersonaCard';
+import ReadinessQuizComponent from '@/components/ReadinessQuiz';
+import QuizResult from '@/components/QuizResult';
 import { useToast } from '@/hooks/useToast';
 import ToastContainer from '@/components/ui/Toast';
 import {
@@ -44,6 +46,7 @@ import {
   updateBlueprint,
   deleteBlueprint,
   downloadPDF,
+  submitQuiz,
 } from '@/lib/api';
 import { mockNiches, mockPersona, mockProgramNames, mockPricing, mockRoadmap, mockProblems, mockCurriculum } from '@/lib/mockData';
 
@@ -175,6 +178,7 @@ export default function Blueprint() {
   const [curriculum, setCurriculum] = useState<CourseCurriculum | null>(null);
   const [duration, setDuration] = useState<CourseDuration>('12_weeks');
   const [roadmap, setRoadmap] = useState<RoadmapPhase[]>([]);
+  const [readinessQuiz, setReadinessQuiz] = useState<ReadinessQuiz | null>(null);
   const [credits, setCredits] = useState(100);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
   const [isPdfLoading, setIsPdfLoading] = useState(false);
@@ -248,6 +252,9 @@ export default function Blueprint() {
             if (target.roadmap) {
               setRoadmap(target.roadmap.phases);
             }
+            if (target.readinessQuiz) {
+              setReadinessQuiz(target.readinessQuiz);
+            }
           }
         }
       } catch {
@@ -283,6 +290,7 @@ export default function Blueprint() {
     setPricing(null);
     setCurriculum(null);
     setRoadmap([]);
+    setReadinessQuiz(null);
     setPdfDownloaded(false);
     setShowBooking(false);
     setSkills('');
@@ -526,6 +534,26 @@ export default function Blueprint() {
       setCredits(prev => prev - result.creditsDeducted);
     } catch {
       setRoadmap(mockRoadmap);
+    }
+    setLoading(false);
+  };
+
+  // ─── Step 4b: Submit Coach Readiness Quiz ───
+  const handleSubmitQuiz = async (answers: number[]) => {
+    setLoading(true);
+    try {
+      const result = await submitQuiz(answers);
+      setReadinessQuiz(result.readinessQuiz);
+      setCredits(prev => prev - result.creditsDeducted);
+      success('Quiz submitted! Your readiness score is ready.');
+      if (blueprintId) {
+        try {
+          await updateBlueprint(blueprintId, { readinessQuiz: result.readinessQuiz });
+        } catch { /* ignore */ }
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to submit quiz';
+      info(message);
     }
     setLoading(false);
   };
@@ -1608,8 +1636,41 @@ export default function Blueprint() {
                       ))}
                     </div>
 
-                    {/* Download CTA */}
-                    {!pdfDownloaded ? (
+                    {/* Coach Readiness Quiz */}
+                    {!readinessQuiz ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="mb-10"
+                      >
+                        <div className="text-center mb-6">
+                          <h3 className="text-2xl font-serif text-gray-900 mb-2">
+                            Coach <span className="italic text-orange-500">Readiness</span> Quiz
+                          </h3>
+                          <p className="text-gray-500 text-sm max-w-md mx-auto">
+                            Answer 5 quick questions to personalize your blueprint. This helps us tailor the tone, urgency, and action items to your current situation.
+                          </p>
+                        </div>
+                        <ReadinessQuizComponent onSubmit={handleSubmitQuiz} isLoading={loading} />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="mb-10"
+                      >
+                        <QuizResult
+                          quiz={readinessQuiz}
+                          onRetake={() => setReadinessQuiz(null)}
+                          canRetake={(readinessQuiz.retakeCount ?? 0) < 1}
+                        />
+                      </motion.div>
+                    )}
+
+                    {/* Download CTA — gated behind quiz completion */}
+                    {readinessQuiz && !pdfDownloaded ? (
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
