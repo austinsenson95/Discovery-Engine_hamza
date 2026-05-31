@@ -5,7 +5,6 @@
  * Dedicated page for credit management:
  *   - Balance display
  *   - Transaction history
- *   - AI step cost breakdown
  *   - Credit purchase packages
  * ============================================================================
  */
@@ -14,13 +13,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   Coins,
-  Zap,
-  Users,
-  Lightbulb,
-  Target,
-  BookOpen,
-  Map,
-  HelpCircle,
   ArrowRight,
   Loader2,
 } from 'lucide-react';
@@ -43,19 +35,6 @@ const fadeUp = {
     },
   }),
 };
-
-// ------------------------------------------------------------------
-// Credit cost breakdown data
-// ------------------------------------------------------------------
-const costBreakdown = [
-  { icon: Zap, label: 'Niche Discovery', cost: 10, desc: 'AI-powered niche recommendations' },
-  { icon: Users, label: 'Audience Mapping', cost: 10, desc: 'Detailed persona generation' },
-  { icon: Target, label: 'Problem Selection', cost: 5, desc: 'Contextual problem generation' },
-  { icon: Lightbulb, label: 'Program Naming', cost: 5, desc: 'AI program name suggestions' },
-  { icon: BookOpen, label: 'Pricing Strategy', cost: 5, desc: 'Market-aware pricing' },
-  { icon: Map, label: '12-Week Roadmap', cost: 15, desc: 'Full launch roadmap + PDF' },
-  { icon: HelpCircle, label: 'Readiness Quiz', cost: 5, desc: 'Personalized readiness score' },
-];
 
 // ------------------------------------------------------------------
 // Transaction type
@@ -163,45 +142,6 @@ export default function Credits() {
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ========== COST BREAKDOWN ========== */}
-      <motion.section
-        className="mb-8"
-        custom={1}
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-8">
-          <p className="label-badge text-[#6B7280] mb-4">COST BREAKDOWN</p>
-          <h2 className="font-serif text-2xl text-[#0A0A0A] mb-6">
-            AI Step <em className="text-[#F05A28] not-italic" style={{ fontStyle: 'italic' }}>Costs</em>
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {costBreakdown.map((item, i) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-start gap-3 p-4 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5]"
-              >
-                <div className="w-9 h-9 rounded-lg bg-white border border-[#E5E5E5] flex items-center justify-center flex-shrink-0">
-                  <item.icon className="w-4 h-4 text-[#F05A28]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold text-[#0A0A0A]">{item.label}</p>
-                    <span className="text-sm font-bold text-[#F05A28]">{item.cost}</span>
-                  </div>
-                  <p className="text-xs text-[#6B7280] mt-0.5">{item.desc}</p>
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </motion.section>

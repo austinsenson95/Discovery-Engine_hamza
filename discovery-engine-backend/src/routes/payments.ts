@@ -6,18 +6,20 @@
  *   GET  /api/payments/packages     → List available credit packages
  *   POST /api/payments/create-order → Create a Razorpay order
  *   POST /api/payments/verify       → Verify payment and add credits
+ *   POST /api/payments/fail         → Record failed payment attempt
  *   POST /api/payments/webhook      → Handle Razorpay webhooks
  * ============================================================================
  */
 
 import { Router } from 'express';
-import { getPackages, createOrder, verifyPayment, webhookHandler } from '../controllers/paymentController';
+import { getPackages, createOrder, verifyPayment, recordPaymentFailure } from '../controllers/paymentController';
+import { validateCreateOrderBody, validateVerifyPaymentBody } from '../middleware/validateRequest';
 
 const router = Router();
 
 router.get('/packages', getPackages);
-router.post('/create-order', createOrder);
-router.post('/verify', verifyPayment);
-router.post('/webhook', webhookHandler);
+router.post('/create-order', validateCreateOrderBody, createOrder);
+router.post('/verify', validateVerifyPaymentBody, verifyPayment);
+router.post('/fail', recordPaymentFailure);
 
 export default router;

@@ -165,6 +165,18 @@ export const verifyPayment = async (payload: {
   return res.data;
 };
 
+export const recordPaymentFailure = async (payload: {
+  orderId: string;
+  paymentId: string;
+  reason?: string;
+}) => {
+  const res = await fetchJson<{
+    data: { status: string };
+    message: string;
+  }>('/payments/fail', { method: 'POST', body: JSON.stringify(payload) });
+  return res.data;
+};
+
 export const downloadPDF = async (id: string): Promise<void> => {
   const response = await fetch(`${API_BASE}/blueprint/pdf/${id}`);
 

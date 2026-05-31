@@ -10,7 +10,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Coins, Sparkles, Loader2, CheckCircle } from 'lucide-react';
-import { fetchCreditPackages, createPaymentOrder, verifyPayment } from '@/lib/api';
+import { fetchCreditPackages, createPaymentOrder, verifyPayment, recordPaymentFailure } from '@/lib/api';
 import type { CreditPackage } from '@/types';
 import { useUser } from '@/hooks/useUser';
 
@@ -103,13 +103,41 @@ export default function CreditPurchaseModal({ isOpen, onClose, onSuccess }: Cred
             ondismiss: () => {
               setLoading(false);
               setSelectedPackage(null);
+              if (order?.id) {
+                recordPaymentFailure({
+                  orderId: order.id,
+                  paymentId: '',
+                  reason: 'User dismissed checkout modal',
+                }).catch(() => {
+                  // Silently fail — this is best-effort tracking
+                });
+              }
             },
             escape: true,
             backdropclose: false,
           },
+          retry: {
+            enabled: true,
+            max_count: 3,
+          },
           theme: {
             color: '#F05A28',
           },
+        });
+
+        rzp.on('payment.failed', (response: any) => {
+          setLoading(false);
+          setSelectedPackage(null);
+          setError(`Payment failed: ${response.error?.description || 'Unknown error'}. Please try again.`);
+          if (order?.id && response.error?.metadata?.payment_id) {
+            recordPaymentFailure({
+              orderId: order.id,
+              paymentId: response.error.metadata.payment_id,
+              reason: response.error.description || 'Payment failed',
+            }).catch(() => {
+              // Silently fail — best-effort tracking
+            });
+          }
         });
 
         rzp.open();
@@ -216,7 +244,7 @@ export default function CreditPurchaseModal({ isOpen, onClose, onSuccess }: Cred
                   {/* Best value badge */}
                   <div className="flex items-center justify-center gap-2 text-xs text-[#6B7280]">
                     <Sparkles className="w-3.5 h-3.5 text-[#F05A28]" />
-                    <span>Pro Pack saves you 60% per credit</span>
+                    <span>Pro Pack gives you the best value</span>
                   </div>
                 </>
               )}

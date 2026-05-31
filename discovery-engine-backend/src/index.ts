@@ -27,6 +27,7 @@ import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import blueprintRoutes from './routes/blueprint';
 import paymentsRoutes from './routes/payments';
+import { webhookHandler } from './controllers/paymentController';
 
 // Middleware
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
@@ -54,6 +55,9 @@ app.use(
     exposedHeaders: ['Content-Disposition'],
   })
 );
+
+// Webhook route MUST use raw body for signature verification (before express.json())
+app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), webhookHandler);
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
@@ -135,7 +139,21 @@ app.listen(config.port, () => {
   console.log('║    POST /api/blueprint/pricing                               ║');
   console.log('║    POST /api/blueprint/roadmap                               ║');
   console.log('║    GET  /api/blueprint/pdf/:id                               ║');
+  console.log('╠══════════════════════════════════════════════════════════════╣');
+  console.log('║  Payment Endpoints:                                          ║');
+  console.log('║    GET  /api/payments/packages                               ║');
+  console.log('║    POST /api/payments/create-order                           ║');
+  console.log('║    POST /api/payments/verify                                 ║');
+  console.log('║    POST /api/payments/webhook                                ║');
   console.log('╚══════════════════════════════════════════════════════════════╝');
+  console.log('');
+  if (config.isRazorpayTestMode) {
+    console.log('⚠️  [Razorpay] Running in TEST mode. No real money will be processed.');
+  } else if (config.razorpayKeyId) {
+    console.log('💰 [Razorpay] Running in LIVE mode. Real payments will be processed!');
+  } else {
+    console.log('⚠️  [Razorpay] Not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.');
+  }
   console.log('');
 });
 
