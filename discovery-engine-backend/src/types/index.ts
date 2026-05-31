@@ -206,7 +206,7 @@ export interface PaymentTransaction {
   id: string;
   userId: string;
   razorpayOrderId: string;
-  razorpayPaymentId: string;
+  razorpayPaymentId: string | null;
   status: 'created' | 'paid' | 'failed' | 'cancelled';
   amount: number;
   creditsAdded: number;

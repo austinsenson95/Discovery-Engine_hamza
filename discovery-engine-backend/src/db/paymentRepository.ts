@@ -78,6 +78,22 @@ export function updatePaymentTransactionStatus(
   stmt.run(status, razorpayPaymentId);
 }
 
+export function updatePaymentTransactionByOrderId(
+  razorpayOrderId: string,
+  status: 'created' | 'paid' | 'failed' | 'cancelled',
+  razorpayPaymentId?: string | null
+): void {
+  if (razorpayPaymentId) {
+    const stmt = db.prepare(
+      'UPDATE payment_transactions SET status = ?, razorpay_payment_id = ? WHERE razorpay_order_id = ?'
+    );
+    stmt.run(status, razorpayPaymentId, razorpayOrderId);
+  } else {
+    const stmt = db.prepare('UPDATE payment_transactions SET status = ? WHERE razorpay_order_id = ?');
+    stmt.run(status, razorpayOrderId);
+  }
+}
+
 export function getPaymentTransactionsByUser(userId: string, limit = 50): PaymentTransaction[] {
   const stmt = db.prepare('SELECT * FROM payment_transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT ?');
   const rows = stmt.all(userId, limit) as PaymentTransactionRow[];

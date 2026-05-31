@@ -26,6 +26,43 @@ dbInstance.pragma('foreign_keys = ON');
 export { dbInstance as db };
 
 // ---------------------------------------------------------------------------
+// Migration helpers
+// ---------------------------------------------------------------------------
+function migratePaymentTransactions() {
+  const tableInfo = dbInstance.prepare("PRAGMA table_info(payment_transactions)").all() as any[];
+  const paymentIdCol = tableInfo.find((col) => col.name === 'razorpay_payment_id');
+
+  if (paymentIdCol && paymentIdCol.notnull === 1) {
+    console.log('[DB] Migrating payment_transactions table (dropping UNIQUE/NOT NULL on razorpay_payment_id)...');
+    dbInstance.exec(`
+      ALTER TABLE payment_transactions RENAME TO payment_transactions_old;
+
+      CREATE TABLE payment_transactions (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        razorpay_order_id TEXT NOT NULL,
+        razorpay_payment_id TEXT,
+        status TEXT NOT NULL CHECK (status IN ('created', 'paid', 'failed', 'cancelled')),
+        amount INTEGER NOT NULL,
+        credits_added INTEGER NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      INSERT INTO payment_transactions
+        (id, user_id, razorpay_order_id, razorpay_payment_id, status, amount, credits_added, created_at)
+      SELECT
+        id, user_id, razorpay_order_id,
+        CASE WHEN razorpay_payment_id = '' THEN NULL ELSE razorpay_payment_id END,
+        status, amount, credits_added, created_at
+      FROM payment_transactions_old;
+
+      DROP TABLE payment_transactions_old;
+    `);
+    console.log('[DB] Migration complete.');
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Initialize Schema
 // ---------------------------------------------------------------------------
 export function initDb() {
@@ -68,7 +105,7 @@ export function initDb() {
       email TEXT NOT NULL,
       avatar TEXT,
       language TEXT NOT NULL DEFAULT 'english',
-      credits INTEGER NOT NULL DEFAULT 100,
+      credits INTEGER NOT NULL DEFAULT 999,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     )
@@ -94,7 +131,7 @@ export function initDb() {
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
       razorpay_order_id TEXT NOT NULL,
-      razorpay_payment_id TEXT UNIQUE NOT NULL,
+      razorpay_payment_id TEXT,
       status TEXT NOT NULL CHECK (status IN ('created', 'paid', 'failed', 'cancelled')),
       amount INTEGER NOT NULL,
       credits_added INTEGER NOT NULL,
@@ -107,6 +144,8 @@ export function initDb() {
   dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_created_at ON credit_transactions(created_at)`);
   dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_user_id ON payment_transactions(user_id)`);
   dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_payment_id ON payment_transactions(razorpay_payment_id)`);
+
+  migratePaymentTransactions();
 
   console.log('[DB] SQLite database initialized at', dbPath);
 }
