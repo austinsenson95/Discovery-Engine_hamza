@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar,
+  Coins,
 } from 'lucide-react';
 import { useUser } from '@/hooks/useUser';
 
@@ -29,6 +30,7 @@ const navSections = [
     label: 'MY STUFF',
     items: [
       { to: '/journey', icon: Route, label: 'My Journey' },
+      { to: '/credits', icon: Coins, label: 'Credits' },
       { to: '/profile', icon: User, label: 'Profile' },
     ],
   },

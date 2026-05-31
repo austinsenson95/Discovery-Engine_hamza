@@ -34,6 +34,7 @@ import QuizResult from '@/components/QuizResult';
 import { useToast } from '@/hooks/useToast';
 import { useUser } from '@/hooks/useUser';
 import ToastContainer from '@/components/ui/Toast';
+import CreditPurchaseModal from '@/components/CreditPurchaseModal';
 import {
   submitNicheForm,
   generatePersona,
@@ -184,6 +185,8 @@ export default function Blueprint() {
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [blueprintId, setBlueprintId] = useState<string | null>(null);
   const [showBooking, setShowBooking] = useState(false);
+  const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
+  const [pendingRetry, setPendingRetry] = useState<(() => void) | null>(null);
 
   const { toasts, removeToast, success, error, info } = useToast();
   const { refreshCredits } = useUser();
@@ -302,6 +305,16 @@ export default function Blueprint() {
     info('Blueprint progress has been reset. Start fresh!');
   };
 
+  const isInsufficientCreditsError = (err: unknown): boolean => {
+    const msg = err instanceof Error ? err.message : String(err);
+    return msg.toLowerCase().includes('insufficient credits') || msg.toLowerCase().includes('402');
+  };
+
+  const handleInsufficientCredits = (retryFn: () => void) => {
+    setPendingRetry(() => retryFn);
+    setPurchaseModalOpen(true);
+  };
+
   const handleCategoryClick = (category: string) => {
     const clean = category.replace(/^[\p{Emoji}\uFE0F]+\s*/u, '');
     setSelectedDomains(prev =>
@@ -324,7 +337,11 @@ export default function Blueprint() {
       setBlueprintId(result.blueprint.id);
       await refreshCredits();
     } catch (err) {
-      error(err instanceof Error ? err.message : 'Failed to generate niches');
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleDiscoverNiche());
+      } else {
+        error(err instanceof Error ? err.message : 'Failed to generate niches');
+      }
     }
     setLoading(false);
   };
@@ -351,7 +368,11 @@ export default function Blueprint() {
       setPersona(result.persona);
       await refreshCredits();
     } catch (err) {
-      error(err instanceof Error ? err.message : 'Failed to generate persona');
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleGeneratePersona());
+      } else {
+        error(err instanceof Error ? err.message : 'Failed to generate persona');
+      }
     }
     setLoading(false);
   };
@@ -376,7 +397,11 @@ export default function Blueprint() {
       setProblems(result.problems);
       await refreshCredits();
     } catch (err) {
-      error(err instanceof Error ? err.message : 'Failed to generate problems');
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleConfirmPersona());
+      } else {
+        error(err instanceof Error ? err.message : 'Failed to generate problems');
+      }
     }
     setLoading(false);
   };
@@ -433,7 +458,11 @@ export default function Blueprint() {
       setProgramNames(result.names);
       await refreshCredits();
     } catch (err) {
-      error(err instanceof Error ? err.message : 'Failed to generate program names');
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleConfirmProblems());
+      } else {
+        error(err instanceof Error ? err.message : 'Failed to generate program names');
+      }
     }
     setLoading(false);
   };
@@ -461,7 +490,11 @@ export default function Blueprint() {
       setAdjustedPrice(result.pricing.startingPrice);
       await refreshCredits();
     } catch (err) {
-      error(err instanceof Error ? err.message : 'Failed to generate pricing');
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleSelectProgramName(name));
+      } else {
+        error(err instanceof Error ? err.message : 'Failed to generate pricing');
+      }
     }
     setLoading(false);
   };
@@ -504,7 +537,11 @@ export default function Blueprint() {
       setCurriculum(result.curriculum);
       await refreshCredits();
     } catch (err) {
-      error(err instanceof Error ? err.message : 'Failed to generate curriculum');
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleBuildCurriculum());
+      } else {
+        error(err instanceof Error ? err.message : 'Failed to generate curriculum');
+      }
     }
     setLoading(false);
   };
@@ -536,7 +573,11 @@ export default function Blueprint() {
       setRoadmap(result.phases);
       await refreshCredits();
     } catch (err) {
-      error(err instanceof Error ? err.message : 'Failed to generate roadmap');
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleContinueToRoadmap());
+      } else {
+        error(err instanceof Error ? err.message : 'Failed to generate roadmap');
+      }
     }
     setLoading(false);
   };
@@ -555,8 +596,12 @@ export default function Blueprint() {
         } catch { /* ignore */ }
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to submit quiz';
-      info(message);
+      if (isInsufficientCreditsError(err)) {
+        handleInsufficientCredits(() => handleSubmitQuiz(answers));
+      } else {
+        const message = err instanceof Error ? err.message : 'Failed to submit quiz';
+        info(message);
+      }
     }
     setLoading(false);
   };
@@ -1770,6 +1815,22 @@ export default function Blueprint() {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Credit Purchase Modal — triggered on 402 insufficient credits */}
+      <CreditPurchaseModal
+        isOpen={purchaseModalOpen}
+        onClose={() => {
+          setPurchaseModalOpen(false);
+          setPendingRetry(null);
+        }}
+        onSuccess={() => {
+          setPurchaseModalOpen(false);
+          if (pendingRetry) {
+            pendingRetry();
+            setPendingRetry(null);
+          }
+        }}
+      />
     </div>
   );
 }

@@ -134,6 +134,37 @@ export const generateProblems = async () => {
   return { problems: res.data.problems, creditsDeducted: res.meta?.creditsDeducted ?? 5 };
 };
 
+// ---------------------------------------------------------------------------
+// Payments
+// ---------------------------------------------------------------------------
+export const fetchCreditPackages = async () => {
+  const res = await fetchJson<{ data: { packages: Array<import('@/types').CreditPackage> } }>('/payments/packages');
+  return res.data.packages;
+};
+
+export const createPaymentOrder = async (packageId: string) => {
+  const res = await fetchJson<{
+    data: {
+      order: { id: string; amount: number; currency: string; receipt: string };
+      package: { id: string; name: string; credits: number };
+      key: string;
+    };
+  }>('/payments/create-order', { method: 'POST', body: JSON.stringify({ packageId }) });
+  return res.data;
+};
+
+export const verifyPayment = async (payload: {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+}) => {
+  const res = await fetchJson<{
+    data: { creditsAdded: number; newBalance: number };
+    message: string;
+  }>('/payments/verify', { method: 'POST', body: JSON.stringify(payload) });
+  return res.data;
+};
+
 export const downloadPDF = async (id: string): Promise<void> => {
   const response = await fetch(`${API_BASE}/blueprint/pdf/${id}`);
 

@@ -88,9 +88,25 @@ export function initDb() {
     )
   `);
 
+  // Payment transactions table (for Razorpay idempotency)
+  dbInstance.exec(`
+    CREATE TABLE IF NOT EXISTS payment_transactions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      razorpay_order_id TEXT NOT NULL,
+      razorpay_payment_id TEXT UNIQUE NOT NULL,
+      status TEXT NOT NULL CHECK (status IN ('created', 'paid', 'failed', 'cancelled')),
+      amount INTEGER NOT NULL,
+      credits_added INTEGER NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
   // Indexes for performance
   dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_user_id ON credit_transactions(user_id)`);
   dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_created_at ON credit_transactions(created_at)`);
+  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_user_id ON payment_transactions(user_id)`);
+  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_payment_id ON payment_transactions(razorpay_payment_id)`);
 
   console.log('[DB] SQLite database initialized at', dbPath);
 }

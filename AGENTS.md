@@ -16,7 +16,7 @@ The project is a **full-stack TypeScript application** with a React frontend and
 3. **Program Builder** — 3 sub-steps: problem selection, program naming, and pricing strategy.
 4. **Roadmap & PDF** — AI generates a 12-week roadmap and triggers PDF creation.
 
-**Credit System:** Users start with 100 credits. Each AI step deducts credits (niche: 10, audience: 10, program name: 5, pricing: 5, roadmap: 15).
+**Credit System:** Users start with 100 credits. Each AI step deducts credits (niche: 10, audience: 10, program name: 5, pricing: 5, problems: 5, curriculum: 10, roadmap: 15, quiz: 5). Users can purchase additional credits via Razorpay (Indian payment gateway) in three packages: Starter (50/₹499), Growth (100/₹899), Pro (250/₹1,999).
 
 ---
 
@@ -152,7 +152,7 @@ The project is a **full-stack TypeScript application** with a React frontend and
 
 ## API Endpoints (Backend)
 
-All routes are prefixed with `/api`. The backend exposes 14 endpoints:
+All routes are prefixed with `/api`. The backend exposes 18 endpoints:
 
 **Auth:**
 - `POST /api/auth/register` — Register new user
@@ -163,6 +163,12 @@ All routes are prefixed with `/api`. The backend exposes 14 endpoints:
 - `PUT /api/user/profile` — Update profile (name, language, avatar)
 - `GET /api/user/credits` — Get credit balance and deduction costs
 
+**Payments:**
+- `GET /api/payments/packages` — List available credit packages
+- `POST /api/payments/create-order` — Create a Razorpay order for selected package
+- `POST /api/payments/verify` — Verify Razorpay payment signature and add credits
+- `POST /api/payments/webhook` — Handle Razorpay async webhooks
+
 **Blueprint:**
 - `GET /api/blueprint` — Get current blueprint state
 - `POST /api/blueprint/niche` — Submit niche form, get 3 AI niche options (10 credits)
@@ -171,6 +177,8 @@ All routes are prefixed with `/api`. The backend exposes 14 endpoints:
 - `POST /api/blueprint/program-name` — Generate program names (5 credits)
 - `POST /api/blueprint/pricing` — Generate pricing strategy (5 credits)
 - `POST /api/blueprint/roadmap` — Generate 12-week roadmap + PDF (15 credits)
+- `POST /api/blueprint/generate-problems` — Generate audience problems (5 credits)
+- `POST /api/blueprint/quiz` — Submit readiness quiz (5 credits)
 - `GET /api/blueprint/pdf/:id` — Download generated PDF
 
 **Standard Response Shape:**
@@ -190,11 +198,12 @@ All routes are prefixed with `/api`. The backend exposes 14 endpoints:
 **Error Codes:**
 - `400` — Bad request / missing fields
 - `401` — Invalid credentials
-- `402` — Insufficient credits
+- `402` — Insufficient credits (triggers CreditPurchaseModal on frontend)
 - `404` — Resource not found
-- `409` — Email already registered
+- `409` — Email already registered / duplicate payment
 - `429` — Rate limited
 - `500` — Internal server error
+- `503` — Service unavailable (e.g., Razorpay not configured)
 
 ---
 
@@ -324,12 +333,15 @@ The frontend does not use environment variables yet.
 
 | File | Why It Matters |
 |------|----------------|
-| `app/src/App.tsx` | Only has the `/` route. Other routes (blueprint, journey, profile) need to be added here, likely inside `Layout`. |
+| `app/src/App.tsx` | Root routes including `/`, `/blueprint`, `/journey`, `/profile`, `/credits` — all wrapped in `Layout`. |
 | `app/src/lib/api.ts` | All wizard API calls connect to the real backend. No mock fallbacks remain in the Blueprint flow. |
 | `app/src/lib/mockData.ts` | Single source of truth for frontend dummy data. |
-| `app/src/components/Layout.tsx` | Sidebar + Navbar wrapper. Not currently used in routing but should be. |
+| `app/src/pages/Credits.tsx` | Dedicated Credits Dashboard with balance, history, cost breakdown, and in-page purchases. |
 | `discovery-engine-backend/src/index.ts` | Express server setup. Add new middleware/routes here. |
 | `discovery-engine-backend/src/services/llmService.ts` | Real Claude API integration. Throws explicit errors on API failure instead of silently falling back to dummy data. |
+| `discovery-engine-backend/src/services/razorpayService.ts` | Razorpay SDK wrapper — order creation, signature verification, webhook verification. |
+| `discovery-engine-backend/src/controllers/paymentController.ts` | Payment flow: create-order, verify, webhook handler with idempotency. |
+| `discovery-engine-backend/src/db/paymentRepository.ts` | SQLite data access for payment_transactions table. |
 | `discovery-engine-backend/src/services/pdfService.ts` | Returns a mock PDF buffer. Replace with Puppeteer/jsPDF/@react-pdf/renderer. |
 | `discovery-engine-backend/src/types/index.ts` | Shared contract. Keep in sync with `app/src/types/index.ts`. |
 
@@ -337,8 +349,8 @@ The frontend does not use environment variables yet.
 
 ## Common Pitfalls
 
-1. **Missing routes:** The Sidebar links to `/blueprint`, `/journey`, and `/profile`, but these routes are not in `App.tsx`. Navigating to them will 404.
-2. **Layout not wired:** `Layout.tsx` exists but is not used. Pages render without the sidebar/navbar unless you wrap routes with it.
+1. **Razorpay keys required:** The payment flow requires `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` in the backend `.env`. Without them, `POST /api/payments/create-order` returns 503.
+2. **Layout wired:** `Layout.tsx` is now used in `App.tsx` — all routes render with sidebar and navbar.
 3. **Type mismatch:** Frontend `RoadmapPhase` has a `color` field; backend `RoadmapPhase` does not. Keep the two `types/index.ts` files aligned.
 4. **No real auth:** The backend auth endpoints accept any password. Don't assume auth is production-ready.
 5. **Credit system is in-memory:** Credit balances reset on backend restart.

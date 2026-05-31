@@ -47,6 +47,13 @@ export const config = {
 
   // Logging
   logLevel: process.env.LOG_LEVEL || 'debug',
+
+  // Call booking link (embedded in generated PDF)
+  bookingLink: process.env.BOOKING_LINK || 'https://discoveryengine.app/book',
+
+  // Razorpay payment integration
+  razorpayKeyId: process.env.RAZORPAY_KEY_ID || '',
+  razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET || '',
 };
 
 /**
