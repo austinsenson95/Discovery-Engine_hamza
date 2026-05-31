@@ -21,6 +21,7 @@ import {
   createPaymentTransaction,
   getPaymentTransactionByPaymentId,
   updatePaymentTransactionStatus,
+  updatePaymentTransactionByOrderId,
   getPaymentTransactionByOrderId,
 } from '../db/paymentRepository';
 import crypto from 'crypto';
@@ -68,7 +69,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
       id: crypto.randomUUID(),
       userId,
       razorpayOrderId: order.id,
-      razorpayPaymentId: '', // Will be filled on verification
+      razorpayPaymentId: null, // Will be filled on verification
       status: 'created',
       amount: pkg.priceInPaise,
       creditsAdded: pkg.credits,
@@ -129,6 +130,9 @@ export const verifyPayment = async (req: Request, res: Response, next: NextFunct
       throw new ApiError('Payment verification failed. Invalid signature.', 400);
     }
 
+    // Find the order transaction (may have null payment ID at creation)
+    const orderTx = getPaymentTransactionByOrderId(razorpay_order_id);
+
     // Find the package from the existing transaction or by order
     let creditsToAdd = 0;
     let amount = 0;
@@ -136,17 +140,14 @@ export const verifyPayment = async (req: Request, res: Response, next: NextFunct
     if (existingTx) {
       creditsToAdd = existingTx.creditsAdded;
       amount = existingTx.amount;
+    } else if (orderTx) {
+      creditsToAdd = orderTx.creditsAdded;
+      amount = orderTx.amount;
     } else {
       // Fallback: find by matching order amount to package price
-      const orderTx = getPaymentTransactionByOrderId(razorpay_order_id);
-      if (orderTx) {
-        creditsToAdd = orderTx.creditsAdded;
-        amount = orderTx.amount;
-      } else {
-        const pkg = creditPackages.find((p) => p.priceInPaise === amount);
-        creditsToAdd = pkg?.credits || 0;
-        amount = pkg?.priceInPaise || 0;
-      }
+      const pkg = creditPackages.find((p) => p.priceInPaise === amount);
+      creditsToAdd = pkg?.credits || 0;
+      amount = pkg?.priceInPaise || 0;
     }
 
     if (creditsToAdd === 0) {
@@ -160,6 +161,8 @@ export const verifyPayment = async (req: Request, res: Response, next: NextFunct
     // Update or create transaction record
     if (existingTx) {
       updatePaymentTransactionStatus(razorpay_payment_id, 'paid');
+    } else if (orderTx) {
+      updatePaymentTransactionByOrderId(razorpay_order_id, 'paid', razorpay_payment_id);
     } else {
       createPaymentTransaction({
         id: crypto.randomUUID(),
@@ -199,8 +202,12 @@ export const recordPaymentFailure = async (req: Request, res: Response, next: Ne
     const existingTx = getPaymentTransactionByPaymentId(paymentId) || getPaymentTransactionByOrderId(orderId);
 
     if (existingTx && existingTx.status === 'created') {
-      updatePaymentTransactionStatus(paymentId || existingTx.razorpayPaymentId, 'failed');
-      console.log(`[Payment] Recorded failure for ${paymentId || existingTx.razorpayPaymentId}. Reason: ${reason || 'unknown'}`);
+      if (existingTx.razorpayPaymentId) {
+        updatePaymentTransactionStatus(existingTx.razorpayPaymentId, 'failed');
+      } else {
+        updatePaymentTransactionByOrderId(existingTx.razorpayOrderId, 'failed');
+      }
+      console.log(`[Payment] Recorded failure for order ${existingTx.razorpayOrderId}. Reason: ${reason || 'unknown'}`);
       sendSuccess(res, { status: 'failed' }, 200, 'Payment failure recorded.');
       return;
     }
@@ -296,18 +303,18 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
       }
     }
 
+    // Find the order transaction (may have null payment ID at creation)
+    const orderTx = getPaymentTransactionByOrderId(razorpayOrderId);
+
     // Find credits to add
     let creditsToAdd = 0;
     if (existingTx) {
       creditsToAdd = existingTx.creditsAdded;
+    } else if (orderTx) {
+      creditsToAdd = orderTx.creditsAdded;
     } else {
-      const orderTx = getPaymentTransactionByOrderId(razorpayOrderId);
-      if (orderTx) {
-        creditsToAdd = orderTx.creditsAdded;
-      } else {
-        const pkg = creditPackages.find((p) => p.priceInPaise === amount);
-        creditsToAdd = pkg?.credits || 0;
-      }
+      const pkg = creditPackages.find((p) => p.priceInPaise === amount);
+      creditsToAdd = pkg?.credits || 0;
     }
 
     const userId = dummyUser.id;
@@ -323,6 +330,8 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
     // Record/update transaction
     if (existingTx) {
       updatePaymentTransactionStatus(razorpayPaymentId, 'paid');
+    } else if (orderTx) {
+      updatePaymentTransactionByOrderId(razorpayOrderId, 'paid', razorpayPaymentId);
     } else {
       createPaymentTransaction({
         id: crypto.randomUUID(),
