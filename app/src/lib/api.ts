@@ -32,6 +32,18 @@ export const fetchUser = (): Promise<User> =>
 export const fetchCredits = () =>
   fetchJson<{ data: { balance: number; costs: Record<string, number> } }>('/user/credits').then(r => r.data);
 
+export const fetchActivity = () =>
+  fetchJson<{ data: Array<{ id: string; title: string; description?: string; type: string; createdAt: string }> }>('/user/activity').then(r => r.data);
+
+export const fetchAchievements = () =>
+  fetchJson<{ data: Array<{ id: string; icon: string; title: string; description: string; earned: boolean; earnedAt: string | null; color: string; bgColor: string }> }>('/user/achievements').then(r => r.data);
+
+export const fetchCreditHistory = () =>
+  fetchJson<{ data: { transactions: Array<{ id: number; createdAt: string; action: string; amount: number; balanceAfter: number }>; balance: number } }>('/user/credit-history').then(r => r.data);
+
+export const updateProfile = (body: { name?: string; language?: string; avatar?: string }) =>
+  fetchJson<{ data: { user: User } }>('/user/profile', { method: 'PUT', body: JSON.stringify(body) }).then(r => r.data.user);
+
 // ---------------------------------------------------------------------------
 // Blueprint
 // ---------------------------------------------------------------------------

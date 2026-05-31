@@ -60,6 +60,38 @@ export function initDb() {
     )
   `);
 
+  // Users table
+  dbInstance.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      avatar TEXT,
+      language TEXT NOT NULL DEFAULT 'english',
+      credits INTEGER NOT NULL DEFAULT 100,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    )
+  `);
+
+  // Credit transactions table
+  dbInstance.exec(`
+    CREATE TABLE IF NOT EXISTS credit_transactions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      blueprint_id TEXT,
+      action TEXT NOT NULL,
+      amount INTEGER NOT NULL,
+      balance_after INTEGER NOT NULL,
+      description TEXT,
+      created_at TEXT NOT NULL
+    )
+  `);
+
+  // Indexes for performance
+  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_user_id ON credit_transactions(user_id)`);
+  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_created_at ON credit_transactions(created_at)`);
+
   console.log('[DB] SQLite database initialized at', dbPath);
 }
 

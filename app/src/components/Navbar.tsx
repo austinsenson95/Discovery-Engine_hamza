@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { Menu, Zap, Globe, Bell } from 'lucide-react';
+import { useUser } from '@/hooks/useUser';
 
 const pageTitles: Record<string, string> = {
   '/': 'Dashboard',
@@ -16,9 +17,10 @@ interface NavbarProps {
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const location = useLocation();
   const title = pageTitles[location.pathname] || 'Dashboard';
+  const { credits, isLoading } = useUser();
 
   return (
-    <header className="sticky top-0 z-20 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8">
+    <header className="sticky top-0 z-20 h-16 bg-background border-b border-border flex items-center justify-between px-4 lg:px-8">
       {/* Left side */}
       <div className="flex items-center gap-3">
         <button
@@ -35,7 +37,9 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
         {/* Credit badge */}
         <div className="hidden sm:flex items-center gap-2 bg-orange-500/[0.12] border border-orange-500/20 rounded-full px-4 py-1.5">
           <Zap className="w-4 h-4 text-orange-500 fill-orange-500" />
-          <span className="text-sm font-semibold text-orange-500 font-mono">100 credits</span>
+          <span className="text-sm font-semibold text-orange-500 font-mono">
+            {isLoading ? '...' : `${credits} credits`}
+          </span>
         </div>
 
         {/* Globe icon */}

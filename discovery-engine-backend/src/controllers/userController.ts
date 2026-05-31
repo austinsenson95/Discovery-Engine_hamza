@@ -6,26 +6,33 @@
  *   - GET  /api/user/me      → Get current user profile
  *   - PUT  /api/user/profile → Update user profile
  *   - GET  /api/user/credits → Get credit balance and deduction info
+ *   - GET  /api/user/activity → Get recent activity feed
+ *   - GET  /api/user/achievements → Get computed achievements
+ *   - GET  /api/user/credit-history → Get credit transaction history
  *
- * TODO: All endpoints currently use a mock user. Replace with:
- *   - JWT token extraction from Authorization header
- *   - Database queries for user data
- *   - Input validation middleware
+ * Uses SQLite via userRepository and creditRepository.
  * ============================================================================
  */
 
 import { Request, Response, NextFunction } from 'express';
 import { dummyUser } from '../data/dummyData';
 import { creditService } from '../services/creditService';
-import { User } from '../types';
+import {
+  getUserById,
+  updateUser,
+  seedDummyUserIfNeeded,
+} from '../db/userRepository';
+import { getActivitiesByUser } from '../db/blueprintRepository';
+import { getTransactionsByUser } from '../db/creditRepository';
+import { getBlueprintsByUser } from '../db/blueprintRepository';
 
-// In-memory store (mirrors authController store)
-const userStore = new Map<string, User>();
-userStore.set(dummyUser.id, { ...dummyUser });
+const userId = dummyUser.id;
+
+// Seed on first use
+seedDummyUserIfNeeded();
 
 /**
  * GET /api/user/me
- * Response: { user: User }
  */
 export const getMe = async (
   req: Request,
@@ -34,13 +41,7 @@ export const getMe = async (
 ) => {
   try {
     console.log(`[User] GET /api/user/me — fetching current user`);
-
-    // TODO: Extract userId from JWT token
-    // const userId = req.user?.id; // After auth middleware
-    const userId = dummyUser.id;
-
-    // TODO: Fetch from database
-    const user = userStore.get(userId);
+    const user = getUserById(userId);
 
     if (!user) {
       res.status(404).json({
@@ -61,8 +62,6 @@ export const getMe = async (
 
 /**
  * PUT /api/user/profile
- * Request: { name?: string, language?: 'english' | 'hindi', avatar?: string }
- * Response: { user: User }
  */
 export const updateProfile = async (
   req: Request,
@@ -73,20 +72,6 @@ export const updateProfile = async (
     const { name, language, avatar } = req.body;
     console.log(`[User] PUT /api/user/profile — name="${name}", language="${language}"`);
 
-    // TODO: Extract userId from JWT token
-    const userId = dummyUser.id;
-
-    // Fetch user
-    const user = userStore.get(userId);
-    if (!user) {
-      res.status(404).json({
-        success: false,
-        message: 'User not found.',
-      });
-      return;
-    }
-
-    // Validate language if provided
     if (language && !['english', 'hindi'].includes(language)) {
       res.status(400).json({
         success: false,
@@ -95,13 +80,20 @@ export const updateProfile = async (
       return;
     }
 
-    // Update fields
-    if (name) user.name = name;
-    if (language) user.language = language as 'english' | 'hindi';
-    if (avatar) user.avatar = avatar;
-    user.updatedAt = new Date();
+    const user = updateUser(userId, {
+      name,
+      language: language as 'english' | 'hindi',
+      avatar,
+    });
 
-    userStore.set(userId, user);
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+      return;
+    }
+
     console.log(`[User] Profile updated for user: ${userId}`);
 
     res.status(200).json({
@@ -116,7 +108,6 @@ export const updateProfile = async (
 
 /**
  * GET /api/user/credits
- * Response: { balance: number, deductions: CreditDeductions, canAfford: {...} }
  */
 export const getCredits = async (
   req: Request,
@@ -125,15 +116,162 @@ export const getCredits = async (
 ) => {
   try {
     console.log(`[User] GET /api/user/credits — fetching credit info`);
-
-    // TODO: Extract userId from JWT token
-    const userId = dummyUser.id;
-
     const creditSummary = await creditService.getCreditSummary(userId);
 
     res.status(200).json({
       success: true,
       data: creditSummary,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/user/activity
+ */
+export const getActivity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log(`[User] GET /api/user/activity — fetching activity feed`);
+    const activities = getActivitiesByUser(userId, 50);
+
+    res.status(200).json({
+      success: true,
+      data: activities,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/user/achievements
+ */
+export const getAchievements = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log(`[User] GET /api/user/achievements — computing achievements`);
+    const blueprints = getBlueprintsByUser(userId);
+    const blueprint = blueprints[0];
+
+    const achievements = [
+      {
+        id: '1',
+        icon: 'rocket' as const,
+        title: 'First Steps',
+        description: 'Complete Step 1',
+        earned: (blueprint?.currentStep || 0) >= 2,
+        earnedAt: blueprint?.currentStep >= 2 ? blueprint.updatedAt : null,
+        color: '#059669',
+        bgColor: '#ECFDF5',
+      },
+      {
+        id: '2',
+        icon: 'users' as const,
+        title: 'People Person',
+        description: 'Complete Step 2',
+        earned: (blueprint?.currentStep || 0) >= 3,
+        earnedAt: blueprint?.currentStep >= 3 ? blueprint.updatedAt : null,
+        color: '#059669',
+        bgColor: '#ECFDF5',
+      },
+      {
+        id: '3',
+        icon: 'zap' as const,
+        title: 'Getting Started',
+        description: 'Start the wizard',
+        earned: blueprints.length > 0,
+        earnedAt: blueprints.length > 0 ? blueprints[0].createdAt : null,
+        color: '#F05A28',
+        bgColor: '#FFF0EB',
+      },
+      {
+        id: '4',
+        icon: 'filetext' as const,
+        title: 'Program Builder',
+        description: 'Complete Step 3',
+        earned: (blueprint?.currentStep || 0) >= 5,
+        earnedAt: blueprint?.currentStep >= 5 ? blueprint.updatedAt : null,
+        color: '#D4D4D4',
+        bgColor: '#F5F5F5',
+      },
+      {
+        id: '5',
+        icon: 'trophy' as const,
+        title: 'Roadmapper',
+        description: 'Complete Step 4',
+        earned: (blueprint?.currentStep || 0) >= 8,
+        earnedAt: blueprint?.currentStep >= 8 ? blueprint.updatedAt : null,
+        color: '#D4D4D4',
+        bgColor: '#F5F5F5',
+      },
+      {
+        id: '6',
+        icon: 'download' as const,
+        title: 'PDF Pro',
+        description: 'Download your first blueprint',
+        earned: false,
+        earnedAt: null,
+        color: '#D4D4D4',
+        bgColor: '#F5F5F5',
+      },
+      {
+        id: '7',
+        icon: 'star' as const,
+        title: 'Credit Saver',
+        description: 'Complete with credits remaining',
+        earned: blueprints.some(bp => bp.status === 'completed'),
+        earnedAt: blueprints.find(bp => bp.status === 'completed')?.updatedAt || null,
+        color: '#D4D4D4',
+        bgColor: '#F5F5F5',
+      },
+      {
+        id: '8',
+        icon: 'lightbulb' as const,
+        title: 'Speed Runner',
+        description: 'Complete all steps in one day',
+        earned: false,
+        earnedAt: null,
+        color: '#D4D4D4',
+        bgColor: '#F5F5F5',
+      },
+    ];
+
+    res.status(200).json({
+      success: true,
+      data: achievements,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/user/credit-history
+ */
+export const getCreditHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log(`[User] GET /api/user/credit-history — fetching transactions`);
+    const transactions = getTransactionsByUser(userId, 50);
+    const balance = await creditService.getBalance(userId);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        transactions,
+        balance,
+      },
     });
   } catch (error) {
     next(error);

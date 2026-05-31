@@ -4,7 +4,8 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { fetchAllBlueprints } from '@/lib/api';
+import type { Blueprint } from '@/types';
+import { fetchAllBlueprints, fetchActivity, fetchAchievements } from '@/lib/api';
 import { motion } from 'framer-motion';
 import {
   Check,
@@ -127,40 +128,45 @@ interface TimelineStep {
   timestamp: string;
 }
 
-const timelineSteps: TimelineStep[] = [
-  {
-    id: 1,
-    title: 'Niche Discovery',
-    description: 'Completed',
-    detail: 'Clarity & Confidence Coach',
-    status: 'completed',
-    timestamp: 'Completed on May 15, 2025',
-  },
-  {
-    id: 2,
-    title: 'Audience Mapping',
-    description: 'Completed',
-    detail: 'Persona: Kartik',
-    status: 'completed',
-    timestamp: 'Completed on May 16, 2025',
-  },
-  {
-    id: 3,
-    title: 'Program Builder',
-    description: 'In Progress',
-    detail: 'Setting up your program',
-    status: 'in_progress',
-    timestamp: 'Started on May 17, 2025',
-  },
-  {
-    id: 4,
-    title: 'Roadmap Generation',
-    description: 'Upcoming',
-    detail: 'Generate your roadmap',
-    status: 'upcoming',
-    timestamp: 'Complete step 3 to unlock',
-  },
-];
+function getTimelineSteps(bp?: Blueprint): TimelineStep[] {
+  const step = bp?.currentStep || 1;
+  const nicheName = bp?.niche?.selectedNiche?.name || 'Your niche';
+  const personaName = bp?.audience?.persona?.name || 'Your persona';
+  return [
+    {
+      id: 1,
+      title: 'Niche Discovery',
+      description: step >= 2 ? 'Completed' : step === 1 ? 'In Progress' : 'Upcoming',
+      detail: nicheName,
+      status: step >= 2 ? 'completed' : step === 1 ? 'in_progress' : 'upcoming',
+      timestamp: step >= 2 ? 'Completed' : step === 1 ? 'In Progress' : 'Complete previous step to unlock',
+    },
+    {
+      id: 2,
+      title: 'Audience Mapping',
+      description: step >= 3 ? 'Completed' : step === 2 ? 'In Progress' : 'Upcoming',
+      detail: `Persona: ${personaName}`,
+      status: step >= 3 ? 'completed' : step === 2 ? 'in_progress' : 'upcoming',
+      timestamp: step >= 3 ? 'Completed' : step === 2 ? 'In Progress' : 'Complete Niche Discovery first',
+    },
+    {
+      id: 3,
+      title: 'Program Builder',
+      description: step >= 6 ? 'Completed' : step >= 3 ? 'In Progress' : 'Upcoming',
+      detail: 'Setting up your program',
+      status: step >= 6 ? 'completed' : step >= 3 ? 'in_progress' : 'upcoming',
+      timestamp: step >= 6 ? 'Completed' : step >= 3 ? 'In Progress' : 'Complete Audience Mapping first',
+    },
+    {
+      id: 4,
+      title: 'Roadmap Generation',
+      description: step >= 8 ? 'Completed' : step === 7 ? 'In Progress' : 'Upcoming',
+      detail: 'Generate your roadmap',
+      status: step >= 8 ? 'completed' : step === 7 ? 'in_progress' : 'upcoming',
+      timestamp: step >= 8 ? 'Completed' : step === 7 ? 'In Progress' : 'Complete Program Builder first',
+    },
+  ];
+}
 
 // ------------------------------------------------------------------
 // Timeline Icon
@@ -218,80 +224,7 @@ interface Achievement {
   bgColor: string;
 }
 
-const achievements: Achievement[] = [
-  {
-    id: 1,
-    icon: 'rocket',
-    title: 'First Steps',
-    description: 'Complete Step 1',
-    earned: true,
-    color: '#059669',
-    bgColor: '#ECFDF5',
-  },
-  {
-    id: 2,
-    icon: 'users',
-    title: 'People Person',
-    description: 'Complete Step 2',
-    earned: true,
-    color: '#059669',
-    bgColor: '#ECFDF5',
-  },
-  {
-    id: 3,
-    icon: 'zap',
-    title: 'Getting Started',
-    description: 'Start the wizard',
-    earned: true,
-    color: '#F05A28',
-    bgColor: '#FFF0EB',
-  },
-  {
-    id: 4,
-    icon: 'filetext',
-    title: 'Program Builder',
-    description: 'Complete Step 3',
-    earned: false,
-    color: '#D4D4D4',
-    bgColor: '#F5F5F5',
-  },
-  {
-    id: 5,
-    icon: 'trophy',
-    title: 'Roadmapper',
-    description: 'Complete Step 4',
-    earned: false,
-    color: '#D4D4D4',
-    bgColor: '#F5F5F5',
-  },
-  {
-    id: 6,
-    icon: 'download',
-    title: 'PDF Pro',
-    description: 'Download your first blueprint',
-    earned: false,
-    color: '#D4D4D4',
-    bgColor: '#F5F5F5',
-  },
-  {
-    id: 7,
-    icon: 'star',
-    title: 'Credit Saver',
-    description: 'Complete with credits remaining',
-    earned: false,
-    color: '#D4D4D4',
-    bgColor: '#F5F5F5',
-  },
-  {
-    id: 8,
-    icon: 'lightbulb',
-    title: 'Speed Runner',
-    description: 'Complete all steps in one day',
-    earned: false,
-    color: '#D4D4D4',
-    bgColor: '#F5F5F5',
-  },
-];
+
 
 function AchievementIcon({
   icon,
@@ -323,34 +256,89 @@ function AchievementIcon({
   }
 }
 
-// ------------------------------------------------------------------
-// Activity Item Type
-// ------------------------------------------------------------------
-interface Activity {
-  id: number;
-  text: string;
-  time: string;
-  color: 'green' | 'orange' | 'gray';
+function formatRelativeTime(date: Date): string {
+  const now = new Date();
+  const diff = now.getTime() - new Date(date).getTime();
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (seconds < 60) return 'Just now';
+  if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  if (days < 7) return `${days} day${days > 1 ? 's' : ''} ago`;
+  return new Date(date).toLocaleDateString();
 }
 
-const activities: Activity[] = [
-  { id: 1, text: 'Started Program Builder', time: '2 hours ago', color: 'orange' },
-  { id: 2, text: 'Completed Audience Mapping', time: 'Yesterday', color: 'green' },
-  { id: 3, text: 'Generated niche recommendations', time: '2 days ago', color: 'green' },
-  { id: 4, text: 'Started Blueprint Wizard', time: '2 days ago', color: 'green' },
-  { id: 5, text: 'Joined Discovery Engine', time: '3 days ago', color: 'gray' },
-];
+function getActivityColor(type: string): 'green' | 'orange' | 'gray' {
+  if (type === 'blueprint' || type === 'niche' || type === 'audience' || type === 'program' || type === 'roadmap') return 'green';
+  if (type === 'credit' || type === 'quiz') return 'orange';
+  return 'gray';
+}
 
 // ------------------------------------------------------------------
 // MAIN: Journey Page
 // ------------------------------------------------------------------
 export default function Journey() {
   const navigate = useNavigate();
-  const [blueprints, setBlueprints] = useState<any[]>([]);
+  const [blueprints, setBlueprints] = useState<Blueprint[]>([]);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [activities, setActivities] = useState<Array<{ id: string; text: string; time: string; color: 'green' | 'orange' | 'gray' }>>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAllBlueprints().then(setBlueprints).catch(() => setBlueprints([]));
+    async function load() {
+      try {
+        const [bps, achs, acts] = await Promise.all([
+          fetchAllBlueprints(),
+          fetchAchievements().catch(() => []),
+          fetchActivity().catch(() => []),
+        ]);
+        setBlueprints(bps);
+        setAchievements(achs.map((a: { id: string; icon: string; title: string; description: string; earned: boolean; color: string; bgColor: string }) => ({
+          id: Number(a.id),
+          icon: a.icon as Achievement['icon'],
+          title: a.title,
+          description: a.description,
+          earned: a.earned,
+          color: a.color,
+          bgColor: a.bgColor,
+        })));
+        setActivities(acts.map((a: { id: string | number; title: string; createdAt: string; type: string }) => ({
+          id: String(a.id),
+          text: a.title,
+          time: formatRelativeTime(new Date(a.createdAt)),
+          color: getActivityColor(a.type),
+        })));
+      } catch {
+        setBlueprints([]);
+        setAchievements([]);
+        setActivities([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
+
+  const latest = blueprints[0];
+  const timelineSteps = getTimelineSteps(latest);
+  const progressPercent = latest ? latest.progress : 0;
+  const completedSteps = latest
+    ? (latest.currentStep >= 2 ? 1 : 0) +
+      (latest.currentStep >= 3 ? 1 : 0) +
+      (latest.currentStep >= 6 ? 1 : 0) +
+      (latest.currentStep >= 8 ? 1 : 0)
+    : 0;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#F05A28]" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -383,7 +371,7 @@ export default function Journey() {
           <div className="flex flex-col md:flex-row items-center gap-8">
             {/* Circular Progress */}
             <motion.div variants={staggerChild} className="flex-shrink-0">
-              <CircularProgress percentage={50} size={160} strokeWidth={10} />
+              <CircularProgress percentage={progressPercent} size={160} strokeWidth={10} />
             </motion.div>
 
             {/* Progress Info */}
@@ -392,11 +380,11 @@ export default function Journey() {
                 <h2 className="font-serif text-2xl text-[#0A0A0A]">
                   Blueprint in <em className="text-[#F05A28] not-italic" style={{ fontStyle: 'italic' }}>Progress</em>
                 </h2>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] bg-[#FFF0EB] text-[#F05A28]">
-                  In Progress
+                <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] ${latest?.status === 'completed' ? 'bg-[#ECFDF5] text-[#059669]' : 'bg-[#FFF0EB] text-[#F05A28]'}`}>
+                  {latest?.status === 'completed' ? 'Completed' : 'In Progress'}
                 </span>
               </div>
-              <p className="text-[#4A4A4A] text-lg mb-1">2 of 4 steps completed</p>
+              <p className="text-[#4A4A4A] text-lg mb-1">{completedSteps} of 4 steps completed</p>
               <p className="text-[#6B7280] text-sm mb-4">
                 You are halfway there! Complete the Program Builder to continue.
               </p>

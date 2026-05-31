@@ -1,0 +1,182 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Profile" [ref=e38] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e39]
+              - generic [ref=e42]: Profile
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - img [ref=e47]
+          - generic [ref=e49]:
+            - paragraph [ref=e50]: Book Your Free Call
+            - paragraph [ref=e51]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e52] [cursor=pointer]
+      - generic [ref=e55]:
+        - img [ref=e57]
+        - generic [ref=e60]:
+          - paragraph [ref=e61]: Loading...
+          - paragraph
+        - button [ref=e62] [cursor=pointer]:
+          - img [ref=e63]
+  - generic [ref=e66]:
+    - banner [ref=e67]:
+      - heading "Dashboard" [level=2] [ref=e69]
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - img [ref=e72]
+          - generic [ref=e74]: ...
+        - button [ref=e75] [cursor=pointer]:
+          - img [ref=e76]
+        - button [ref=e79] [cursor=pointer]:
+          - img [ref=e80]
+        - img [ref=e85]
+    - main [ref=e88]:
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - heading "Welcome back, Coach" [level=1] [ref=e92]
+          - paragraph [ref=e93]: You have 100 credits remaining
+        - generic [ref=e95]:
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - img [ref=e100]
+                - generic [ref=e103]: Discovery Blueprint
+              - heading "Discover Your Perfect Niche" [level=2] [ref=e104]
+              - paragraph [ref=e105]: Answer a few questions and our AI will help you discover your coaching niche, define your ideal student, build your program, and create your business roadmap.
+              - list [ref=e106]:
+                - listitem [ref=e107]:
+                  - img [ref=e109]
+                  - text: AI-Powered Niche Discovery
+                - listitem [ref=e111]:
+                  - img [ref=e113]
+                  - text: Ideal Student Persona
+                - listitem [ref=e115]:
+                  - img [ref=e117]
+                  - text: Program Builder & Pricing
+                - listitem [ref=e119]:
+                  - img [ref=e121]
+                  - text: 12-Week Launch Roadmap
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - img [ref=e125]
+                - generic [ref=e128]:
+                  - generic [ref=e129]: 0%
+                  - generic [ref=e130]: Complete
+              - paragraph [ref=e131]: 0% complete
+          - generic [ref=e132]:
+            - paragraph [ref=e133]: 100 credits available — each step uses 5-15 credits
+            - button "Get Started" [ref=e134] [cursor=pointer]:
+              - text: Get Started
+              - img [ref=e135]
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - generic [ref=e140]:
+              - img [ref=e142]
+              - generic [ref=e146]:
+                - paragraph [ref=e147]: Current Step
+                - paragraph [ref=e148]: Step 1 of 4
+            - generic [ref=e150]: Niche Discovery
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - img [ref=e154]
+              - generic [ref=e156]:
+                - paragraph [ref=e157]: Credits Used
+                - paragraph [ref=e158]: 0 / 100
+            - generic [ref=e159]:
+              - progressbar [ref=e160]
+              - paragraph [ref=e162]: 100 remaining
+          - generic [ref=e163]:
+            - generic [ref=e164]:
+              - img [ref=e166]
+              - generic [ref=e168]:
+                - paragraph [ref=e169]: Blueprint Status
+                - paragraph [ref=e170]: Not Started
+            - generic [ref=e172]: Start Now
+        - generic [ref=e174]:
+          - heading "Progress Overview" [level=3] [ref=e175]
+          - generic [ref=e176]:
+            - generic [ref=e177]:
+              - generic [ref=e178]: "1"
+              - generic [ref=e179]:
+                - paragraph [ref=e180]: Niche Discovery
+                - generic [ref=e182]:
+                  - img [ref=e183]
+                  - text: In Progress
+            - generic [ref=e185]:
+              - generic [ref=e186]: "2"
+              - generic [ref=e187]:
+                - paragraph [ref=e188]: Audience Mapping
+                - generic [ref=e190]:
+                  - img [ref=e191]
+                  - text: Upcoming
+            - generic [ref=e194]:
+              - generic [ref=e195]: "3"
+              - generic [ref=e196]:
+                - paragraph [ref=e197]: Program Builder
+                - generic [ref=e199]:
+                  - img [ref=e200]
+                  - text: Upcoming
+            - generic [ref=e203]:
+              - generic [ref=e204]: "4"
+              - generic [ref=e205]:
+                - paragraph [ref=e206]: Roadmap
+                - generic [ref=e208]:
+                  - img [ref=e209]
+                  - text: Upcoming
+        - generic [ref=e212]:
+          - heading "Recent Activity" [level=3] [ref=e213]
+          - list [ref=e215]:
+            - listitem [ref=e216]:
+              - generic [ref=e218]:
+                - generic [ref=e219]: Completed Coach Readiness Quiz
+                - generic [ref=e220]:
+                  - img [ref=e221]
+                  - text: 4h ago
+            - listitem [ref=e224]:
+              - generic [ref=e226]:
+                - generic [ref=e227]: Completed Blueprint Roadmap
+                - generic [ref=e228]:
+                  - img [ref=e229]
+                  - text: 4h ago
+            - listitem [ref=e232]:
+              - generic [ref=e234]:
+                - generic [ref=e235]: Generated Course Curriculum
+                - generic [ref=e236]:
+                  - img [ref=e237]
+                  - text: 4h ago
+            - listitem [ref=e240]:
+              - generic [ref=e242]:
+                - generic [ref=e243]: Generated Audience Problems
+                - generic [ref=e244]:
+                  - img [ref=e245]
+                  - text: 4h ago
+            - listitem [ref=e248]:
+              - generic [ref=e250]:
+                - generic [ref=e251]: Completed Audience Mapping
+                - generic [ref=e252]:
+                  - img [ref=e253]
+                  - text: 4h ago

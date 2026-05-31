@@ -2,7 +2,7 @@
 // DISCOVERY ENGINE — My Profile Page
 // ============================================================
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   LogOut,
@@ -11,6 +11,9 @@ import {
   Globe,
   Pencil,
 } from 'lucide-react';
+import { useUser } from '@/hooks/useUser';
+import { fetchCreditHistory, updateProfile, fetchAllBlueprints } from '@/lib/api';
+import { useTheme } from 'next-themes';
 import { Switch } from '@/components/ui/switch';
 import {
   Dialog,
@@ -71,34 +74,70 @@ interface CreditTransaction {
   balance: string;
 }
 
-const creditTransactions: CreditTransaction[] = [
-  { date: 'May 17', action: 'Program Builder start', credits: '-10', balance: '100' },
-  { date: 'May 16', action: 'Audience Mapping', credits: '-10', balance: '110' },
-  { date: 'May 15', action: 'Niche Discovery', credits: '-10', balance: '120' },
-  { date: 'May 15', action: 'Welcome bonus', credits: '+100', balance: '130' },
-];
+function formatTxDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
 
 // ------------------------------------------------------------------
 // MAIN: Profile Page
 // ------------------------------------------------------------------
 export default function Profile() {
-  const [language, setLanguage] = useState('english');
+  const { user, credits, refreshUser } = useUser();
+  const { theme, setTheme } = useTheme();
+  const [language, setLanguage] = useState<string>(user?.language || 'english');
   const [emailNotifs, setEmailNotifs] = useState(true);
   const [pushNotifs, setPushNotifs] = useState(true);
   const [marketingEmails, setMarketingEmails] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [creditTransactions, setCreditTransactions] = useState<CreditTransaction[]>([]);
+  const [blueprintCount, setBlueprintCount] = useState(0);
+  const [saving, setSaving] = useState(false);
 
-  const handleSavePreferences = useCallback(() => {
-    const win = window as unknown as Record<string, unknown>;
-    if (typeof win.addToast === 'function') {
-      (win.addToast as (t: { type: 'success'; message: string; duration: number }) => void)({
-        type: 'success',
-        message: 'Preferences saved successfully!',
-        duration: 3000,
-      });
-    }
+  useEffect(() => {
+    fetchCreditHistory()
+      .then((data) => {
+        setCreditTransactions(
+          data.transactions.map((t) => ({
+            date: formatTxDate(t.createdAt),
+            action: t.action,
+            credits: String(t.amount),
+            balance: String(t.balanceAfter),
+          }))
+        );
+      })
+      .catch(() => setCreditTransactions([]));
+    fetchAllBlueprints()
+      .then((bps) => setBlueprintCount(bps.length))
+      .catch(() => setBlueprintCount(0));
   }, []);
+
+  const handleSavePreferences = useCallback(async () => {
+    setSaving(true);
+    try {
+      await updateProfile({ language });
+      await refreshUser();
+      const win = window as unknown as Record<string, unknown>;
+      if (typeof win.addToast === 'function') {
+        (win.addToast as (t: { type: 'success'; message: string; duration: number }) => void)({
+          type: 'success',
+          message: 'Preferences saved successfully!',
+          duration: 3000,
+        });
+      }
+    } catch {
+      const win = window as unknown as Record<string, unknown>;
+      if (typeof win.addToast === 'function') {
+        (win.addToast as (t: { type: 'error'; message: string; duration: number }) => void)({
+          type: 'error',
+          message: 'Failed to save preferences.',
+          duration: 3000,
+        });
+      }
+    } finally {
+      setSaving(false);
+    }
+  }, [language, refreshUser]);
 
   return (
     <div>
@@ -142,10 +181,10 @@ export default function Profile() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               </div>
               <button className="text-sm text-[#F05A28] underline mb-4">Change Photo</button>
-              <h2 className="font-serif text-2xl text-[#0A0A0A]">John Doe</h2>
-              <p className="text-sm text-[#4A4A4A]">john.doe@example.com</p>
+              <h2 className="font-serif text-2xl text-[#0A0A0A]">{user?.name || 'Guest'}</h2>
+              <p className="text-sm text-[#4A4A4A]">{user?.email || ''}</p>
               <span className="inline-flex items-center mt-2 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.12em] bg-[#F5F5F5] text-[#6B7280]">
-                Member since May 2025
+                Member since {user ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : ''}
               </span>
             </motion.div>
 
@@ -162,7 +201,7 @@ export default function Profile() {
                 className="bg-[#F5F5F5] rounded-xl p-5 text-center"
               >
                 <Coins size={20} className="text-[#059669] mx-auto mb-2" />
-                <p className="font-serif text-2xl text-[#059669]">100</p>
+                <p className="font-serif text-2xl text-[#059669]">{credits}</p>
                 <p className="text-xs text-[#6B7280]">credits remaining</p>
               </motion.div>
 
@@ -172,8 +211,8 @@ export default function Profile() {
                 className="bg-[#F5F5F5] rounded-xl p-5 text-center"
               >
                 <FileText size={20} className="text-[#F05A28] mx-auto mb-2" />
-                <p className="font-serif text-2xl text-[#0A0A0A]">1</p>
-                <p className="text-xs text-[#6B7280]">blueprint created</p>
+                <p className="font-serif text-2xl text-[#0A0A0A]">{blueprintCount}</p>
+                <p className="text-xs text-[#6B7280]">blueprint{blueprintCount !== 1 ? 's' : ''} created</p>
               </motion.div>
 
               {/* Language */}
@@ -182,7 +221,7 @@ export default function Profile() {
                 className="bg-[#F5F5F5] rounded-xl p-5 text-center"
               >
                 <Globe size={20} className="text-[#0A0A0A] mx-auto mb-2" />
-                <p className="font-serif text-2xl text-[#0A0A0A]">English</p>
+                <p className="font-serif text-2xl text-[#0A0A0A]">{language.charAt(0).toUpperCase() + language.slice(1)}</p>
                 <p className="text-xs text-[#6B7280]">language</p>
               </motion.div>
             </motion.div>
@@ -268,7 +307,7 @@ export default function Profile() {
                 <button
                   onClick={() => setTheme('light')}
                   className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${
-                    theme === 'light'
+                    theme === 'light' || theme === 'system'
                       ? 'border-[#F05A28] bg-[#F5F5F5] text-[#0A0A0A]'
                       : 'border-[#D4D4D4] bg-white text-[#6B7280] hover:bg-[#F5F5F5]'
                   }`}
@@ -290,8 +329,8 @@ export default function Profile() {
 
             {/* Save Button */}
             <div className="pt-4">
-              <button onClick={handleSavePreferences} className="btn-primary">
-                Save Preferences
+              <button onClick={handleSavePreferences} className="btn-primary" disabled={saving}>
+                {saving ? 'Saving...' : 'Save Preferences'}
               </button>
             </div>
           </div>
@@ -320,7 +359,7 @@ export default function Profile() {
             transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
           >
             <Coins size={32} className="text-[#059669] mb-3" />
-            <p className="font-serif text-[32px] text-[#059669]">100 Credits</p>
+            <p className="font-serif text-[32px] text-[#059669]">{credits} Credits</p>
             <p className="text-sm text-[#4A4A4A] mb-3">You have plenty of credits to keep building!</p>
             {/* Usage bar */}
             <div className="w-full bg-[#FFFFFF] rounded-full overflow-hidden" style={{ height: 4 }}>
