@@ -119,6 +119,69 @@ export const validateRegister = (
 };
 
 /**
+ * Payment - Create Order validation
+ */
+export const validateCreateOrderBody = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const { packageId } = req.body;
+  const validPackages = ['starter', 'growth', 'pro'];
+
+  if (!packageId || typeof packageId !== 'string') {
+    res.status(400).json({
+      success: false,
+      message: 'packageId is required and must be a string.',
+    });
+    return;
+  }
+
+  if (!validPackages.includes(packageId)) {
+    res.status(400).json({
+      success: false,
+      message: `Invalid packageId. Must be one of: ${validPackages.join(', ')}.`,
+    });
+    return;
+  }
+
+  next();
+};
+
+/**
+ * Payment - Verify Payment validation
+ */
+export const validateVerifyPaymentBody = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+  const errors: string[] = [];
+
+  if (!razorpay_payment_id || typeof razorpay_payment_id !== 'string' || razorpay_payment_id.trim() === '') {
+    errors.push('razorpay_payment_id is required');
+  }
+  if (!razorpay_order_id || typeof razorpay_order_id !== 'string' || razorpay_order_id.trim() === '') {
+    errors.push('razorpay_order_id is required');
+  }
+  if (!razorpay_signature || typeof razorpay_signature !== 'string' || razorpay_signature.trim() === '') {
+    errors.push('razorpay_signature is required');
+  }
+
+  if (errors.length > 0) {
+    res.status(400).json({
+      success: false,
+      message: 'Validation failed',
+      errors,
+    });
+    return;
+  }
+
+  next();
+};
+
+/**
  * Auth form validation (login)
  */
 export const validateLogin = (

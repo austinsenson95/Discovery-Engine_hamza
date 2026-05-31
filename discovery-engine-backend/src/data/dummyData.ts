@@ -14,9 +14,9 @@ import { User, NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase,
 // Credit Purchase Packages
 // ---------------------------------------------------------------------------
 export const creditPackages: CreditPackage[] = [
-  { id: 'pkg_50', name: 'Starter Pack', credits: 50, priceInPaise: 49900, priceDisplay: '₹499' },
-  { id: 'pkg_100', name: 'Growth Pack', credits: 100, priceInPaise: 89900, priceDisplay: '₹899' },
-  { id: 'pkg_250', name: 'Pro Pack', credits: 250, priceInPaise: 199900, priceDisplay: '₹1,999' },
+  { id: 'starter', name: 'Starter Pack', credits: 50, priceInPaise: 4900, priceDisplay: '₹49' },
+  { id: 'growth', name: 'Growth Pack', credits: 100, priceInPaise: 19900, priceDisplay: '₹199' },
+  { id: 'pro', name: 'Pro Pack', credits: 150, priceInPaise: 29900, priceDisplay: '₹299' },
 ];
 
 // ---------------------------------------------------------------------------

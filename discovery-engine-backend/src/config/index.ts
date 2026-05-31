@@ -54,6 +54,10 @@ export const config = {
   // Razorpay payment integration
   razorpayKeyId: process.env.RAZORPAY_KEY_ID || '',
   razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET || '',
+  razorpayWebhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET || '',
+
+  // Derived
+  isRazorpayTestMode: (process.env.RAZORPAY_KEY_ID || '').startsWith('rzp_test_'),
 };
 
 /**
