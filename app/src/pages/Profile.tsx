@@ -15,6 +15,7 @@ import { useUser } from '@/hooks/useUser';
 import { fetchCreditHistory, updateProfile, fetchAllBlueprints } from '@/lib/api';
 import { useTheme } from 'next-themes';
 import { Switch } from '@/components/ui/switch';
+import CreditPurchaseModal from '@/components/CreditPurchaseModal';
 import {
   Dialog,
   DialogContent,
@@ -93,6 +94,7 @@ export default function Profile() {
   const [creditTransactions, setCreditTransactions] = useState<CreditTransaction[]>([]);
   const [blueprintCount, setBlueprintCount] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
 
   useEffect(() => {
     fetchCreditHistory()
@@ -428,10 +430,12 @@ export default function Profile() {
           {/* Purchase Credits */}
           <div>
             <label className="label-badge text-[#6B7280] block mb-4">BUY MORE CREDITS</label>
-            <button className="btn-primary opacity-50 cursor-not-allowed" disabled>
+            <button
+              className="btn-primary"
+              onClick={() => setPurchaseModalOpen(true)}
+            >
               Purchase Credits
             </button>
-            <span className="ml-3 text-xs text-[#6B7280]">Coming Soon</span>
           </div>
         </div>
       </motion.section>
@@ -493,6 +497,23 @@ export default function Profile() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Purchase Credits Modal */}
+      <CreditPurchaseModal
+        isOpen={purchaseModalOpen}
+        onClose={() => setPurchaseModalOpen(false)}
+        onSuccess={() => {
+          setPurchaseModalOpen(false);
+          const win = window as unknown as Record<string, unknown>;
+          if (typeof win.addToast === 'function') {
+            (win.addToast as (t: { type: 'success'; message: string; duration: number }) => void)({
+              type: 'success',
+              message: 'Credits purchased successfully!',
+              duration: 3000,
+            });
+          }
+        }}
+      />
     </div>
   );
 }

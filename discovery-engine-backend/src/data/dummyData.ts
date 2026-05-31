@@ -8,7 +8,16 @@
  * ============================================================================
  */
 
-import { User, NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, Blueprint, CreditDeductions, ModuleItem } from '../types';
+import { User, NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, Blueprint, CreditDeductions, ModuleItem, CreditPackage } from '../types';
+
+// ---------------------------------------------------------------------------
+// Credit Purchase Packages
+// ---------------------------------------------------------------------------
+export const creditPackages: CreditPackage[] = [
+  { id: 'pkg_50', name: 'Starter Pack', credits: 50, priceInPaise: 49900, priceDisplay: '₹499' },
+  { id: 'pkg_100', name: 'Growth Pack', credits: 100, priceInPaise: 89900, priceDisplay: '₹899' },
+  { id: 'pkg_250', name: 'Pro Pack', credits: 250, priceInPaise: 199900, priceDisplay: '₹1,999' },
+];
 
 // ---------------------------------------------------------------------------
 // Credit Deduction Configuration

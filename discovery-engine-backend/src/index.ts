@@ -26,6 +26,7 @@ import { config, validateConfig } from './config';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import blueprintRoutes from './routes/blueprint';
+import paymentsRoutes from './routes/payments';
 
 // Middleware
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
@@ -95,6 +96,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/blueprint', blueprintRoutes);
+app.use('/api/payments', paymentsRoutes);
 
 // ---------------------------------------------------------------------------
 // Error Handling

@@ -10,6 +10,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { config } from '../config';
 import type { Blueprint } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -193,7 +194,7 @@ function buildRoadmapPage(blueprint: Blueprint): string {
           (item) => `
         <div class="week-card">
           <div class="week-header">
-            <span class="badge">Week ${item.week}</span>
+            <span class="badge">${item.week}</span>
             <strong style="color: #0A0A0A;">${escapeHtml(item.tasks[0] || 'Milestone')}</strong>
           </div>
           <ul style="margin: 0; padding-left: 16px;">
@@ -259,7 +260,9 @@ function buildQuizPage(blueprint: Blueprint): string {
 
 function buildNextStepsPage(blueprint: Blueprint): string {
   const personaName = blueprint.audience?.persona?.name || 'your ideal client';
-  return readPartial('next-steps.html').replace(/{{personaName}}/g, escapeHtml(personaName));
+  return readPartial('next-steps.html')
+    .replace(/{{personaName}}/g, escapeHtml(personaName))
+    .replace(/{{bookingLink}}/g, escapeHtml(config.bookingLink));
 }
 
 // ---------------------------------------------------------------------------

@@ -134,6 +134,25 @@ export interface Toast {
   message: string;
 }
 
+export interface CreditPackage {
+  id: string;
+  name: string;
+  credits: number;
+  priceInPaise: number;
+  priceDisplay: string;
+}
+
+export interface PaymentTransaction {
+  id: string;
+  userId: string;
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  status: 'created' | 'paid' | 'failed' | 'cancelled';
+  amount: number;
+  creditsAdded: number;
+  createdAt: Date;
+}
+
 export interface ActivityItem {
   id: string;
   title: string;
