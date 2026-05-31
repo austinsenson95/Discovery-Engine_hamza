@@ -21,14 +21,15 @@ import {
   getAchievements,
   getCreditHistory,
 } from '../controllers/userController';
+import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/me', getMe);
-router.put('/profile', updateProfile);
-router.get('/credits', getCredits);
-router.get('/activity', getActivity);
-router.get('/achievements', getAchievements);
-router.get('/credit-history', getCreditHistory);
+router.get('/me', authenticate, getMe);
+router.put('/profile', authenticate, updateProfile);
+router.get('/credits', authenticate, getCredits);
+router.get('/activity', authenticate, getActivity);
+router.get('/achievements', authenticate, getAchievements);
+router.get('/credit-history', authenticate, getCreditHistory);
 
 export default router;

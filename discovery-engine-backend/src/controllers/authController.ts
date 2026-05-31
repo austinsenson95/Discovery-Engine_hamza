@@ -5,29 +5,32 @@
  * Handles user authentication:
  *   - POST /api/auth/register  → Register new user
  *   - POST /api/auth/login     → Login existing user
- *
- * TODO: Replace with real authentication:
- *   - Use bcrypt for password hashing
- *   - Use JWT for token generation
- *   - Add email verification
- *   - Add OAuth (Google, LinkedIn) support
- *   - Add password reset flow
+ *   - POST /api/auth/forgot-password → Request password reset
+ *   - POST /api/auth/reset-password  → Reset password with token
  * ============================================================================
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { dummyUser, mockToken } from '../data/dummyData';
-import { User } from '../types';
+import type { User } from '../types';
+import { hashPassword, comparePassword, generateToken, generateResetToken } from '../lib/auth';
+import { getUserByEmail, getUserById, createUser, updatePasswordHash, updateUser } from '../db/userRepository';
+import { createResetToken, findValidToken, markTokenUsed } from '../db/passwordResetRepository';
+import { sendPasswordResetEmail } from '../services/emailService';
+import { config } from '../config';
 
-// In-memory user store for demo
-const userStore = new Map<string, User>();
-userStore.set(dummyUser.id, { ...dummyUser });
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
-/**
- * POST /api/auth/register
- * Request: { name: string, email: string, password: string }
- * Response: { user: User, token: string }
- */
+function stripPasswordHash(user: User): Omit<User, 'passwordHash'> {
+  const { passwordHash: _, ...safe } = user;
+  return safe;
+}
+
+// ---------------------------------------------------------------------------
+// POST /api/auth/register
+// ---------------------------------------------------------------------------
+
 export const register = async (
   req: Request,
   res: Response,
@@ -37,20 +40,8 @@ export const register = async (
     const { name, email, password } = req.body;
     console.log(`[Auth] POST /api/auth/register — email="${email}"`);
 
-    // Validate required fields
-    if (!name || !email || !password) {
-      res.status(400).json({
-        success: false,
-        message: 'Name, email, and password are required.',
-      });
-      return;
-    }
-
     // Check if user already exists
-    // TODO: Replace with database query: await db.users.findOne({ email })
-    const existingUser = Array.from(userStore.values()).find(
-      (u) => u.email === email
-    );
+    const existingUser = getUserByEmail(email);
     if (existingUser) {
       res.status(409).json({
         success: false,
@@ -59,33 +50,33 @@ export const register = async (
       return;
     }
 
-    // TODO: Hash password with bcrypt
-    // const hashedPassword = await bcrypt.hash(password, 12);
+    // Hash password
+    const passwordHash = await hashPassword(password);
 
     // Create new user
-    // TODO: Replace with database insert
-    const newUser: User = {
+    const newUser: User & { passwordHash: string } = {
       id: `usr_${Date.now()}`,
       name,
-      email,
+      email: email.toLowerCase(),
+      passwordHash,
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.replace(/\s/g, '')}`,
-      credits: 50, // Starter credits for new users
+      credits: 100,
       language: 'english',
       createdAt: new Date(),
       updatedAt: new Date(),
     };
 
-    userStore.set(newUser.id, newUser);
+    createUser(newUser);
     console.log(`[Auth] New user registered: ${newUser.id} (${email})`);
 
-    // TODO: Generate real JWT token
-    // const token = jwt.sign({ userId: newUser.id, email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    // Generate JWT
+    const token = generateToken(newUser);
 
     res.status(201).json({
       success: true,
       data: {
-        user: newUser,
-        token: mockToken,
+        user: stripPasswordHash(newUser),
+        token,
       },
       message: 'Registration successful! Welcome to Discovery Engine.',
     });
@@ -94,11 +85,36 @@ export const register = async (
   }
 };
 
-/**
- * POST /api/auth/login
- * Request: { email: string, password: string }
- * Response: { user: User, token: string }
- */
+// ---------------------------------------------------------------------------
+// POST /api/auth/login
+// ---------------------------------------------------------------------------
+
+// Dev mode credentials
+const DEV_EMAIL = 'dev';
+const DEV_PASSWORD = 'password';
+const DEV_CREDITS = 999;
+
+async function ensureDevUser(): Promise<User & { passwordHash: string }> {
+  let user = getUserByEmail(DEV_EMAIL);
+  if (!user) {
+    const devUser: User & { passwordHash: string } = {
+      id: `usr_dev_${Date.now()}`,
+      name: 'Developer',
+      email: DEV_EMAIL,
+      passwordHash: await hashPassword(DEV_PASSWORD),
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Developer',
+      credits: DEV_CREDITS,
+      language: 'english',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    createUser(devUser);
+    console.log(`[Auth] Created dev user: ${devUser.id}`);
+    user = devUser;
+  }
+  return user as User & { passwordHash: string };
+}
+
 export const login = async (
   req: Request,
   res: Response,
@@ -108,18 +124,41 @@ export const login = async (
     const { email, password } = req.body;
     console.log(`[Auth] POST /api/auth/login — email="${email}"`);
 
-    // Validate required fields
-    if (!email || !password) {
-      res.status(400).json({
-        success: false,
-        message: 'Email and password are required.',
-      });
-      return;
-    }
+    let user: User | undefined;
+    let isDevMode = false;
 
-    // Find user by email
-    // TODO: Replace with database query
-    const user = Array.from(userStore.values()).find((u) => u.email === email);
+    // Dev mode: special credentials
+    if (email === DEV_EMAIL && password === DEV_PASSWORD) {
+      isDevMode = true;
+      user = await ensureDevUser();
+      // Reset dev credits on every login
+      updateUser(user.id, { credits: DEV_CREDITS });
+      user = getUserById(user.id);
+      console.log(`[Auth] Dev login: ${user?.id} — credits set to ${DEV_CREDITS}`);
+    } else {
+      // Regular login
+      user = getUserByEmail(email);
+
+      if (!user || !user.passwordHash) {
+        res.status(401).json({
+          success: false,
+          message: 'Invalid email or password.',
+        });
+        return;
+      }
+
+      // Verify password
+      const isValid = await comparePassword(password, user.passwordHash);
+      if (!isValid) {
+        res.status(401).json({
+          success: false,
+          message: 'Invalid email or password.',
+        });
+        return;
+      }
+
+      console.log(`[Auth] User logged in: ${user.id} (${email})`);
+    }
 
     if (!user) {
       res.status(401).json({
@@ -129,22 +168,92 @@ export const login = async (
       return;
     }
 
-    // TODO: Verify password with bcrypt
-    // const isValid = await bcrypt.compare(password, user.passwordHash);
-    // if (!isValid) { return 401 ... }
-
-    console.log(`[Auth] User logged in: ${user.id} (${email})`);
-
-    // TODO: Generate real JWT token
-    // const token = jwt.sign({ userId: user.id, email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    // Generate JWT
+    const token = generateToken(user);
 
     res.status(200).json({
       success: true,
       data: {
-        user,
-        token: mockToken,
+        user: { ...stripPasswordHash(user), isDev: isDevMode },
+        token,
       },
       message: 'Login successful!',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
+// POST /api/auth/forgot-password
+// ---------------------------------------------------------------------------
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.body;
+    console.log(`[Auth] POST /api/auth/forgot-password — email="${email}"`);
+
+    const user = getUserByEmail(email);
+
+    if (user) {
+      const { raw, hash } = generateResetToken();
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+      createResetToken(user.id, hash, expiresAt);
+
+      const resetUrl = `${config.frontendUrl}/reset-password?token=${raw}`;
+      await sendPasswordResetEmail(user.email, resetUrl);
+    }
+
+    // Always return the same message to prevent user enumeration
+    res.status(200).json({
+      success: true,
+      message: 'If an account exists with this email, you will receive a password reset link shortly.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ---------------------------------------------------------------------------
+// POST /api/auth/reset-password
+// ---------------------------------------------------------------------------
+
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { token, password } = req.body;
+    console.log(`[Auth] POST /api/auth/reset-password`);
+
+    const tokenHash = require('crypto').createHash('sha256').update(token).digest('hex');
+    const resetRecord = findValidToken(tokenHash);
+
+    if (!resetRecord) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid or expired reset token. Please request a new password reset.',
+      });
+      return;
+    }
+
+    // Hash new password and update user
+    const passwordHash = await hashPassword(password);
+    updatePasswordHash(resetRecord.userId, passwordHash);
+
+    // Mark token as used
+    markTokenUsed(resetRecord.id);
+
+    console.log(`[Auth] Password reset complete for user: ${resetRecord.userId}`);
+
+    res.status(200).json({
+      success: true,
+      message: 'Password updated successfully. Please log in with your new password.',
     });
   } catch (error) {
     next(error);

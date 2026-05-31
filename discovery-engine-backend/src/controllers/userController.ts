@@ -15,7 +15,6 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { dummyUser } from '../data/dummyData';
 import { creditService } from '../services/creditService';
 import {
   getUserById,
@@ -26,20 +25,36 @@ import { getActivitiesByUser } from '../db/blueprintRepository';
 import { getTransactionsByUser } from '../db/creditRepository';
 import { getBlueprintsByUser } from '../db/blueprintRepository';
 
-const userId = dummyUser.id;
-
 // Seed on first use
 seedDummyUserIfNeeded();
 
-/**
- * GET /api/user/me
- */
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function stripPasswordHash(user: any) {
+  const { passwordHash: _, ...safe } = user;
+  return safe;
+}
+
+// ---------------------------------------------------------------------------
+// GET /api/user/me
+// ---------------------------------------------------------------------------
 export const getMe = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.',
+      });
+      return;
+    }
+
     console.log(`[User] GET /api/user/me — fetching current user`);
     const user = getUserById(userId);
 
@@ -53,22 +68,31 @@ export const getMe = async (
 
     res.status(200).json({
       success: true,
-      data: { user },
+      data: { user: stripPasswordHash(user) },
     });
   } catch (error) {
     next(error);
   }
 };
 
-/**
- * PUT /api/user/profile
- */
+// ---------------------------------------------------------------------------
+// PUT /api/user/profile
+// ---------------------------------------------------------------------------
 export const updateProfile = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.',
+      });
+      return;
+    }
+
     const { name, language, avatar } = req.body;
     console.log(`[User] PUT /api/user/profile — name="${name}", language="${language}"`);
 
@@ -98,7 +122,7 @@ export const updateProfile = async (
 
     res.status(200).json({
       success: true,
-      data: { user },
+      data: { user: stripPasswordHash(user) },
       message: 'Profile updated successfully.',
     });
   } catch (error) {
@@ -106,15 +130,24 @@ export const updateProfile = async (
   }
 };
 
-/**
- * GET /api/user/credits
- */
+// ---------------------------------------------------------------------------
+// GET /api/user/credits
+// ---------------------------------------------------------------------------
 export const getCredits = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.',
+      });
+      return;
+    }
+
     console.log(`[User] GET /api/user/credits — fetching credit info`);
     const creditSummary = await creditService.getCreditSummary(userId);
 
@@ -127,15 +160,24 @@ export const getCredits = async (
   }
 };
 
-/**
- * GET /api/user/activity
- */
+// ---------------------------------------------------------------------------
+// GET /api/user/activity
+// ---------------------------------------------------------------------------
 export const getActivity = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.',
+      });
+      return;
+    }
+
     console.log(`[User] GET /api/user/activity — fetching activity feed`);
     const activities = getActivitiesByUser(userId, 50);
 
@@ -148,15 +190,24 @@ export const getActivity = async (
   }
 };
 
-/**
- * GET /api/user/achievements
- */
+// ---------------------------------------------------------------------------
+// GET /api/user/achievements
+// ---------------------------------------------------------------------------
 export const getAchievements = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.',
+      });
+      return;
+    }
+
     console.log(`[User] GET /api/user/achievements — computing achievements`);
     const blueprints = getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
@@ -253,15 +304,24 @@ export const getAchievements = async (
   }
 };
 
-/**
- * GET /api/user/credit-history
- */
+// ---------------------------------------------------------------------------
+// GET /api/user/credit-history
+// ---------------------------------------------------------------------------
 export const getCreditHistory = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required. Please log in.',
+      });
+      return;
+    }
+
     console.log(`[User] GET /api/user/credit-history — fetching transactions`);
     const transactions = getTransactionsByUser(userId, 50);
     const balance = await creditService.getBalance(userId);

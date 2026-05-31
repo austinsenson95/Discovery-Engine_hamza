@@ -13,6 +13,7 @@ import {
   Coins,
 } from 'lucide-react';
 import { useUser } from '@/hooks/useUser';
+import { useAuth } from '@/context/AuthContext';
 
 const CALL_BOOKING_URL =
   import.meta.env.VITE_CALL_BOOKING_URL ||
@@ -51,6 +52,7 @@ export default function Sidebar({
 }: SidebarProps) {
   const location = useLocation();
   const { user, isLoading } = useUser();
+  const { logout } = useAuth();
 
   const handleBookCall = () => {
     console.log('[Sidebar] Call booking clicked');
@@ -278,6 +280,7 @@ export default function Sidebar({
                   animate={{ opacity: 1, width: 'auto' }}
                   exit={{ opacity: 0, width: 0 }}
                   transition={{ duration: 0.15 }}
+                  onClick={logout}
                   className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors overflow-hidden"
                 >
                   <LogOut className="w-4 h-4" />

@@ -5,6 +5,7 @@ export interface User {
   avatar?: string;
   credits: number;
   language: 'english' | 'hindi';
+  isDev?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

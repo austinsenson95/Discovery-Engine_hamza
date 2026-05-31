@@ -2,9 +2,17 @@ import type { NicheOption, Persona, ProgramName, PricingStrategy, RoadmapPhase, 
 
 export const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
+function getAuthHeaders(): Record<string, string> {
+  const token = localStorage.getItem('de_token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${url}`, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     ...options,
   });
   const data = await res.json();
@@ -18,16 +26,22 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
 // Auth
 // ---------------------------------------------------------------------------
 export const registerUser = (body: { name: string; email: string; password: string }) =>
-  fetchJson<{ user: User; token: string }>('/auth/register', { method: 'POST', body: JSON.stringify(body) });
+  fetchJson<{ data: { user: User; token: string } }>('/auth/register', { method: 'POST', body: JSON.stringify(body) }).then(r => r.data);
 
 export const loginUser = (body: { email: string; password: string }) =>
-  fetchJson<{ user: User; token: string }>('/auth/login', { method: 'POST', body: JSON.stringify(body) });
+  fetchJson<{ data: { user: User; token: string } }>('/auth/login', { method: 'POST', body: JSON.stringify(body) }).then(r => r.data);
+
+export const requestPasswordReset = (body: { email: string }) =>
+  fetchJson<{ message: string }>('/auth/forgot-password', { method: 'POST', body: JSON.stringify(body) });
+
+export const resetPassword = (body: { token: string; password: string }) =>
+  fetchJson<{ message: string }>('/auth/reset-password', { method: 'POST', body: JSON.stringify(body) });
 
 // ---------------------------------------------------------------------------
 // User
 // ---------------------------------------------------------------------------
 export const fetchUser = (): Promise<User> =>
-  fetchJson<{ data: User }>('/user/me').then(r => r.data);
+  fetchJson<{ data: { user: User } }>('/user/me').then(r => r.data.user);
 
 export const fetchCredits = () =>
   fetchJson<{ data: { balance: number; costs: Record<string, number> } }>('/user/credits').then(r => r.data);
@@ -195,7 +209,6 @@ export const downloadPDF = async (id: string): Promise<void> => {
   const blob = await response.blob();
   const url = window.URL.createObjectURL(blob);
 
-  // Extract filename from Content-Disposition header if available
   const disposition = response.headers.get('Content-Disposition');
   let filename = 'Discovery-Engine-Blueprint.pdf';
   if (disposition) {
@@ -203,7 +216,6 @@ export const downloadPDF = async (id: string): Promise<void> => {
     if (match) filename = match[1];
   }
 
-  // msSaveOrOpenBlob for IE/Edge legacy support
   const nav = window.navigator as any;
   if (nav.msSaveOrOpenBlob) {
     nav.msSaveOrOpenBlob(blob, filename);
@@ -211,9 +223,6 @@ export const downloadPDF = async (id: string): Promise<void> => {
     return;
   }
 
-  // Cross-browser download strategy
-  // Safari is strict about user gesture context — a.click() after await often fails.
-  // MouseEvent dispatch + longer element persistence is more reliable.
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const clickDelay = isSafari ? 300 : 50;
   const cleanupDelay = isSafari ? 5000 : 2000;
@@ -225,7 +234,6 @@ export const downloadPDF = async (id: string): Promise<void> => {
   document.body.appendChild(a);
 
   setTimeout(() => {
-    // Use MouseEvent dispatch instead of a.click() — Safari handles this better
     const event = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
@@ -233,7 +241,6 @@ export const downloadPDF = async (id: string): Promise<void> => {
     });
     a.dispatchEvent(event);
 
-    // Keep anchor and URL alive long enough for the browser to start download
     setTimeout(() => {
       if (a.parentNode) a.parentNode.removeChild(a);
       window.URL.revokeObjectURL(url);

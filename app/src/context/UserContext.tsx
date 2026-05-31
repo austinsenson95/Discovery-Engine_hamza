@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import type { User } from '@/types';
 import { fetchUser, fetchCredits } from '@/lib/api';
+import { useAuth } from './AuthContext';
 
 interface UserContextValue {
   user: User | null;
@@ -14,6 +15,7 @@ interface UserContextValue {
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
+  const { isAuthenticated } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [credits, setCredits] = useState(100);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,6 +45,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true;
     async function init() {
+      if (!isAuthenticated) {
+        if (mounted) {
+          setUser(null);
+          setIsLoading(false);
+        }
+        return;
+      }
       setIsLoading(true);
       try {
         const [userData, creditData] = await Promise.all([fetchUser(), fetchCredits()]);
@@ -61,7 +70,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
     init();
     return () => { mounted = false; };
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <UserContext.Provider value={{ user, credits, isLoading, error, refreshUser, refreshCredits }}>
