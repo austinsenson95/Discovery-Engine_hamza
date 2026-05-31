@@ -15,7 +15,7 @@ interface UserContextValue {
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user: authUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [credits, setCredits] = useState(100);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +48,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (!isAuthenticated) {
         if (mounted) {
           setUser(null);
+          setCredits(100);
+          setError(null);
           setIsLoading(false);
         }
         return;
@@ -70,7 +72,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
     init();
     return () => { mounted = false; };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, authUser?.id]);
 
   return (
     <UserContext.Provider value={{ user, credits, isLoading, error, refreshUser, refreshCredits }}>

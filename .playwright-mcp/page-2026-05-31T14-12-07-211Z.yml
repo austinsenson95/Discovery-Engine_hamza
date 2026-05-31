@@ -1,0 +1,160 @@
+- generic [ref=e37]:
+  - complementary [ref=e38]:
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - img "Discovery Engine" [ref=e42]
+        - button "Collapse sidebar" [ref=e43] [cursor=pointer]:
+          - img [ref=e45]
+      - navigation [ref=e47]:
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: PROGRAM
+          - generic [ref=e50]:
+            - link "Dashboard" [ref=e51] [cursor=pointer]:
+              - /url: /
+              - img [ref=e52]
+              - generic [ref=e57]: Dashboard
+            - link "Blueprint" [ref=e58] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e59]
+              - generic [ref=e62]: Blueprint
+        - generic [ref=e63]:
+          - paragraph [ref=e64]: MY STUFF
+          - generic [ref=e65]:
+            - link "My Journey" [ref=e66] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e67]
+              - generic [ref=e71]: My Journey
+            - link "Credits" [ref=e72] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e73]
+              - generic [ref=e78]: Credits
+            - link "Profile" [ref=e79] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e80]
+              - generic [ref=e83]: Profile
+      - generic [ref=e85]:
+        - generic [ref=e86]:
+          - img [ref=e88]
+          - generic [ref=e90]:
+            - paragraph [ref=e91]: Book Your Free Call
+            - paragraph [ref=e92]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e93] [cursor=pointer]
+      - generic [ref=e96]:
+        - img [ref=e98]
+        - generic [ref=e101]:
+          - paragraph [ref=e102]: Developer
+          - paragraph [ref=e103]: dev
+        - button [ref=e104] [cursor=pointer]:
+          - img [ref=e105]
+  - generic [ref=e108]:
+    - banner [ref=e109]:
+      - heading "Dashboard" [level=2] [ref=e111]
+      - generic [ref=e112]:
+        - generic [ref=e114]: Dev Mode
+        - generic [ref=e115]:
+          - img [ref=e116]
+          - generic [ref=e118]: 999 credits
+        - button [ref=e119] [cursor=pointer]:
+          - img [ref=e120]
+        - button [ref=e123] [cursor=pointer]:
+          - img [ref=e124]
+        - button "Log out" [ref=e128] [cursor=pointer]:
+          - img [ref=e129]
+        - img "Developer" [ref=e133]
+    - main [ref=e134]:
+      - generic [ref=e136]:
+        - generic [ref=e137]:
+          - heading "Welcome back, Developer" [level=1] [ref=e138]
+          - paragraph [ref=e139]: You have 999 credits remaining
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]:
+                - img [ref=e146]
+                - generic [ref=e149]: Discovery Blueprint
+              - heading "Discover Your Perfect Niche" [level=2] [ref=e150]
+              - paragraph [ref=e151]: Answer a few questions and our AI will help you discover your coaching niche, define your ideal student, build your program, and create your business roadmap.
+              - list [ref=e152]:
+                - listitem [ref=e153]:
+                  - img [ref=e155]
+                  - text: AI-Powered Niche Discovery
+                - listitem [ref=e157]:
+                  - img [ref=e159]
+                  - text: Ideal Student Persona
+                - listitem [ref=e161]:
+                  - img [ref=e163]
+                  - text: Program Builder & Pricing
+                - listitem [ref=e165]:
+                  - img [ref=e167]
+                  - text: 12-Week Launch Roadmap
+            - generic [ref=e169]:
+              - generic [ref=e170]:
+                - img [ref=e171]
+                - generic [ref=e174]:
+                  - generic [ref=e175]: 100%
+                  - generic [ref=e176]: Complete
+              - paragraph [ref=e177]: 100% complete
+          - generic [ref=e178]:
+            - paragraph [ref=e179]: 999 credits available — each step uses 5-15 credits
+            - button "Get Started" [ref=e180] [cursor=pointer]:
+              - text: Get Started
+              - img [ref=e181]
+        - generic [ref=e184]:
+          - generic [ref=e185]:
+            - generic [ref=e186]:
+              - img [ref=e188]
+              - generic [ref=e192]:
+                - paragraph [ref=e193]: Current Step
+                - paragraph [ref=e194]: Step 4 of 4
+            - generic [ref=e196]: Roadmap
+          - generic [ref=e197]:
+            - generic [ref=e198]:
+              - img [ref=e200]
+              - generic [ref=e202]:
+                - paragraph [ref=e203]: Credits Used
+                - paragraph [ref=e204]: 45 / 999
+            - generic [ref=e205]:
+              - progressbar [ref=e206]
+              - paragraph [ref=e208]: 954 remaining
+          - generic [ref=e209]:
+            - generic [ref=e210]:
+              - img [ref=e212]
+              - generic [ref=e214]:
+                - paragraph [ref=e215]: Blueprint Status
+                - paragraph [ref=e216]: Completed
+            - generic [ref=e218]: Done
+        - generic [ref=e220]:
+          - heading "Progress Overview" [level=3] [ref=e221]
+          - generic [ref=e222]:
+            - generic [ref=e223]:
+              - img [ref=e225]
+              - generic [ref=e227]:
+                - paragraph [ref=e228]: Niche Discovery
+                - generic [ref=e230]:
+                  - img [ref=e231]
+                  - text: Completed
+            - generic [ref=e233]:
+              - img [ref=e235]
+              - generic [ref=e237]:
+                - paragraph [ref=e238]: Audience Mapping
+                - generic [ref=e240]:
+                  - img [ref=e241]
+                  - text: Completed
+            - generic [ref=e243]:
+              - img [ref=e245]
+              - generic [ref=e247]:
+                - paragraph [ref=e248]: Program Builder
+                - generic [ref=e250]:
+                  - img [ref=e251]
+                  - text: Completed
+            - generic [ref=e253]:
+              - img [ref=e255]
+              - generic [ref=e257]:
+                - paragraph [ref=e258]: Roadmap
+                - generic [ref=e260]:
+                  - img [ref=e261]
+                  - text: Completed
+        - generic [ref=e263]:
+          - heading "Recent Activity" [level=3] [ref=e264]
+          - generic [ref=e265]:
+            - list

@@ -1,0 +1,89 @@
+- generic [ref=e37]:
+  - complementary [ref=e38]:
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - img "Discovery Engine" [ref=e42]
+        - button "Collapse sidebar" [ref=e43] [cursor=pointer]:
+          - img [ref=e45]
+      - navigation [ref=e47]:
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: PROGRAM
+          - generic [ref=e50]:
+            - link "Dashboard" [ref=e51] [cursor=pointer]:
+              - /url: /
+              - img [ref=e52]
+              - generic [ref=e57]: Dashboard
+            - link "Blueprint" [ref=e58] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e59]
+              - generic [ref=e62]: Blueprint
+        - generic [ref=e63]:
+          - paragraph [ref=e64]: MY STUFF
+          - generic [ref=e65]:
+            - link "My Journey" [ref=e66] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e67]
+              - generic [ref=e71]: My Journey
+            - link "Credits" [ref=e72] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e73]
+              - generic [ref=e78]: Credits
+            - link "Profile" [ref=e79] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e80]
+              - generic [ref=e83]: Profile
+      - generic [ref=e85]:
+        - generic [ref=e86]:
+          - img [ref=e88]
+          - generic [ref=e90]:
+            - paragraph [ref=e91]: Book Your Free Call
+            - paragraph [ref=e92]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e93] [cursor=pointer]
+      - generic [ref=e96]:
+        - img [ref=e98]
+        - generic [ref=e101]:
+          - paragraph [ref=e102]: Developer
+          - paragraph [ref=e103]: dev
+        - button [ref=e104] [cursor=pointer]:
+          - img [ref=e105]
+  - generic [ref=e108]:
+    - banner [ref=e109]:
+      - heading "Dashboard" [level=2] [ref=e111]
+      - generic [ref=e112]:
+        - generic [ref=e114]: Dev Mode
+        - generic [ref=e115]:
+          - img [ref=e116]
+          - generic [ref=e118]: 999 credits
+        - button [ref=e119] [cursor=pointer]:
+          - img [ref=e120]
+        - button [ref=e123] [cursor=pointer]:
+          - img [ref=e124]
+        - button "Log out" [ref=e128] [cursor=pointer]:
+          - img [ref=e129]
+        - img "Developer" [ref=e133]
+    - main [ref=e134]:
+      - generic [ref=e266]:
+        - generic [ref=e267]:
+          - paragraph [ref=e268]: Dashboard / Credits
+          - heading "Credit Dashboard" [level=1] [ref=e269]:
+            - text: Credit
+            - emphasis [ref=e270]: Dashboard
+          - paragraph [ref=e271]: Manage your credits, view usage history, and purchase more.
+        - generic [ref=e274]:
+          - generic [ref=e275]:
+            - img [ref=e277]
+            - generic [ref=e282]:
+              - paragraph [ref=e283]: Current Balance
+              - paragraph [ref=e284]: "999"
+              - paragraph [ref=e285]: credits remaining
+          - button "Buy More Credits" [ref=e287] [cursor=pointer]:
+            - text: Buy More Credits
+            - img [ref=e288]
+        - generic [ref=e291]:
+          - paragraph [ref=e292]: HISTORY
+          - heading "Transaction History" [level=2] [ref=e293]:
+            - text: Transaction
+            - emphasis [ref=e294]: History
+          - generic [ref=e295]:
+            - img [ref=e296]
+            - paragraph [ref=e301]: No transactions yet.
