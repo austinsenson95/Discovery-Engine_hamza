@@ -28,6 +28,42 @@ export { dbInstance as db };
 // ---------------------------------------------------------------------------
 // Migration helpers
 // ---------------------------------------------------------------------------
+function migrateUsersV2() {
+  const tableInfo = dbInstance.prepare("PRAGMA table_info(users)").all() as any[];
+  const hasPasswordHash = tableInfo.find((col) => col.name === 'password_hash');
+  const emailCol = tableInfo.find((col) => col.name === 'email');
+
+  if (!hasPasswordHash || emailCol?.pk !== 0) {
+    console.log('[DB] Migrating users table (adding password_hash + UNIQUE email)...');
+
+    // Generate a random hash for existing users so the NOT NULL constraint passes
+    const dummyHash = '$2a$12$abcdefghijklmnopqrstuvwxycdefghimnopqrstuvwx12345678901';
+
+    dbInstance.exec(`
+      ALTER TABLE users RENAME TO users_old;
+
+      CREATE TABLE users (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        password_hash TEXT NOT NULL,
+        avatar TEXT,
+        language TEXT NOT NULL DEFAULT 'english',
+        credits INTEGER NOT NULL DEFAULT 100,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+
+      INSERT INTO users (id, name, email, password_hash, avatar, language, credits, created_at, updated_at)
+      SELECT id, name, email, '${dummyHash}', avatar, language, credits, created_at, updated_at
+      FROM users_old;
+
+      DROP TABLE users_old;
+    `);
+    console.log('[DB] users migration complete.');
+  }
+}
+
 function migratePaymentTransactions() {
   const tableInfo = dbInstance.prepare("PRAGMA table_info(payment_transactions)").all() as any[];
   const paymentIdCol = tableInfo.find((col) => col.name === 'razorpay_payment_id');
@@ -145,7 +181,23 @@ export function initDb() {
   dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_user_id ON payment_transactions(user_id)`);
   dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_payment_id ON payment_transactions(razorpay_payment_id)`);
 
+  migrateUsersV2();
   migratePaymentTransactions();
+
+  // Password resets table (must be created AFTER users migration)
+  dbInstance.exec(`
+    CREATE TABLE IF NOT EXISTS password_resets (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      token_hash TEXT NOT NULL UNIQUE,
+      expires_at TEXT NOT NULL,
+      used_at TEXT,
+      created_at TEXT NOT NULL
+    )
+  `);
+
+  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_password_resets_user_id ON password_resets(user_id)`);
+  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_password_resets_token_hash ON password_resets(token_hash)`);
 
   console.log('[DB] SQLite database initialized at', dbPath);
 }

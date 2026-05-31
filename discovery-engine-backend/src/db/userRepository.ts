@@ -18,9 +18,11 @@ function rowToUser(row: any): User {
     id: row.id,
     name: row.name,
     email: row.email,
+    passwordHash: row.password_hash || undefined,
     avatar: row.avatar,
     language: row.language,
     credits: row.credits,
+    isDev: row.email === 'dev',
     createdAt: new Date(row.created_at),
     updatedAt: new Date(row.updated_at),
   };
@@ -35,15 +37,22 @@ export function getUserById(userId: string): User | undefined {
   return row ? rowToUser(row) : undefined;
 }
 
-export function createUser(user: User): User {
+export function getUserByEmail(email: string): User | undefined {
+  const stmt = db.prepare('SELECT * FROM users WHERE email = ?');
+  const row = stmt.get(email.toLowerCase()) as any;
+  return row ? rowToUser(row) : undefined;
+}
+
+export function createUser(user: User & { passwordHash: string }): User {
   const stmt = db.prepare(`
-    INSERT INTO users (id, name, email, avatar, language, credits, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO users (id, name, email, password_hash, avatar, language, credits, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   stmt.run(
     user.id,
     user.name,
-    user.email,
+    user.email.toLowerCase(),
+    user.passwordHash,
     user.avatar || null,
     user.language,
     user.credits,
@@ -63,6 +72,7 @@ export function updateUser(userId: string, updates: Partial<Omit<User, 'id' | 'c
     UPDATE users SET
       name = ?,
       email = ?,
+      password_hash = ?,
       avatar = ?,
       language = ?,
       credits = ?,
@@ -72,6 +82,7 @@ export function updateUser(userId: string, updates: Partial<Omit<User, 'id' | 'c
   stmt.run(
     merged.name,
     merged.email,
+    merged.passwordHash || existing.passwordHash,
     merged.avatar || null,
     merged.language,
     merged.credits,
@@ -79,6 +90,13 @@ export function updateUser(userId: string, updates: Partial<Omit<User, 'id' | 'c
     userId
   );
   return merged;
+}
+
+export function updatePasswordHash(userId: string, passwordHash: string): void {
+  const stmt = db.prepare(`
+    UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?
+  `);
+  stmt.run(passwordHash, new Date().toISOString(), userId);
 }
 
 export function getAllUsers(): User[] {
@@ -93,8 +111,14 @@ export function getAllUsers(): User[] {
 export function seedDummyUserIfNeeded(): User {
   let user = getUserById(dummyUser.id);
   if (!user) {
-    user = { ...dummyUser, createdAt: new Date(), updatedAt: new Date() };
-    createUser(user);
+    const seedUser: User & { passwordHash: string } = {
+      ...dummyUser,
+      passwordHash: '$2a$12$abcdefghijklmnopqrstuvwxycdefghimnopqrstuvwx12345678901',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    createUser(seedUser);
+    user = seedUser;
     console.log(`[UserRepository] Seeded dummy user: ${user.id}`);
   }
   return user;

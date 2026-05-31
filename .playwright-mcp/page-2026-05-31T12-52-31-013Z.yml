@@ -1,0 +1,26 @@
+- generic [ref=e259]:
+  - generic [ref=e260]:
+    - heading "Welcome back" [level=1] [ref=e261]
+    - paragraph [ref=e262]: Log in to continue your blueprint journey
+  - generic [ref=e263]:
+    - generic [ref=e264]:
+      - generic [ref=e265]: Email
+      - generic [ref=e266]:
+        - img [ref=e267]
+        - textbox "you@example.com (or 'dev')" [ref=e270]: test@example.com
+    - generic [ref=e271]:
+      - generic [ref=e272]: Password
+      - generic [ref=e273]:
+        - img [ref=e274]
+        - textbox "Your password" [active] [ref=e277]: TestPass123
+        - button [ref=e278] [cursor=pointer]:
+          - img [ref=e279]
+    - link "Forgot password?" [ref=e283] [cursor=pointer]:
+      - /url: /forgot-password
+    - button "Log in" [ref=e284] [cursor=pointer]:
+      - text: Log in
+      - img [ref=e285]
+  - paragraph [ref=e287]:
+    - text: Don't have an account?
+    - link "Sign up" [ref=e288] [cursor=pointer]:
+      - /url: /signup

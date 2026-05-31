@@ -11,9 +11,11 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  passwordHash?: string;
   avatar?: string;
   credits: number;
   language: 'english' | 'hindi';
+  isDev?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

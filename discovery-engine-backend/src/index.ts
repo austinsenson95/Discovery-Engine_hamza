@@ -48,7 +48,19 @@ app.use(helmet());
 // CORS: Allow requests from frontend
 app.use(
   cors({
-    origin: config.corsOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      // In development, allow any localhost origin
+      if (config.isDevelopment && origin.match(/^http:\/\/localhost:\d+$/)) {
+        return callback(null, true);
+      }
+      // Check against configured origins
+      if (config.corsOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -125,7 +137,7 @@ app.listen(config.port, () => {
   console.log(`║  Environment: ${config.nodeEnv.padEnd(49)} ║`);
   console.log(`║  Health:      http://localhost:${config.port}/health${' '.repeat(24 - config.port.toString().length)}║`);
   console.log('╠══════════════════════════════════════════════════════════════╣');
-  console.log('║  Available Endpoints:                                        ║');
+  console.log('║  Auth Endpoints:                                        ║');
   console.log('║    POST /api/auth/register                                   ║');
   console.log('║    POST /api/auth/login                                      ║');
   console.log('║    GET  /api/user/me                                         ║');

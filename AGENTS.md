@@ -310,9 +310,9 @@ The frontend does not use environment variables yet.
 ## Security Considerations
 
 ### Current State
-- **Authentication is MOCKED.** The backend auth controller issues fake JWTs and does not hash passwords. The `authenticate` middleware is a pass-through.
-- **No real database.** All data is in-memory and lost on server restart.
-- **No input sanitization** beyond basic `express.json()` parsing.
+- **Authentication is REAL.** The backend uses `bcryptjs` for password hashing and `jsonwebtoken` for JWT sessions. The `authenticate` middleware verifies tokens.
+- **SQLite database.** User accounts, blueprints, and credit transactions persist across restarts.
+- **Zod validation** is used for all auth routes. Manual validation remains for legacy routes.
 
 ### Existing Security Measures
 - `helmet()` sets secure HTTP headers.
@@ -321,10 +321,10 @@ The frontend does not use environment variables yet.
 - `ApiError` class prevents stack trace leakage in production.
 
 ### If Hardening
-1. Add `bcryptjs` for password hashing.
-2. Implement real JWT validation in `middleware/auth.ts`.
-3. Add a database (PostgreSQL + Prisma or MongoDB + Mongoose).
-4. Sanitize/validate all user inputs (Zod schemas are a good fit).
+1. ~~Add `bcryptjs` for password hashing.~~ ✅ Done
+2. ~~Implement real JWT validation in `middleware/auth.ts`.~~ ✅ Done
+3. Add a database (PostgreSQL + Prisma or MongoDB + Mongoose). SQLite is in use; migrate when scaling.
+4. ~~Sanitize/validate all user inputs (Zod schemas).~~ ✅ Auth routes use Zod.
 5. Do not commit `.env` files with real secrets.
 
 ---
@@ -333,16 +333,16 @@ The frontend does not use environment variables yet.
 
 | File | Why It Matters |
 |------|----------------|
-| `app/src/App.tsx` | Root routes including `/`, `/blueprint`, `/journey`, `/profile`, `/credits` — all wrapped in `Layout`. |
-| `app/src/lib/api.ts` | All wizard API calls connect to the real backend. No mock fallbacks remain in the Blueprint flow. |
-| `app/src/lib/mockData.ts` | Single source of truth for frontend dummy data. |
+| `app/src/App.tsx` | Root routes including `/login`, `/signup`, `/forgot-password`, `/reset-password` (public) and `/`, `/blueprint`, `/journey`, `/profile`, `/credits` (protected via `AuthGuard`). |
+| `app/src/lib/api.ts` | All API calls including auth endpoints. Bearer token auto-attached from `localStorage`. |
+| `app/src/context/AuthContext.tsx` | Global auth state: login, logout, register, token persistence in `localStorage`. |
 | `app/src/pages/Credits.tsx` | Dedicated Credits Dashboard with balance, history, cost breakdown, and in-page purchases. |
 | `discovery-engine-backend/src/index.ts` | Express server setup. Add new middleware/routes here. |
 | `discovery-engine-backend/src/services/llmService.ts` | Real Claude API integration. Throws explicit errors on API failure instead of silently falling back to dummy data. |
 | `discovery-engine-backend/src/services/razorpayService.ts` | Razorpay SDK wrapper — order creation, signature verification, webhook verification. |
 | `discovery-engine-backend/src/controllers/paymentController.ts` | Payment flow: create-order, verify, webhook handler with idempotency. |
 | `discovery-engine-backend/src/db/paymentRepository.ts` | SQLite data access for payment_transactions table. |
-| `discovery-engine-backend/src/services/pdfService.ts` | Returns a mock PDF buffer. Replace with Puppeteer/jsPDF/@react-pdf/renderer. |
+| `discovery-engine-backend/src/services/emailService.ts` | SMTP email service for password reset. Configurable via env vars; logs to console in dev. |
 | `discovery-engine-backend/src/types/index.ts` | Shared contract. Keep in sync with `app/src/types/index.ts`. |
 
 ---
