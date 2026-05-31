@@ -14,8 +14,9 @@ import {
   Loader2,
 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { mockUser } from '@/lib/mockData';
-import { fetchAllBlueprints } from '@/lib/api';
+import { useUser } from '@/hooks/useUser';
+import type { Blueprint } from '@/types';
+import { fetchAllBlueprints, fetchActivity } from '@/lib/api';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -77,13 +78,25 @@ const getWizardSteps = (bp?: any): WizardStep[] => {
 
 
 
-const activityItems: ActivityItem[] = [
-  { id: '1', title: 'Started Program Builder', timeAgo: '2 hours ago', color: 'orange' },
-  { id: '2', title: 'Completed Audience Mapping', timeAgo: 'Yesterday', color: 'green' },
-  { id: '3', title: 'Generated niche recommendations', timeAgo: '2 days ago', color: 'green' },
-  { id: '4', title: 'Started Blueprint Wizard', timeAgo: '2 days ago', color: 'green' },
-  { id: '5', title: 'Joined Discovery Engine', timeAgo: '3 days ago', color: 'gray' },
-];
+function formatRelativeTime(date: Date): string {
+  const now = new Date();
+  const diff = now.getTime() - new Date(date).getTime();
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  if (seconds < 60) return 'Just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  if (days < 7) return `${days}d ago`;
+  return new Date(date).toLocaleDateString();
+}
+
+function getActivityColor(type: string): 'green' | 'orange' | 'gray' {
+  if (type === 'blueprint' || type === 'niche' || type === 'audience' || type === 'program' || type === 'roadmap') return 'green';
+  if (type === 'credit' || type === 'quiz') return 'orange';
+  return 'gray';
+}
 
 /* ------------------------------------------------------------------ */
 /*  Helper Components                                                  */
@@ -179,12 +192,25 @@ function ProgressRing({
 /* ------------------------------------------------------------------ */
 export default function Home() {
   const navigate = useNavigate();
-  const userName = mockUser.name.split(' ')[0]; // "John"
-  const creditsTotal = mockUser.credits;
-  const [blueprints, setBlueprints] = useState<any[]>([]);
+  const { user, credits: creditsTotal } = useUser();
+  const userName = user?.name?.split(' ')[0] || 'Coach';
+  const [blueprints, setBlueprints] = useState<Blueprint[]>([]);
+  const [activityItems, setActivityItems] = useState<ActivityItem[]>([]);
 
   useEffect(() => {
     fetchAllBlueprints().then(setBlueprints).catch(() => setBlueprints([]));
+    fetchActivity()
+      .then((acts) =>
+        setActivityItems(
+          acts.slice(0, 5).map((a: { id: string | number; title: string; createdAt: string; type: string }) => ({
+            id: String(a.id),
+            title: a.title,
+            timeAgo: formatRelativeTime(new Date(a.createdAt)),
+            color: getActivityColor(a.type),
+          }))
+        )
+      )
+      .catch(() => setActivityItems([]));
   }, []);
 
   const latest = blueprints[0];

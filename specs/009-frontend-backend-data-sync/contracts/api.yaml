@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: Discovery Engine - User Data API
+  version: 1.0.0
+  description: |
+    New endpoints for real-time user data, activity, achievements, and credit history.
+    These endpoints complement the existing blueprint and auth APIs.
+
+servers:
+  - url: http://localhost:3001/api
+    description: Local development server
+
+paths:
+  /user/activity:
+    get:
+      summary: Get user's recent activity feed
+      description: Returns the most recent activity items for the current user, ordered by newest first.
+      tags:
+        - User
+      responses:
+        '200':
+          description: Activity feed retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActivityItem'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /user/achievements:
+    get:
+      summary: Get user's achievements
+      description: Computes and returns all achievements with their earned status based on the user's blueprint data.
+      tags:
+        - User
+      responses:
+        '200':
+          description: Achievements retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Achievement'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /user/credit-history:
+    get:
+      summary: Get user's credit transaction history
+      description: Returns a chronological list of all credit deductions with dates, actions, and running balances.
+      tags:
+        - User
+      responses:
+        '200':
+          description: Credit history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      transactions:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/CreditTransaction'
+                      balance:
+                        type: integer
+                        description: Current credit balance
+                        example: 85
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          example: "Completed Niche Discovery"
+        description:
+          type: string
+          example: "Found niche: Career Transition Coaching"
+        type:
+          type: string
+          enum: [blueprint, niche, audience, program, roadmap, credit, quiz]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, type, createdAt]
+
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: string
+        icon:
+          type: string
+          example: "rocket"
+        title:
+          type: string
+          example: "First Steps"
+        description:
+          type: string
+          example: "Complete Step 1"
+        earned:
+          type: boolean
+        earnedAt:
+          type: string
+          format: date-time
+          nullable: true
+        color:
+          type: string
+          example: "#059669"
+        bgColor:
+          type: string
+          example: "#ECFDF5"
+      required: [id, icon, title, description, earned, color, bgColor]
+
+    CreditTransaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date
+          example: "2026-05-30"
+        action:
+          type: string
+          example: "Niche Discovery"
+        credits:
+          type: string
+          example: "-10"
+        balance:
+          type: string
+          example: "90"
+      required: [id, date, action, credits, balance]
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "Unauthorized"

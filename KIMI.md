@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/008-claude-dynamic-content/plan.md
+specs/009-frontend-backend-data-sync/plan.md
 <!-- SPECKIT END -->

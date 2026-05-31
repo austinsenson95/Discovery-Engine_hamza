@@ -32,6 +32,7 @@ import PersonaCard from '@/components/PersonaCard';
 import ReadinessQuizComponent from '@/components/ReadinessQuiz';
 import QuizResult from '@/components/QuizResult';
 import { useToast } from '@/hooks/useToast';
+import { useUser } from '@/hooks/useUser';
 import ToastContainer from '@/components/ui/Toast';
 import {
   submitNicheForm,
@@ -179,13 +180,13 @@ export default function Blueprint() {
   const [duration, setDuration] = useState<CourseDuration>('12_weeks');
   const [roadmap, setRoadmap] = useState<RoadmapPhase[]>([]);
   const [readinessQuiz, setReadinessQuiz] = useState<ReadinessQuiz | null>(null);
-  const [credits, setCredits] = useState(100);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [blueprintId, setBlueprintId] = useState<string | null>(null);
   const [showBooking, setShowBooking] = useState(false);
 
   const { toasts, removeToast, success, error, info } = useToast();
+  const { refreshCredits } = useUser();
 
   // Helper tags
   const skillTags = ['Leadership', 'Public Speaking', 'Team Management', 'Problem Solving', 'Mentoring'];
@@ -194,7 +195,7 @@ export default function Blueprint() {
 
   // Suppress unused variable warnings for state tracked but not rendered
   void selectedProgramName;
-  void credits;
+
   void skillTags;
   void expTags;
   void passionTags;
@@ -321,7 +322,7 @@ export default function Blueprint() {
       const result = await submitNicheForm({ skills, experience, passions, domains: selectedDomains });
       setNicheOptions(result.niches);
       setBlueprintId(result.blueprint.id);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
     } catch (err) {
       error(err instanceof Error ? err.message : 'Failed to generate niches');
     }
@@ -348,7 +349,7 @@ export default function Blueprint() {
     try {
       const result = await generatePersona(selectedNiche?.id || '1');
       setPersona(result.persona);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
     } catch (err) {
       error(err instanceof Error ? err.message : 'Failed to generate persona');
     }
@@ -360,18 +361,20 @@ export default function Blueprint() {
     setSubStep(1);
     if (blueprintId) {
       try {
-        await updateBlueprint(blueprintId, {
-          audience: { persona: persona },
-          currentStep: 3,
-          progress: 35,
-        });
+        if (persona) {
+          await updateBlueprint(blueprintId, {
+            audience: { persona },
+            currentStep: 3,
+            progress: 35,
+          });
+        }
       } catch { /* ignore */ }
     }
     setLoading(true);
     try {
       const result = await generateProblems();
       setProblems(result.problems);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
     } catch (err) {
       error(err instanceof Error ? err.message : 'Failed to generate problems');
     }
@@ -428,7 +431,7 @@ export default function Blueprint() {
     try {
       const result = await generateProgramNames();
       setProgramNames(result.names);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
     } catch (err) {
       error(err instanceof Error ? err.message : 'Failed to generate program names');
     }
@@ -456,7 +459,7 @@ export default function Blueprint() {
       const result = await generatePricing();
       setPricing(result.pricing);
       setAdjustedPrice(result.pricing.startingPrice);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
     } catch (err) {
       error(err instanceof Error ? err.message : 'Failed to generate pricing');
     }
@@ -499,7 +502,7 @@ export default function Blueprint() {
     try {
       const result = await generateCurriculum();
       setCurriculum(result.curriculum);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
     } catch (err) {
       error(err instanceof Error ? err.message : 'Failed to generate curriculum');
     }
@@ -531,7 +534,7 @@ export default function Blueprint() {
     try {
       const result = await generateRoadmap();
       setRoadmap(result.phases);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
     } catch (err) {
       error(err instanceof Error ? err.message : 'Failed to generate roadmap');
     }
@@ -544,7 +547,7 @@ export default function Blueprint() {
     try {
       const result = await submitQuiz(answers);
       setReadinessQuiz(result.readinessQuiz);
-      setCredits(prev => prev - result.creditsDeducted);
+      await refreshCredits();
       success('Quiz submitted! Your readiness score is ready.');
       if (blueprintId) {
         try {

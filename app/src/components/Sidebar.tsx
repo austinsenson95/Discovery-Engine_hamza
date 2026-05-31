@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Calendar,
 } from 'lucide-react';
+import { useUser } from '@/hooks/useUser';
 
 const CALL_BOOKING_URL =
   import.meta.env.VITE_CALL_BOOKING_URL ||
@@ -27,7 +28,7 @@ const navSections = [
   {
     label: 'MY STUFF',
     items: [
-      { to: '/journey', icon: Route, label: 'MY Journey' },
+      { to: '/journey', icon: Route, label: 'My Journey' },
       { to: '/profile', icon: User, label: 'Profile' },
     ],
   },
@@ -47,6 +48,7 @@ export default function Sidebar({
   onToggleCollapse,
 }: SidebarProps) {
   const location = useLocation();
+  const { user, isLoading } = useUser();
 
   const handleBookCall = () => {
     console.log('[Sidebar] Call booking clicked');
@@ -259,10 +261,10 @@ export default function Sidebar({
                   className="flex-1 min-w-0 overflow-hidden"
                 >
                   <p className="text-sm font-semibold text-white truncate">
-                    John Doe
+                    {isLoading ? 'Loading...' : user?.name || 'Guest'}
                   </p>
                   <p className="text-xs text-gray-400 truncate">
-                    john.doe@example.com
+                    {isLoading ? '' : user?.email || ''}
                   </p>
                 </motion.div>
               )}

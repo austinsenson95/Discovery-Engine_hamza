@@ -12,7 +12,7 @@ export default function Layout() {
     : 'lg:ml-[260px]';
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex h-screen bg-background">
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -21,7 +21,7 @@ export default function Layout() {
       />
       <div className={`flex-1 flex flex-col ml-0 ${contentMargin} transition-all duration-300 ease-out`}>
         <Navbar onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8 bg-white">
+        <main className="flex-1 overflow-y-auto p-6 lg:p-8 bg-background">
           <Outlet />
         </main>
       </div>
