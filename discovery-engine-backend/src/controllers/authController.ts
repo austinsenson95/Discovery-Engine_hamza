@@ -41,7 +41,7 @@ export const register = async (
     console.log(`[Auth] POST /api/auth/register — email="${email}"`);
 
     // Check if user already exists
-    const existingUser = getUserByEmail(email);
+    const existingUser = await getUserByEmail(email);
     if (existingUser) {
       res.status(409).json({
         success: false,
@@ -66,7 +66,7 @@ export const register = async (
       updatedAt: new Date(),
     };
 
-    createUser(newUser);
+    await createUser(newUser);
     console.log(`[Auth] New user registered: ${newUser.id} (${email})`);
 
     // Generate JWT
@@ -95,7 +95,7 @@ const DEV_PASSWORD = 'password';
 const DEV_CREDITS = 999;
 
 async function ensureDevUser(): Promise<User & { passwordHash: string }> {
-  let user = getUserByEmail(DEV_EMAIL);
+  let user = await getUserByEmail(DEV_EMAIL);
   if (!user) {
     const devUser: User & { passwordHash: string } = {
       id: `usr_dev_${Date.now()}`,
@@ -108,7 +108,7 @@ async function ensureDevUser(): Promise<User & { passwordHash: string }> {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    createUser(devUser);
+    await createUser(devUser);
     console.log(`[Auth] Created dev user: ${devUser.id}`);
     user = devUser;
   }
@@ -132,12 +132,12 @@ export const login = async (
       isDevMode = true;
       user = await ensureDevUser();
       // Reset dev credits on every login
-      updateUser(user.id, { credits: DEV_CREDITS });
-      user = getUserById(user.id);
+      await updateUser(user.id, { credits: DEV_CREDITS });
+      user = await getUserById(user.id);
       console.log(`[Auth] Dev login: ${user?.id} — credits set to ${DEV_CREDITS}`);
     } else {
       // Regular login
-      user = getUserByEmail(email);
+      user = await getUserByEmail(email);
 
       if (!user || !user.passwordHash) {
         res.status(401).json({
@@ -197,12 +197,12 @@ export const forgotPassword = async (
     const { email } = req.body;
     console.log(`[Auth] POST /api/auth/forgot-password — email="${email}"`);
 
-    const user = getUserByEmail(email);
+    const user = await getUserByEmail(email);
 
     if (user) {
       const { raw, hash } = generateResetToken();
       const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-      createResetToken(user.id, hash, expiresAt);
+      await createResetToken(user.id, hash, expiresAt);
 
       const resetUrl = `${config.frontendUrl}/reset-password?token=${raw}`;
       await sendPasswordResetEmail(user.email, resetUrl);
@@ -232,7 +232,7 @@ export const resetPassword = async (
     console.log(`[Auth] POST /api/auth/reset-password`);
 
     const tokenHash = require('crypto').createHash('sha256').update(token).digest('hex');
-    const resetRecord = findValidToken(tokenHash);
+    const resetRecord = await findValidToken(tokenHash);
 
     if (!resetRecord) {
       res.status(400).json({
@@ -244,10 +244,10 @@ export const resetPassword = async (
 
     // Hash new password and update user
     const passwordHash = await hashPassword(password);
-    updatePasswordHash(resetRecord.userId, passwordHash);
+    await updatePasswordHash(resetRecord.userId, passwordHash);
 
     // Mark token as used
-    markTokenUsed(resetRecord.id);
+    await markTokenUsed(resetRecord.id);
 
     console.log(`[Auth] Password reset complete for user: ${resetRecord.userId}`);
 

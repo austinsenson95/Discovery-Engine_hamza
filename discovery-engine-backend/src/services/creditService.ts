@@ -4,7 +4,7 @@
  * ============================================================================
  * Manages credit deduction for AI-powered blueprint generation steps.
  *
- * Uses SQLite via creditRepository for persistence.
+ * Uses PostgreSQL via creditRepository for persistence.
  * ============================================================================
  */
 
@@ -29,11 +29,6 @@ class CreditService {
     return CreditService.instance;
   }
 
-  constructor() {
-    // Ensure dummy user exists in DB
-    seedDummyUserIfNeeded();
-  }
-
   getCost(action: keyof CreditDeductions): number {
     return this.deductions[action] || 0;
   }
@@ -43,10 +38,10 @@ class CreditService {
   }
 
   async getBalance(userId: string): Promise<number> {
-    const balance = getBalance(userId);
+    const balance = await getBalance(userId);
     if (balance === undefined) {
       // New user — seed and return default
-      seedDummyUserIfNeeded();
+      await seedDummyUserIfNeeded();
       return 100;
     }
     return balance;
@@ -67,10 +62,10 @@ class CreditService {
     }
 
     const newBalance = currentBalance - amount;
-    updateBalance(userId, newBalance);
+    await updateBalance(userId, newBalance);
 
     // Record transaction
-    addTransaction({
+    await addTransaction({
       userId,
       blueprintId,
       action,
@@ -89,9 +84,9 @@ class CreditService {
   async addCredits(userId: string, amount: number): Promise<number> {
     const currentBalance = await this.getBalance(userId);
     const newBalance = currentBalance + amount;
-    updateBalance(userId, newBalance);
+    await updateBalance(userId, newBalance);
 
-    addTransaction({
+    await addTransaction({
       userId,
       action: 'purchase',
       amount,
@@ -138,7 +133,7 @@ class CreditService {
     };
   }
 
-  getTransactionHistory(userId: string, limit = 50) {
+  async getTransactionHistory(userId: string, limit = 50) {
     return getTransactionsByUser(userId, limit);
   }
 }

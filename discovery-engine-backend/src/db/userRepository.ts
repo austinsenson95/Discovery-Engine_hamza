@@ -2,11 +2,11 @@
  * ============================================================================
  * DISCOVERY ENGINE - User Repository
  * ============================================================================
- * Data access layer for users using SQLite.
+ * Data access layer for users using PostgreSQL.
  * ============================================================================
  */
 
-import { db } from './index';
+import { query } from './index';
 import type { User } from '../types';
 import { dummyUser } from '../data/dummyData';
 
@@ -31,85 +31,86 @@ function rowToUser(row: any): User {
 // ---------------------------------------------------------------------------
 // User CRUD
 // ---------------------------------------------------------------------------
-export function getUserById(userId: string): User | undefined {
-  const stmt = db.prepare('SELECT * FROM users WHERE id = ?');
-  const row = stmt.get(userId) as any;
-  return row ? rowToUser(row) : undefined;
+export async function getUserById(userId: string): Promise<User | undefined> {
+  const { rows } = await query('SELECT * FROM users WHERE id = $1', [userId]);
+  return rows[0] ? rowToUser(rows[0]) : undefined;
 }
 
-export function getUserByEmail(email: string): User | undefined {
-  const stmt = db.prepare('SELECT * FROM users WHERE email = ?');
-  const row = stmt.get(email.toLowerCase()) as any;
-  return row ? rowToUser(row) : undefined;
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  const { rows } = await query('SELECT * FROM users WHERE email = $1', [email.toLowerCase()]);
+  return rows[0] ? rowToUser(rows[0]) : undefined;
 }
 
-export function createUser(user: User & { passwordHash: string }): User {
-  const stmt = db.prepare(`
-    INSERT INTO users (id, name, email, password_hash, avatar, language, credits, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
-  stmt.run(
-    user.id,
-    user.name,
-    user.email.toLowerCase(),
-    user.passwordHash,
-    user.avatar || null,
-    user.language,
-    user.credits,
-    user.createdAt.toISOString(),
-    user.updatedAt.toISOString()
+export async function createUser(user: User & { passwordHash: string }): Promise<User> {
+  await query(
+    `INSERT INTO users (id, name, email, password_hash, avatar, language, credits, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+    [
+      user.id,
+      user.name,
+      user.email.toLowerCase(),
+      user.passwordHash,
+      user.avatar || null,
+      user.language,
+      user.credits,
+      user.createdAt.toISOString(),
+      user.updatedAt.toISOString(),
+    ]
   );
   return user;
 }
 
-export function updateUser(userId: string, updates: Partial<Omit<User, 'id' | 'createdAt'>>): User | undefined {
-  const existing = getUserById(userId);
+export async function updateUser(
+  userId: string,
+  updates: Partial<Omit<User, 'id' | 'createdAt'>>
+): Promise<User | undefined> {
+  const existing = await getUserById(userId);
   if (!existing) return undefined;
 
   const merged = { ...existing, ...updates, updatedAt: new Date() };
 
-  const stmt = db.prepare(`
-    UPDATE users SET
-      name = ?,
-      email = ?,
-      password_hash = ?,
-      avatar = ?,
-      language = ?,
-      credits = ?,
-      updated_at = ?
-    WHERE id = ?
-  `);
-  stmt.run(
-    merged.name,
-    merged.email,
-    merged.passwordHash || existing.passwordHash,
-    merged.avatar || null,
-    merged.language,
-    merged.credits,
-    merged.updatedAt.toISOString(),
-    userId
+  await query(
+    `UPDATE users SET
+      name = $1,
+      email = $2,
+      password_hash = $3,
+      avatar = $4,
+      language = $5,
+      credits = $6,
+      updated_at = $7
+    WHERE id = $8`,
+    [
+      merged.name,
+      merged.email,
+      merged.passwordHash || existing.passwordHash,
+      merged.avatar || null,
+      merged.language,
+      merged.credits,
+      merged.updatedAt.toISOString(),
+      userId,
+    ]
   );
   return merged;
 }
 
-export function updatePasswordHash(userId: string, passwordHash: string): void {
-  const stmt = db.prepare(`
-    UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?
-  `);
-  stmt.run(passwordHash, new Date().toISOString(), userId);
+export async function updatePasswordHash(userId: string, passwordHash: string): Promise<void> {
+  await query('UPDATE users SET password_hash = $1, updated_at = $2 WHERE id = $3', [
+    passwordHash,
+    new Date().toISOString(),
+    userId,
+  ]);
 }
 
-export function getAllUsers(): User[] {
-  const stmt = db.prepare('SELECT * FROM users ORDER BY created_at DESC');
-  const rows = stmt.all() as any[];
+export async function getAllUsers(): Promise<User[]> {
+  const { rows } = await query('SELECT * FROM users ORDER BY created_at DESC');
   return rows.map(rowToUser);
 }
 
 // ---------------------------------------------------------------------------
 // Seeding
 // ---------------------------------------------------------------------------
-export function seedDummyUserIfNeeded(): User {
-  let user = getUserById(dummyUser.id);
+export async function seedDummyUserIfNeeded(): Promise<User> {
+  let user = await getUserById(dummyUser.id);
   if (!user) {
     const seedUser: User & { passwordHash: string } = {
       ...dummyUser,
@@ -117,7 +118,7 @@ export function seedDummyUserIfNeeded(): User {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    createUser(seedUser);
+    await createUser(seedUser);
     user = seedUser;
     console.log(`[UserRepository] Seeded dummy user: ${user.id}`);
   }

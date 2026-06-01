@@ -2,11 +2,11 @@
  * ============================================================================
  * DISCOVERY ENGINE - Credit Repository
  * ============================================================================
- * Data access layer for credit transactions using SQLite.
+ * Data access layer for credit transactions using PostgreSQL.
  * ============================================================================
  */
 
-import { db } from './index';
+import { query } from './index';
 
 export interface CreditTransaction {
   id: number;
@@ -38,36 +38,41 @@ function rowToTransaction(row: any): CreditTransaction {
 // ---------------------------------------------------------------------------
 // Credit Transaction CRUD
 // ---------------------------------------------------------------------------
-export function getTransactionsByUser(userId: string, limit = 50): CreditTransaction[] {
-  const stmt = db.prepare('SELECT * FROM credit_transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT ?');
-  const rows = stmt.all(userId, limit) as any[];
+export async function getTransactionsByUser(userId: string, limit = 50): Promise<CreditTransaction[]> {
+  const { rows } = await query(
+    'SELECT * FROM credit_transactions WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2',
+    [userId, limit]
+  );
   return rows.map(rowToTransaction);
 }
 
-export function addTransaction(tx: Omit<CreditTransaction, 'id'>): CreditTransaction {
-  const stmt = db.prepare(`
-    INSERT INTO credit_transactions (user_id, blueprint_id, action, amount, balance_after, description, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `);
-  const result = stmt.run(
-    tx.userId,
-    tx.blueprintId || null,
-    tx.action,
-    tx.amount,
-    tx.balanceAfter,
-    tx.description || null,
-    tx.createdAt.toISOString()
+export async function addTransaction(tx: Omit<CreditTransaction, 'id'>): Promise<CreditTransaction> {
+  const { rows } = await query(
+    `INSERT INTO credit_transactions (user_id, blueprint_id, action, amount, balance_after, description, created_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING id`,
+    [
+      tx.userId,
+      tx.blueprintId || null,
+      tx.action,
+      tx.amount,
+      tx.balanceAfter,
+      tx.description || null,
+      tx.createdAt.toISOString(),
+    ]
   );
-  return { ...tx, id: Number(result.lastInsertRowid) };
+  return { ...tx, id: Number(rows[0].id) };
 }
 
-export function getBalance(userId: string): number | undefined {
-  const stmt = db.prepare('SELECT credits FROM users WHERE id = ?');
-  const row = stmt.get(userId) as any;
-  return row ? row.credits : undefined;
+export async function getBalance(userId: string): Promise<number | undefined> {
+  const { rows } = await query('SELECT credits FROM users WHERE id = $1', [userId]);
+  return rows[0] ? rows[0].credits : undefined;
 }
 
-export function updateBalance(userId: string, newBalance: number): void {
-  const stmt = db.prepare('UPDATE users SET credits = ?, updated_at = ? WHERE id = ?');
-  stmt.run(newBalance, new Date().toISOString(), userId);
+export async function updateBalance(userId: string, newBalance: number): Promise<void> {
+  await query('UPDATE users SET credits = $1, updated_at = $2 WHERE id = $3', [
+    newBalance,
+    new Date().toISOString(),
+    userId,
+  ]);
 }
