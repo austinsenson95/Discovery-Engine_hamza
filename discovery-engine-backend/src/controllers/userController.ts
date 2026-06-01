@@ -10,7 +10,7 @@
  *   - GET  /api/user/achievements → Get computed achievements
  *   - GET  /api/user/credit-history → Get credit transaction history
  *
- * Uses SQLite via userRepository and creditRepository.
+ * Uses PostgreSQL via userRepository and creditRepository.
  * ============================================================================
  */
 
@@ -25,8 +25,7 @@ import { getActivitiesByUser } from '../db/blueprintRepository';
 import { getTransactionsByUser } from '../db/creditRepository';
 import { getBlueprintsByUser } from '../db/blueprintRepository';
 
-// Seed on first use
-seedDummyUserIfNeeded();
+// Seeding is handled lazily by creditService
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -56,7 +55,7 @@ export const getMe = async (
     }
 
     console.log(`[User] GET /api/user/me — fetching current user`);
-    const user = getUserById(userId);
+    const user = await getUserById(userId);
 
     if (!user) {
       res.status(404).json({
@@ -104,7 +103,7 @@ export const updateProfile = async (
       return;
     }
 
-    const user = updateUser(userId, {
+    const user = await updateUser(userId, {
       name,
       language: language as 'english' | 'hindi',
       avatar,
@@ -179,7 +178,7 @@ export const getActivity = async (
     }
 
     console.log(`[User] GET /api/user/activity — fetching activity feed`);
-    const activities = getActivitiesByUser(userId, 50);
+    const activities = await getActivitiesByUser(userId, 50);
 
     res.status(200).json({
       success: true,
@@ -209,7 +208,7 @@ export const getAchievements = async (
     }
 
     console.log(`[User] GET /api/user/achievements — computing achievements`);
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
 
     const achievements = [
@@ -323,7 +322,7 @@ export const getCreditHistory = async (
     }
 
     console.log(`[User] GET /api/user/credit-history — fetching transactions`);
-    const transactions = getTransactionsByUser(userId, 50);
+    const transactions = await getTransactionsByUser(userId, 50);
     const balance = await creditService.getBalance(userId);
 
     res.status(200).json({

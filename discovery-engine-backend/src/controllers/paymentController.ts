@@ -65,7 +65,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
     const order = await createRazorpayOrder(pkg, userId);
 
     // Record the transaction as 'created'
-    createPaymentTransaction({
+    await createPaymentTransaction({
       id: crypto.randomUUID(),
       userId,
       razorpayOrderId: order.id,
@@ -105,7 +105,7 @@ export const verifyPayment = async (req: Request, res: Response, next: NextFunct
     const userId = dummyUser.id;
 
     // Idempotency check: already processed?
-    const existingTx = getPaymentTransactionByPaymentId(razorpay_payment_id);
+    const existingTx = await getPaymentTransactionByPaymentId(razorpay_payment_id);
     if (existingTx && existingTx.status === 'paid') {
       const currentBalance = await creditService.getBalance(userId);
       console.log(`[Payment] Duplicate verify for ${razorpay_payment_id}. Already paid.`);
@@ -131,7 +131,7 @@ export const verifyPayment = async (req: Request, res: Response, next: NextFunct
     }
 
     // Find the order transaction (may have null payment ID at creation)
-    const orderTx = getPaymentTransactionByOrderId(razorpay_order_id);
+    const orderTx = await getPaymentTransactionByOrderId(razorpay_order_id);
 
     // Find the package from the existing transaction or by order
     let creditsToAdd = 0;
@@ -160,11 +160,11 @@ export const verifyPayment = async (req: Request, res: Response, next: NextFunct
 
     // Update or create transaction record
     if (existingTx) {
-      updatePaymentTransactionStatus(razorpay_payment_id, 'paid');
+      await updatePaymentTransactionStatus(razorpay_payment_id, 'paid');
     } else if (orderTx) {
-      updatePaymentTransactionByOrderId(razorpay_order_id, 'paid', razorpay_payment_id);
+      await updatePaymentTransactionByOrderId(razorpay_order_id, 'paid', razorpay_payment_id);
     } else {
-      createPaymentTransaction({
+      await createPaymentTransaction({
         id: crypto.randomUUID(),
         userId,
         razorpayOrderId: razorpay_order_id,
@@ -199,13 +199,13 @@ export const recordPaymentFailure = async (req: Request, res: Response, next: Ne
       throw new ApiError('orderId and paymentId are required.', 400);
     }
 
-    const existingTx = getPaymentTransactionByPaymentId(paymentId) || getPaymentTransactionByOrderId(orderId);
+    const existingTx = await getPaymentTransactionByPaymentId(paymentId) || await getPaymentTransactionByOrderId(orderId);
 
     if (existingTx && existingTx.status === 'created') {
       if (existingTx.razorpayPaymentId) {
-        updatePaymentTransactionStatus(existingTx.razorpayPaymentId, 'failed');
+        await updatePaymentTransactionStatus(existingTx.razorpayPaymentId, 'failed');
       } else {
-        updatePaymentTransactionByOrderId(existingTx.razorpayOrderId, 'failed');
+        await updatePaymentTransactionByOrderId(existingTx.razorpayOrderId, 'failed');
       }
       console.log(`[Payment] Recorded failure for order ${existingTx.razorpayOrderId}. Reason: ${reason || 'unknown'}`);
       sendSuccess(res, { status: 'failed' }, 200, 'Payment failure recorded.');
@@ -214,7 +214,7 @@ export const recordPaymentFailure = async (req: Request, res: Response, next: Ne
 
     // If no existing transaction, create one with failed status
     if (!existingTx) {
-      createPaymentTransaction({
+      await createPaymentTransaction({
         id: crypto.randomUUID(),
         userId: dummyUser.id,
         razorpayOrderId: orderId,
@@ -289,7 +289,7 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
     const amount = paymentEntity.amount;
 
     // Idempotency check
-    const existingTx = getPaymentTransactionByPaymentId(razorpayPaymentId);
+    const existingTx = await getPaymentTransactionByPaymentId(razorpayPaymentId);
     if (existingTx) {
       if (existingTx.status === 'paid') {
         console.log(`[Payment] Webhook duplicate for already-paid ${razorpayPaymentId}`);
@@ -304,7 +304,7 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
     }
 
     // Find the order transaction (may have null payment ID at creation)
-    const orderTx = getPaymentTransactionByOrderId(razorpayOrderId);
+    const orderTx = await getPaymentTransactionByOrderId(razorpayOrderId);
 
     // Find credits to add
     let creditsToAdd = 0;
@@ -329,11 +329,11 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
 
     // Record/update transaction
     if (existingTx) {
-      updatePaymentTransactionStatus(razorpayPaymentId, 'paid');
+      await updatePaymentTransactionStatus(razorpayPaymentId, 'paid');
     } else if (orderTx) {
-      updatePaymentTransactionByOrderId(razorpayOrderId, 'paid', razorpayPaymentId);
+      await updatePaymentTransactionByOrderId(razorpayOrderId, 'paid', razorpayPaymentId);
     } else {
-      createPaymentTransaction({
+      await createPaymentTransaction({
         id: crypto.randomUUID(),
         userId,
         razorpayOrderId,

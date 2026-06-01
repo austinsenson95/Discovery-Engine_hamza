@@ -2,11 +2,11 @@
  * ============================================================================
  * DISCOVERY ENGINE - Blueprint Repository
  * ============================================================================
- * Data access layer for blueprints and activities using SQLite.
+ * Data access layer for blueprints and activities using PostgreSQL.
  * ============================================================================
  */
 
-import { db } from './index';
+import { query } from './index';
 import type { Blueprint, ActivityItem } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -44,86 +44,91 @@ function rowToBlueprint(row: any): Blueprint {
 // ---------------------------------------------------------------------------
 // Blueprint CRUD
 // ---------------------------------------------------------------------------
-export function getBlueprintsByUser(userId: string): Blueprint[] {
-  const stmt = db.prepare('SELECT * FROM blueprints WHERE user_id = ? ORDER BY updated_at DESC');
-  const rows = stmt.all(userId) as any[];
+export async function getBlueprintsByUser(userId: string): Promise<Blueprint[]> {
+  const { rows } = await query(
+    'SELECT * FROM blueprints WHERE user_id = $1 ORDER BY updated_at DESC',
+    [userId]
+  );
   return rows.map(rowToBlueprint);
 }
 
-export function getBlueprintById(id: string): Blueprint | undefined {
-  const stmt = db.prepare('SELECT * FROM blueprints WHERE id = ?');
-  const row = stmt.get(id) as any;
-  return row ? rowToBlueprint(row) : undefined;
+export async function getBlueprintById(id: string): Promise<Blueprint | undefined> {
+  const { rows } = await query('SELECT * FROM blueprints WHERE id = $1', [id]);
+  return rows[0] ? rowToBlueprint(rows[0]) : undefined;
 }
 
-export function createBlueprint(blueprint: Blueprint): Blueprint {
-  const stmt = db.prepare(`
-    INSERT INTO blueprints (id, user_id, title, status, current_step, progress, niche, audience, program, roadmap, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
-  stmt.run(
-    blueprint.id,
-    blueprint.userId,
-    blueprint.title || null,
-    blueprint.status,
-    blueprint.currentStep,
-    blueprint.progress,
-    serialize(blueprint.niche),
-    serialize(blueprint.audience),
-    serialize(blueprint.program),
-    serialize(blueprint.roadmap),
-    blueprint.createdAt.toISOString(),
-    blueprint.updatedAt.toISOString()
+export async function createBlueprint(blueprint: Blueprint): Promise<Blueprint> {
+  await query(
+    `INSERT INTO blueprints (id, user_id, title, status, current_step, progress, niche, audience, program, roadmap, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
+    [
+      blueprint.id,
+      blueprint.userId,
+      blueprint.title || null,
+      blueprint.status,
+      blueprint.currentStep,
+      blueprint.progress,
+      serialize(blueprint.niche),
+      serialize(blueprint.audience),
+      serialize(blueprint.program),
+      serialize(blueprint.roadmap),
+      blueprint.createdAt.toISOString(),
+      blueprint.updatedAt.toISOString(),
+    ]
   );
   return blueprint;
 }
 
-export function updateBlueprint(id: string, updates: Partial<Blueprint>): Blueprint | undefined {
-  const existing = getBlueprintById(id);
+export async function updateBlueprint(
+  id: string,
+  updates: Partial<Blueprint>
+): Promise<Blueprint | undefined> {
+  const existing = await getBlueprintById(id);
   if (!existing) return undefined;
 
   const merged = { ...existing, ...updates, updatedAt: new Date() };
 
-  const stmt = db.prepare(`
-    UPDATE blueprints SET
-      title = ?,
-      status = ?,
-      current_step = ?,
-      progress = ?,
-      niche = ?,
-      audience = ?,
-      program = ?,
-      roadmap = ?,
-      updated_at = ?
-    WHERE id = ?
-  `);
-  stmt.run(
-    merged.title || null,
-    merged.status,
-    merged.currentStep,
-    merged.progress,
-    serialize(merged.niche),
-    serialize(merged.audience),
-    serialize(merged.program),
-    serialize(merged.roadmap),
-    merged.updatedAt.toISOString(),
-    id
+  await query(
+    `UPDATE blueprints SET
+      title = $1,
+      status = $2,
+      current_step = $3,
+      progress = $4,
+      niche = $5,
+      audience = $6,
+      program = $7,
+      roadmap = $8,
+      updated_at = $9
+    WHERE id = $10`,
+    [
+      merged.title || null,
+      merged.status,
+      merged.currentStep,
+      merged.progress,
+      serialize(merged.niche),
+      serialize(merged.audience),
+      serialize(merged.program),
+      serialize(merged.roadmap),
+      merged.updatedAt.toISOString(),
+      id,
+    ]
   );
   return merged;
 }
 
-export function deleteBlueprint(id: string): boolean {
-  const stmt = db.prepare('DELETE FROM blueprints WHERE id = ?');
-  const result = stmt.run(id);
-  return result.changes > 0;
+export async function deleteBlueprint(id: string): Promise<boolean> {
+  const result = await query('DELETE FROM blueprints WHERE id = $1', [id]);
+  return (result.rowCount ?? 0) > 0;
 }
 
 // ---------------------------------------------------------------------------
 // Activities
 // ---------------------------------------------------------------------------
-export function getActivitiesByUser(userId: string, limit = 20): ActivityItem[] {
-  const stmt = db.prepare('SELECT * FROM activities WHERE user_id = ? ORDER BY created_at DESC LIMIT ?');
-  const rows = stmt.all(userId, limit) as any[];
+export async function getActivitiesByUser(userId: string, limit = 20): Promise<ActivityItem[]> {
+  const { rows } = await query(
+    'SELECT * FROM activities WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2',
+    [userId, limit]
+  );
   return rows.map((row) => ({
     id: String(row.id),
     userId: row.user_id,
@@ -135,21 +140,22 @@ export function getActivitiesByUser(userId: string, limit = 20): ActivityItem[] 
   }));
 }
 
-export function addActivity(activity: Omit<ActivityItem, 'id'>): ActivityItem {
-  const stmt = db.prepare(`
-    INSERT INTO activities (user_id, blueprint_id, title, description, type, created_at)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `);
-  const result = stmt.run(
-    activity.userId,
-    activity.blueprintId || null,
-    activity.title,
-    activity.description || null,
-    activity.type,
-    activity.createdAt.toISOString()
+export async function addActivity(activity: Omit<ActivityItem, 'id'>): Promise<ActivityItem> {
+  const { rows } = await query(
+    `INSERT INTO activities (user_id, blueprint_id, title, description, type, created_at)
+     VALUES ($1, $2, $3, $4, $5, $6)
+     RETURNING id`,
+    [
+      activity.userId,
+      activity.blueprintId || null,
+      activity.title,
+      activity.description || null,
+      activity.type,
+      activity.createdAt.toISOString(),
+    ]
   );
   return {
     ...activity,
-    id: String(result.lastInsertRowid),
+    id: String(rows[0].id),
   };
 }

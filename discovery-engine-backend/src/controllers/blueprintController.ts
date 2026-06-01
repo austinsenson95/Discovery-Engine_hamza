@@ -81,7 +81,7 @@ export const getBlueprint = async (
     console.log(`[Blueprint] GET /api/blueprint — fetching blueprint`);
 
     const userId = dummyUser.id;
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0] || {
       ...dummyBlueprint,
       userId,
@@ -104,7 +104,7 @@ export const getAllBlueprints = async (
   try {
     console.log(`[Blueprint] GET /api/blueprint/all — fetching all blueprints`);
     const userId = dummyUser.id;
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     sendSuccess(res, blueprints);
   } catch (error) {
     next(error);
@@ -135,8 +135,8 @@ export const createNewBlueprint = async (
       updatedAt: now,
     };
 
-    createBlueprint(blueprint);
-    addActivity({
+    await createBlueprint(blueprint);
+    await addActivity({
       userId,
       blueprintId: id,
       title: 'Created new blueprint',
@@ -164,7 +164,7 @@ export const updateBlueprintById = async (
     console.log(`[Blueprint] PUT /api/blueprint/${id} — updating blueprint`);
 
     const updates = req.body as Partial<Blueprint>;
-    const updated = updateBlueprint(id, updates);
+    const updated = await updateBlueprint(id, updates);
 
     if (!updated) {
       res.status(404).json({ success: false, message: 'Blueprint not found' });
@@ -192,7 +192,7 @@ export const deleteBlueprintById = async (
     const { id } = req.params;
     console.log(`[Blueprint] DELETE /api/blueprint/${id} — deleting blueprint`);
 
-    const success = deleteBlueprint(id);
+    const success = await deleteBlueprint(id);
     if (!success) {
       res.status(404).json({ success: false, message: 'Blueprint not found' });
       return;
@@ -241,7 +241,7 @@ export const submitNiche = async (
     );
 
     // Find or create blueprint
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     let blueprint = blueprints[0];
     if (!blueprint) {
       blueprint = {
@@ -260,9 +260,9 @@ export const submitNiche = async (
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      createBlueprint(blueprint);
+      await createBlueprint(blueprint);
     } else {
-      blueprint = updateBlueprint(blueprint.id, {
+      const updatedBlueprint = await updateBlueprint(blueprint.id, {
         currentStep: 2,
         progress: 20,
         niche: {
@@ -272,10 +272,15 @@ export const submitNiche = async (
           passions,
           domains,
         },
-      })!;
+      });
+      if (!updatedBlueprint) {
+        res.status(404).json({ success: false, message: 'Blueprint not found' });
+        return;
+      }
+      blueprint = updatedBlueprint;
     }
 
-    addActivity({
+    await addActivity({
       userId,
       blueprintId: blueprint.id,
       title: 'Completed Niche Discovery',
@@ -326,7 +331,7 @@ export const generateAudience = async (
       return;
     }
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     const nicheName =
       blueprint?.niche?.selectedNiche?.name ||
@@ -341,12 +346,12 @@ export const generateAudience = async (
     );
 
     if (blueprint) {
-      updateBlueprint(blueprint.id, {
+      await updateBlueprint(blueprint.id, {
         audience: { persona },
         currentStep: 3,
         progress: 35,
       });
-      addActivity({
+      await addActivity({
         userId,
         blueprintId: blueprint.id,
         title: 'Completed Audience Mapping',
@@ -389,7 +394,7 @@ export const submitProblems = async (
     const userId = dummyUser.id;
     const problems = selectedProblems || dummySelectedProblems;
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     if (blueprint) {
       const program = blueprint.program || {
@@ -399,7 +404,7 @@ export const submitProblems = async (
         modules: dummyModules,
       };
       program.selectedProblems = problems;
-      updateBlueprint(blueprint.id, {
+      await updateBlueprint(blueprint.id, {
         program,
         currentStep: 4,
         progress: 45,
@@ -435,7 +440,7 @@ export const generateProblems = async (
       return;
     }
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     if (!blueprint) {
       res.status(404).json({
@@ -465,12 +470,12 @@ export const generateProblems = async (
 
     if (blueprint && blueprint.program) {
       blueprint.program.generatedProblems = problems;
-      updateBlueprint(blueprint.id, {
+      await updateBlueprint(blueprint.id, {
         program: blueprint.program,
       });
     }
 
-    addActivity({
+    await addActivity({
       userId,
       blueprintId: blueprint.id,
       title: 'Generated Audience Problems',
@@ -520,7 +525,7 @@ export const generateProgramNames = async (
       return;
     }
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     const niche = blueprint?.niche?.selectedNiche?.name || 'Career Coaching';
     const persona = blueprint?.audience?.persona?.name || 'Target Audience';
@@ -534,7 +539,7 @@ export const generateProgramNames = async (
 
     if (blueprint && blueprint.program) {
       blueprint.program.selectedName = names.find((n) => n.isAiRecommended) || names[0];
-      updateBlueprint(blueprint.id, {
+      await updateBlueprint(blueprint.id, {
         program: blueprint.program,
         currentStep: 5,
         progress: 55,
@@ -582,7 +587,7 @@ export const generatePricing = async (
       return;
     }
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     const persona = blueprint?.audience?.persona || dummyPersona;
     const niche = blueprint?.niche?.selectedNiche?.name || 'Career Coaching';
@@ -597,7 +602,7 @@ export const generatePricing = async (
 
     if (blueprint && blueprint.program) {
       blueprint.program.pricing = pricing;
-      updateBlueprint(blueprint.id, {
+      await updateBlueprint(blueprint.id, {
         program: blueprint.program,
         currentStep: 6,
         progress: 70,
@@ -645,7 +650,7 @@ export const generateCurriculum = async (
       return;
     }
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     if (!blueprint) {
       res.status(404).json({
@@ -669,14 +674,14 @@ export const generateCurriculum = async (
 
     if (blueprint && blueprint.program) {
       blueprint.program.curriculum = curriculum;
-      updateBlueprint(blueprint.id, {
+      await updateBlueprint(blueprint.id, {
         program: blueprint.program,
         currentStep: 7,
         progress: 80,
       });
     }
 
-    addActivity({
+    await addActivity({
       userId,
       blueprintId: blueprint.id,
       title: 'Generated Course Curriculum',
@@ -736,7 +741,7 @@ export const submitQuiz = async (
       return;
     }
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     if (!blueprint) {
       res.status(404).json({
@@ -802,11 +807,11 @@ export const submitQuiz = async (
 
     const { deducted, remaining } = await creditService.deductCredits(userId, 'quiz');
 
-    updateBlueprint(blueprint.id, {
+    await updateBlueprint(blueprint.id, {
       readinessQuiz,
     });
 
-    addActivity({
+    await addActivity({
       userId,
       blueprintId: blueprint.id,
       title: 'Completed Coach Readiness Quiz',
@@ -856,7 +861,7 @@ export const generateRoadmap = async (
       return;
     }
 
-    const blueprints = getBlueprintsByUser(userId);
+    const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0];
     if (!blueprint) {
       res.status(404).json({
@@ -875,7 +880,7 @@ export const generateRoadmap = async (
       'roadmap'
     );
 
-    const updated = updateBlueprint(blueprint.id, {
+    const updated = await updateBlueprint(blueprint.id, {
       roadmap: {
         phases,
         pdfUrl,
@@ -886,7 +891,7 @@ export const generateRoadmap = async (
       progress: 100,
     });
 
-    addActivity({
+    await addActivity({
       userId,
       blueprintId: blueprint.id,
       title: 'Completed Blueprint Roadmap',
@@ -925,7 +930,7 @@ export const downloadPDF = async (
     const id = req.params.id as string;
     console.log(`[Blueprint] GET /api/blueprint/pdf/${id} — downloading PDF`);
 
-    const blueprint = getBlueprintById(id);
+    const blueprint = await getBlueprintById(id);
     if (!blueprint) {
       res.status(404).json({
         success: false,

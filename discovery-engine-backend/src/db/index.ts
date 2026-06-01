@@ -1,109 +1,39 @@
 /**
  * ============================================================================
- * DISCOVERY ENGINE - SQLite Database
+ * DISCOVERY ENGINE - PostgreSQL Database
  * ============================================================================
- * Local SQLite database for persisting user blueprints across sessions.
- * Uses better-sqlite3 for synchronous, high-performance queries.
+ * PostgreSQL database via node-postgres (pg) for serverless compatibility.
+ * Uses connection pooling optimized for Vercel serverless functions.
+ *
+ * Environment: DATABASE_URL (required in production)
+ * For Supabase: use the PgBouncer connection string on port 6543
  * ============================================================================
  */
 
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
+import { Pool } from 'pg';
 
-const dbDir = path.resolve(__dirname, '../../data');
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString && process.env.NODE_ENV === 'production') {
+  console.error('[DB] FATAL: DATABASE_URL is not set in production');
 }
 
-const dbPath = path.resolve(dbDir, 'discovery-engine.db');
-const dbInstance: Database.Database = new Database(dbPath);
+export const pool = new Pool({
+  connectionString,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  max: 1,
+  idleTimeoutMillis: 0,
+  connectionTimeoutMillis: 10000,
+});
 
-// Enable WAL mode for better concurrency
-dbInstance.pragma('journal_mode = WAL');
-dbInstance.pragma('foreign_keys = ON');
-
-export { dbInstance as db };
-
-// ---------------------------------------------------------------------------
-// Migration helpers
-// ---------------------------------------------------------------------------
-function migrateUsersV2() {
-  const tableInfo = dbInstance.prepare("PRAGMA table_info(users)").all() as any[];
-  const hasPasswordHash = tableInfo.find((col) => col.name === 'password_hash');
-  const emailCol = tableInfo.find((col) => col.name === 'email');
-
-  if (!hasPasswordHash || emailCol?.pk !== 0) {
-    console.log('[DB] Migrating users table (adding password_hash + UNIQUE email)...');
-
-    // Generate a random hash for existing users so the NOT NULL constraint passes
-    const dummyHash = '$2a$12$abcdefghijklmnopqrstuvwxycdefghimnopqrstuvwx12345678901';
-
-    dbInstance.exec(`
-      ALTER TABLE users RENAME TO users_old;
-
-      CREATE TABLE users (
-        id TEXT PRIMARY KEY,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        password_hash TEXT NOT NULL,
-        avatar TEXT,
-        language TEXT NOT NULL DEFAULT 'english',
-        credits INTEGER NOT NULL DEFAULT 100,
-        created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL
-      );
-
-      INSERT INTO users (id, name, email, password_hash, avatar, language, credits, created_at, updated_at)
-      SELECT id, name, email, '${dummyHash}', avatar, language, credits, created_at, updated_at
-      FROM users_old;
-
-      DROP TABLE users_old;
-    `);
-    console.log('[DB] users migration complete.');
-  }
-}
-
-function migratePaymentTransactions() {
-  const tableInfo = dbInstance.prepare("PRAGMA table_info(payment_transactions)").all() as any[];
-  const paymentIdCol = tableInfo.find((col) => col.name === 'razorpay_payment_id');
-
-  if (paymentIdCol && paymentIdCol.notnull === 1) {
-    console.log('[DB] Migrating payment_transactions table (dropping UNIQUE/NOT NULL on razorpay_payment_id)...');
-    dbInstance.exec(`
-      ALTER TABLE payment_transactions RENAME TO payment_transactions_old;
-
-      CREATE TABLE payment_transactions (
-        id TEXT PRIMARY KEY,
-        user_id TEXT NOT NULL,
-        razorpay_order_id TEXT NOT NULL,
-        razorpay_payment_id TEXT,
-        status TEXT NOT NULL CHECK (status IN ('created', 'paid', 'failed', 'cancelled')),
-        amount INTEGER NOT NULL,
-        credits_added INTEGER NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      INSERT INTO payment_transactions
-        (id, user_id, razorpay_order_id, razorpay_payment_id, status, amount, credits_added, created_at)
-      SELECT
-        id, user_id, razorpay_order_id,
-        CASE WHEN razorpay_payment_id = '' THEN NULL ELSE razorpay_payment_id END,
-        status, amount, credits_added, created_at
-      FROM payment_transactions_old;
-
-      DROP TABLE payment_transactions_old;
-    `);
-    console.log('[DB] Migration complete.');
-  }
-}
+export const query = (text: string, params?: any[]) => pool.query(text, params);
 
 // ---------------------------------------------------------------------------
 // Initialize Schema
 // ---------------------------------------------------------------------------
-export function initDb() {
+export async function initDb() {
   // Blueprints table
-  dbInstance.exec(`
+  await query(`
     CREATE TABLE IF NOT EXISTS blueprints (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
@@ -115,54 +45,55 @@ export function initDb() {
       audience TEXT,
       program TEXT,
       roadmap TEXT,
-      created_at TEXT NOT NULL,
-      updated_at TEXT NOT NULL
+      created_at TIMESTAMP NOT NULL,
+      updated_at TIMESTAMP NOT NULL
     )
   `);
 
   // Activities table
-  dbInstance.exec(`
+  await query(`
     CREATE TABLE IF NOT EXISTS activities (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id SERIAL PRIMARY KEY,
       user_id TEXT NOT NULL,
       blueprint_id TEXT,
       title TEXT NOT NULL,
       description TEXT,
       type TEXT NOT NULL DEFAULT 'blueprint',
-      created_at TEXT NOT NULL
+      created_at TIMESTAMP NOT NULL
     )
   `);
 
   // Users table
-  dbInstance.exec(`
+  await query(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
-      email TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
       avatar TEXT,
       language TEXT NOT NULL DEFAULT 'english',
-      credits INTEGER NOT NULL DEFAULT 999,
-      created_at TEXT NOT NULL,
-      updated_at TEXT NOT NULL
+      credits INTEGER NOT NULL DEFAULT 100,
+      created_at TIMESTAMP NOT NULL,
+      updated_at TIMESTAMP NOT NULL
     )
   `);
 
   // Credit transactions table
-  dbInstance.exec(`
+  await query(`
     CREATE TABLE IF NOT EXISTS credit_transactions (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id SERIAL PRIMARY KEY,
       user_id TEXT NOT NULL,
       blueprint_id TEXT,
       action TEXT NOT NULL,
       amount INTEGER NOT NULL,
       balance_after INTEGER NOT NULL,
       description TEXT,
-      created_at TEXT NOT NULL
+      created_at TIMESTAMP NOT NULL
     )
   `);
 
   // Payment transactions table (for Razorpay idempotency)
-  dbInstance.exec(`
+  await query(`
     CREATE TABLE IF NOT EXISTS payment_transactions (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
@@ -171,35 +102,29 @@ export function initDb() {
       status TEXT NOT NULL CHECK (status IN ('created', 'paid', 'failed', 'cancelled')),
       amount INTEGER NOT NULL,
       credits_added INTEGER NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  // Password resets table
+  await query(`
+    CREATE TABLE IF NOT EXISTS password_resets (
+      id SERIAL PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      token_hash TEXT NOT NULL UNIQUE,
+      expires_at TIMESTAMP NOT NULL,
+      used_at TIMESTAMP,
+      created_at TIMESTAMP NOT NULL
     )
   `);
 
   // Indexes for performance
-  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_user_id ON credit_transactions(user_id)`);
-  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_created_at ON credit_transactions(created_at)`);
-  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_user_id ON payment_transactions(user_id)`);
-  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_payment_id ON payment_transactions(razorpay_payment_id)`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_user_id ON credit_transactions(user_id)`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_credit_transactions_created_at ON credit_transactions(created_at)`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_user_id ON payment_transactions(user_id)`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_payment_transactions_payment_id ON payment_transactions(razorpay_payment_id)`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_password_resets_user_id ON password_resets(user_id)`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_password_resets_token_hash ON password_resets(token_hash)`);
 
-  migrateUsersV2();
-  migratePaymentTransactions();
-
-  // Password resets table (must be created AFTER users migration)
-  dbInstance.exec(`
-    CREATE TABLE IF NOT EXISTS password_resets (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id TEXT NOT NULL,
-      token_hash TEXT NOT NULL UNIQUE,
-      expires_at TEXT NOT NULL,
-      used_at TEXT,
-      created_at TEXT NOT NULL
-    )
-  `);
-
-  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_password_resets_user_id ON password_resets(user_id)`);
-  dbInstance.exec(`CREATE INDEX IF NOT EXISTS idx_password_resets_token_hash ON password_resets(token_hash)`);
-
-  console.log('[DB] SQLite database initialized at', dbPath);
+  console.log('[DB] PostgreSQL schema initialized');
 }
-
-initDb();

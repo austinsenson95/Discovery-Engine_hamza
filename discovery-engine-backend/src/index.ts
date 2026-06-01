@@ -31,7 +31,7 @@ import { webhookHandler } from './controllers/paymentController';
 
 // Middleware
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
-import './db'; // Initialize SQLite database
+import { initDb } from './db';
 
 // Validate configuration
 validateConfig();
@@ -106,6 +106,23 @@ app.get('/health', (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// Database Initialization (lazy on first request for serverless)
+// ---------------------------------------------------------------------------
+let dbInitialized = false;
+app.use(async (req, res, next) => {
+  if (!dbInitialized) {
+    try {
+      await initDb();
+      dbInitialized = true;
+    } catch (err) {
+      console.error('[DB] Initialization failed:', err);
+      return res.status(500).json({ success: false, message: 'Database unavailable' });
+    }
+  }
+  next();
+});
+
+// ---------------------------------------------------------------------------
 // API Routes
 // ---------------------------------------------------------------------------
 
@@ -125,48 +142,55 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // ---------------------------------------------------------------------------
-// Start Server
+// Serverless Export (Vercel)
 // ---------------------------------------------------------------------------
 
-app.listen(config.port, () => {
-  console.log('');
-  console.log('╔══════════════════════════════════════════════════════════════╗');
-  console.log('║     DISCOVERY ENGINE API — Backend Server                    ║');
-  console.log('╠══════════════════════════════════════════════════════════════╣');
-  console.log(`║  Port:        ${config.port.toString().padEnd(49)} ║`);
-  console.log(`║  Environment: ${config.nodeEnv.padEnd(49)} ║`);
-  console.log(`║  Health:      http://localhost:${config.port}/health${' '.repeat(24 - config.port.toString().length)}║`);
-  console.log('╠══════════════════════════════════════════════════════════════╣');
-  console.log('║  Auth Endpoints:                                        ║');
-  console.log('║    POST /api/auth/register                                   ║');
-  console.log('║    POST /api/auth/login                                      ║');
-  console.log('║    GET  /api/user/me                                         ║');
-  console.log('║    PUT  /api/user/profile                                    ║');
-  console.log('║    GET  /api/user/credits                                    ║');
-  console.log('║    GET  /api/blueprint                                       ║');
-  console.log('║    POST /api/blueprint/niche                                 ║');
-  console.log('║    POST /api/blueprint/audience                              ║');
-  console.log('║    POST /api/blueprint/problems                              ║');
-  console.log('║    POST /api/blueprint/program-name                          ║');
-  console.log('║    POST /api/blueprint/pricing                               ║');
-  console.log('║    POST /api/blueprint/roadmap                               ║');
-  console.log('║    GET  /api/blueprint/pdf/:id                               ║');
-  console.log('╠══════════════════════════════════════════════════════════════╣');
-  console.log('║  Payment Endpoints:                                          ║');
-  console.log('║    GET  /api/payments/packages                               ║');
-  console.log('║    POST /api/payments/create-order                           ║');
-  console.log('║    POST /api/payments/verify                                 ║');
-  console.log('║    POST /api/payments/webhook                                ║');
-  console.log('╚══════════════════════════════════════════════════════════════╝');
-  console.log('');
-  if (config.isRazorpayTestMode) {
-    console.log('⚠️  [Razorpay] Running in TEST mode. No real money will be processed.');
-  } else if (config.razorpayKeyId) {
-    console.log('💰 [Razorpay] Running in LIVE mode. Real payments will be processed!');
-  } else {
-    console.log('⚠️  [Razorpay] Not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.');
-  }
-  console.log('');
-});
+import serverless from 'serverless-http';
+export default serverless(app);
 
-export default app;
+// ---------------------------------------------------------------------------
+// Local Development Server
+// ---------------------------------------------------------------------------
+
+if (!process.env.VERCEL) {
+  app.listen(config.port, () => {
+    console.log('');
+    console.log('╔══════════════════════════════════════════════════════════════╗');
+    console.log('║     DISCOVERY ENGINE API — Backend Server                    ║');
+    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log(`║  Port:        ${config.port.toString().padEnd(49)} ║`);
+    console.log(`║  Environment: ${config.nodeEnv.padEnd(49)} ║`);
+    console.log(`║  Health:      http://localhost:${config.port}/health${' '.repeat(24 - config.port.toString().length)}║`);
+    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log('║  Auth Endpoints:                                             ║');
+    console.log('║    POST /api/auth/register                                   ║');
+    console.log('║    POST /api/auth/login                                      ║');
+    console.log('║    GET  /api/user/me                                         ║');
+    console.log('║    PUT  /api/user/profile                                    ║');
+    console.log('║    GET  /api/user/credits                                    ║');
+    console.log('║    GET  /api/blueprint                                       ║');
+    console.log('║    POST /api/blueprint/niche                                 ║');
+    console.log('║    POST /api/blueprint/audience                              ║');
+    console.log('║    POST /api/blueprint/problems                              ║');
+    console.log('║    POST /api/blueprint/program-name                          ║');
+    console.log('║    POST /api/blueprint/pricing                               ║');
+    console.log('║    POST /api/blueprint/roadmap                               ║');
+    console.log('║    GET  /api/blueprint/pdf/:id                               ║');
+    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log('║  Payment Endpoints:                                          ║');
+    console.log('║    GET  /api/payments/packages                               ║');
+    console.log('║    POST /api/payments/create-order                           ║');
+    console.log('║    POST /api/payments/verify                                 ║');
+    console.log('║    POST /api/payments/webhook                                ║');
+    console.log('╚══════════════════════════════════════════════════════════════╝');
+    console.log('');
+    if (config.isRazorpayTestMode) {
+      console.log('⚠️  [Razorpay] Running in TEST mode. No real money will be processed.');
+    } else if (config.razorpayKeyId) {
+      console.log('💰 [Razorpay] Running in LIVE mode. Real payments will be processed!');
+    } else {
+      console.log('⚠️  [Razorpay] Not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.');
+    }
+    console.log('');
+  });
+}

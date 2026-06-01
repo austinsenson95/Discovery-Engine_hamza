@@ -2,11 +2,11 @@
  * ============================================================================
  * DISCOVERY ENGINE - Payment Repository
  * ============================================================================
- * Data access layer for payment transactions using SQLite.
+ * Data access layer for payment transactions using PostgreSQL.
  * ============================================================================
  */
 
-import { db } from './index';
+import { query } from './index';
 import { PaymentTransaction } from '../types';
 
 export interface PaymentTransactionRow {
@@ -39,63 +39,80 @@ function rowToTransaction(row: PaymentTransactionRow): PaymentTransaction {
 // ---------------------------------------------------------------------------
 // Payment Transaction CRUD
 // ---------------------------------------------------------------------------
-export function createPaymentTransaction(tx: Omit<PaymentTransaction, 'createdAt'>): PaymentTransaction {
-  const stmt = db.prepare(`
-    INSERT INTO payment_transactions (id, user_id, razorpay_order_id, razorpay_payment_id, status, amount, credits_added, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `);
+export async function createPaymentTransaction(
+  tx: Omit<PaymentTransaction, 'createdAt'>
+): Promise<PaymentTransaction> {
   const now = new Date().toISOString();
-  stmt.run(
-    tx.id,
-    tx.userId,
-    tx.razorpayOrderId,
-    tx.razorpayPaymentId,
-    tx.status,
-    tx.amount,
-    tx.creditsAdded,
-    now
+  await query(
+    `INSERT INTO payment_transactions (id, user_id, razorpay_order_id, razorpay_payment_id, status, amount, credits_added, created_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+    [
+      tx.id,
+      tx.userId,
+      tx.razorpayOrderId,
+      tx.razorpayPaymentId,
+      tx.status,
+      tx.amount,
+      tx.creditsAdded,
+      now,
+    ]
   );
   return { ...tx, createdAt: new Date(now) };
 }
 
-export function getPaymentTransactionByPaymentId(razorpayPaymentId: string): PaymentTransaction | undefined {
-  const stmt = db.prepare('SELECT * FROM payment_transactions WHERE razorpay_payment_id = ?');
-  const row = stmt.get(razorpayPaymentId) as PaymentTransactionRow | undefined;
-  return row ? rowToTransaction(row) : undefined;
+export async function getPaymentTransactionByPaymentId(
+  razorpayPaymentId: string
+): Promise<PaymentTransaction | undefined> {
+  const { rows } = await query('SELECT * FROM payment_transactions WHERE razorpay_payment_id = $1', [
+    razorpayPaymentId,
+  ]);
+  return rows[0] ? rowToTransaction(rows[0]) : undefined;
 }
 
-export function getPaymentTransactionByOrderId(razorpayOrderId: string): PaymentTransaction | undefined {
-  const stmt = db.prepare('SELECT * FROM payment_transactions WHERE razorpay_order_id = ?');
-  const row = stmt.get(razorpayOrderId) as PaymentTransactionRow | undefined;
-  return row ? rowToTransaction(row) : undefined;
+export async function getPaymentTransactionByOrderId(
+  razorpayOrderId: string
+): Promise<PaymentTransaction | undefined> {
+  const { rows } = await query('SELECT * FROM payment_transactions WHERE razorpay_order_id = $1', [
+    razorpayOrderId,
+  ]);
+  return rows[0] ? rowToTransaction(rows[0]) : undefined;
 }
 
-export function updatePaymentTransactionStatus(
+export async function updatePaymentTransactionStatus(
   razorpayPaymentId: string,
   status: 'created' | 'paid' | 'failed' | 'cancelled'
-): void {
-  const stmt = db.prepare('UPDATE payment_transactions SET status = ? WHERE razorpay_payment_id = ?');
-  stmt.run(status, razorpayPaymentId);
+): Promise<void> {
+  await query('UPDATE payment_transactions SET status = $1 WHERE razorpay_payment_id = $2', [
+    status,
+    razorpayPaymentId,
+  ]);
 }
 
-export function updatePaymentTransactionByOrderId(
+export async function updatePaymentTransactionByOrderId(
   razorpayOrderId: string,
   status: 'created' | 'paid' | 'failed' | 'cancelled',
   razorpayPaymentId?: string | null
-): void {
+): Promise<void> {
   if (razorpayPaymentId) {
-    const stmt = db.prepare(
-      'UPDATE payment_transactions SET status = ?, razorpay_payment_id = ? WHERE razorpay_order_id = ?'
+    await query(
+      'UPDATE payment_transactions SET status = $1, razorpay_payment_id = $2 WHERE razorpay_order_id = $3',
+      [status, razorpayPaymentId, razorpayOrderId]
     );
-    stmt.run(status, razorpayPaymentId, razorpayOrderId);
   } else {
-    const stmt = db.prepare('UPDATE payment_transactions SET status = ? WHERE razorpay_order_id = ?');
-    stmt.run(status, razorpayOrderId);
+    await query('UPDATE payment_transactions SET status = $1 WHERE razorpay_order_id = $2', [
+      status,
+      razorpayOrderId,
+    ]);
   }
 }
 
-export function getPaymentTransactionsByUser(userId: string, limit = 50): PaymentTransaction[] {
-  const stmt = db.prepare('SELECT * FROM payment_transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT ?');
-  const rows = stmt.all(userId, limit) as PaymentTransactionRow[];
+export async function getPaymentTransactionsByUser(
+  userId: string,
+  limit = 50
+): Promise<PaymentTransaction[]> {
+  const { rows } = await query(
+    'SELECT * FROM payment_transactions WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2',
+    [userId, limit]
+  );
   return rows.map(rowToTransaction);
 }

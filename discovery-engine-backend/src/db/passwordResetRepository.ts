@@ -2,11 +2,11 @@
  * ============================================================================
  * DISCOVERY ENGINE - Password Reset Repository
  * ============================================================================
- * Data access layer for password reset tokens using SQLite.
+ * Data access layer for password reset tokens using PostgreSQL.
  * ============================================================================
  */
 
-import { db } from './index';
+import { query } from './index';
 
 export interface PasswordResetToken {
   id: number;
@@ -28,15 +28,20 @@ function rowToToken(row: any): PasswordResetToken {
   };
 }
 
-export function createResetToken(userId: string, tokenHash: string, expiresAt: Date): PasswordResetToken {
-  const stmt = db.prepare(`
-    INSERT INTO password_resets (user_id, token_hash, expires_at, created_at)
-    VALUES (?, ?, ?, ?)
-  `);
-  const result = stmt.run(userId, tokenHash, expiresAt.toISOString(), new Date().toISOString());
+export async function createResetToken(
+  userId: string,
+  tokenHash: string,
+  expiresAt: Date
+): Promise<PasswordResetToken> {
+  const { rows } = await query(
+    `INSERT INTO password_resets (user_id, token_hash, expires_at, created_at)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id`,
+    [userId, tokenHash, expiresAt.toISOString(), new Date().toISOString()]
+  );
 
   return {
-    id: Number(result.lastInsertRowid),
+    id: Number(rows[0].id),
     userId,
     tokenHash,
     expiresAt,
@@ -45,25 +50,22 @@ export function createResetToken(userId: string, tokenHash: string, expiresAt: D
   };
 }
 
-export function findValidToken(tokenHash: string): PasswordResetToken | undefined {
-  const stmt = db.prepare(`
-    SELECT * FROM password_resets
-    WHERE token_hash = ? AND used_at IS NULL AND expires_at > ?
-  `);
-  const row = stmt.get(tokenHash, new Date().toISOString()) as any;
-  return row ? rowToToken(row) : undefined;
+export async function findValidToken(tokenHash: string): Promise<PasswordResetToken | undefined> {
+  const { rows } = await query(
+    `SELECT * FROM password_resets
+     WHERE token_hash = $1 AND used_at IS NULL AND expires_at > $2`,
+    [tokenHash, new Date().toISOString()]
+  );
+  return rows[0] ? rowToToken(rows[0]) : undefined;
 }
 
-export function markTokenUsed(tokenId: number): void {
-  const stmt = db.prepare(`
-    UPDATE password_resets SET used_at = ? WHERE id = ?
-  `);
-  stmt.run(new Date().toISOString(), tokenId);
+export async function markTokenUsed(tokenId: number): Promise<void> {
+  await query('UPDATE password_resets SET used_at = $1 WHERE id = $2', [
+    new Date().toISOString(),
+    tokenId,
+  ]);
 }
 
-export function cleanupExpiredTokens(): void {
-  const stmt = db.prepare(`
-    DELETE FROM password_resets WHERE expires_at < ?
-  `);
-  stmt.run(new Date().toISOString());
+export async function cleanupExpiredTokens(): Promise<void> {
+  await query('DELETE FROM password_resets WHERE expires_at < $1', [new Date().toISOString()]);
 }
