@@ -35,7 +35,9 @@ function getRazorpay(): Razorpay {
 // ---------------------------------------------------------------------------
 export async function createRazorpayOrder(pkg: CreditPackage, userId: string) {
   const razorpay = getRazorpay();
-  const receipt = `receipt_${userId}_${Date.now()}`;
+  // Razorpay receipt max length is 40 chars
+  const shortUser = userId.slice(-6);
+  const receipt = `r_${shortUser}_${Date.now().toString(36)}`;
 
   try {
     const order = await razorpay.orders.create({
@@ -51,9 +53,10 @@ export async function createRazorpayOrder(pkg: CreditPackage, userId: string) {
 
     console.log(`[Razorpay] Order created: ${order.id} for user ${userId}, amount ${pkg.priceInPaise}`);
     return order;
-  } catch (error) {
+  } catch (error: any) {
     console.error('[Razorpay] Failed to create order:', error);
-    throw new ApiError('Failed to create payment order. Please try again.', 500);
+    const razorpayMsg = error?.error?.description || error?.message || 'Unknown Razorpay error';
+    throw new ApiError(`Payment setup failed. ${razorpayMsg}`, 500);
   }
 }
 
