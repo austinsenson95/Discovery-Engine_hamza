@@ -1,0 +1,312 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Credits" [ref=e38] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e39]
+              - generic [ref=e44]: Credits
+            - link "Profile" [ref=e45] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e46]
+              - generic [ref=e49]: Profile
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Book Your Free Call
+            - paragraph [ref=e58]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e59] [cursor=pointer]
+      - generic [ref=e62]:
+        - img [ref=e64]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Test User
+          - paragraph [ref=e69]: test@example.com
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+  - generic [ref=e74]:
+    - banner [ref=e75]:
+      - heading "Coach Blueprint" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - img [ref=e80]
+          - generic [ref=e82]: 100 credits
+        - button [ref=e83] [cursor=pointer]:
+          - img [ref=e84]
+        - button [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+        - button "Log out" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - img "Test User" [ref=e97]
+    - main [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - button "Reset Blueprint" [ref=e101] [cursor=pointer]:
+            - img [ref=e102]
+            - text: Reset Blueprint
+          - generic [ref=e185]: "ID: bp_1780371244340"
+        - generic [ref=e109]:
+          - button "Niche Discovery" [ref=e301] [cursor=pointer]:
+            - img [ref=e303]
+            - generic [ref=e113]: Niche Discovery
+          - button "Audience Mapping" [ref=e382] [cursor=pointer]:
+            - img [ref=e384]
+            - generic [ref=e116]: Audience Mapping
+          - button "3 Program Builder" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: "3"
+            - generic [ref=e119]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e120]:
+            - generic [ref=e121]: "4"
+            - generic [ref=e122]: Roadmap & PDF
+        - generic [ref=e387]:
+          - heading "Build Your Signature Program" [level=2] [ref=e389]
+          - generic [ref=e390]:
+            - generic [ref=e392]:
+              - img [ref=e498]
+              - generic [ref=e394]: Problems
+            - generic [ref=e397]:
+              - img [ref=e528]
+              - generic [ref=e399]: Naming
+            - generic [ref=e402]:
+              - img [ref=e622]
+              - generic [ref=e404]: Pricing
+            - generic [ref=e407]:
+              - generic [ref=e408]: "4"
+              - generic [ref=e409]: Curriculum
+          - generic [ref=e624]:
+            - heading "Design Your Course Curriculum" [level=3] [ref=e625]
+            - paragraph [ref=e626]: AI-generated lesson plan structured into modules with clear learning outcomes.
+            - generic [ref=e676]:
+              - generic [ref=e677]:
+                - generic [ref=e678]: 32 lessons
+                - generic [ref=e679]: 12 hours
+              - generic [ref=e680]:
+                - heading "Welcome to Lead From Day One" [level=4] [ref=e681]
+                - paragraph [ref=e682]: Your journey to confident first-time leadership starts here
+                - list [ref=e683]:
+                  - listitem [ref=e684]:
+                    - generic [ref=e685]:
+                      - generic [ref=e686]: Your Leadership Transformation Starts Now
+                      - generic [ref=e688]: 15 min
+                    - paragraph [ref=e689]: "Outcome: Understand the program structure, your coach's philosophy, and what to expect over the next 12 weeks"
+                  - listitem [ref=e690]:
+                    - generic [ref=e691]:
+                      - generic [ref=e692]: Assess Your Current Leadership Reality
+                      - generic [ref=e694]: 20 min
+                    - paragraph [ref=e695]: "Outcome: Complete your baseline assessment to identify your unique leadership challenges and set personalized goals"
+                - generic [ref=e696]:
+                  - paragraph [ref=e697]: Output
+                  - paragraph [ref=e698]: Completed baseline assessment and personalized goal-setting worksheet
+              - generic [ref=e699]:
+                - 'heading "Module 1: Foundation - Shifting from Doer to Leader" [level=4] [ref=e700]'
+                - paragraph [ref=e701]: Understanding your new role and the mindset shift required
+                - list [ref=e702]:
+                  - listitem [ref=e703]:
+                    - generic [ref=e704]:
+                      - generic [ref=e705]: "The Doer-to-Leader Transition: Why You're Stuck"
+                      - generic [ref=e707]: 30 min
+                    - paragraph [ref=e708]: "Outcome: Understand the psychological and practical barriers that keep first-time managers trapped in doing instead of leading"
+                  - listitem [ref=e709]:
+                    - generic [ref=e710]:
+                      - generic [ref=e711]: The Three Pillars of First-Time Leadership
+                      - generic [ref=e713]: 25 min
+                    - paragraph [ref=e714]: "Outcome: Learn the foundational pillars of effective leadership: trust, clarity, and accountability"
+                  - listitem [ref=e715]:
+                    - generic [ref=e716]:
+                      - generic [ref=e717]: Defining Your Leadership Identity
+                      - generic [ref=e719]: 35 min
+                    - paragraph [ref=e720]: "Outcome: Clarify your leadership values, strengths, and the leader you want to become (distinct from who you were as an individual contributor)"
+                - generic [ref=e721]:
+                  - paragraph [ref=e722]: Output
+                  - paragraph [ref=e723]: Personal leadership identity statement and transition plan identifying current bottlenecks
+              - generic [ref=e724]:
+                - 'heading "Module 2: Strategic Delegation - Breaking the Bottleneck" [level=4] [ref=e725]'
+                - paragraph [ref=e726]: Master the art of delegating technical tasks without losing control
+                - list [ref=e727]:
+                  - listitem [ref=e728]:
+                    - generic [ref=e729]:
+                      - generic [ref=e730]: "The Delegation Paradox: Why Good Doers Struggle to Delegate"
+                      - generic [ref=e732]: 25 min
+                    - paragraph [ref=e733]: "Outcome: Identify the root causes of delegation resistance and understand how perfectionism creates single points of failure"
+                  - listitem [ref=e734]:
+                    - generic [ref=e735]:
+                      - generic [ref=e736]: The CRAFT Framework for Effective Delegation
+                      - generic [ref=e738]: 40 min
+                    - paragraph [ref=e739]: "Outcome: Learn the five-step delegation framework: Clarify, Respect capabilities, Assign with clarity, Follow-up structure, and Trust verification"
+                  - listitem [ref=e740]:
+                    - generic [ref=e741]:
+                      - generic [ref=e742]: Building Capability in Your Team
+                      - generic [ref=e744]: 35 min
+                    - paragraph [ref=e745]: "Outcome: Develop a system to assess team member capabilities and create stretch assignments that develop talent while reducing your workload"
+                  - listitem [ref=e746]:
+                    - generic [ref=e747]:
+                      - generic [ref=e748]: "Delegation in Action: Real Scenarios"
+                      - generic [ref=e750]: 30 min
+                    - paragraph [ref=e751]: "Outcome: Apply the CRAFT framework to your actual work bottlenecks through guided case studies and problem-solving"
+                - generic [ref=e752]:
+                  - paragraph [ref=e753]: Output
+                  - paragraph [ref=e754]: Delegation action plan identifying 3-5 tasks to delegate, capability assessment for each team member, and follow-up schedule
+              - generic [ref=e755]:
+                - 'heading "Module 3: Relationship Mastery - Leading Former Peers" [level=4] [ref=e756]'
+                - paragraph [ref=e757]: Transform peer relationships into authentic leader-team member dynamics
+                - list [ref=e758]:
+                  - listitem [ref=e759]:
+                    - generic [ref=e760]:
+                      - generic [ref=e761]: "The Former Peer Challenge: Psychological Realities"
+                      - generic [ref=e763]: 30 min
+                    - paragraph [ref=e764]: "Outcome: Understand the unique dynamics of managing people who were recently your equals and how to navigate the emotional complexity"
+                  - listitem [ref=e765]:
+                    - generic [ref=e766]:
+                      - generic [ref=e767]: Establishing Authority Without Arrogance
+                      - generic [ref=e769]: 35 min
+                    - paragraph [ref=e770]: "Outcome: Learn how to set appropriate boundaries, make decisive decisions, and maintain respect without damaging relationships"
+                  - listitem [ref=e771]:
+                    - generic [ref=e772]:
+                      - generic [ref=e773]: The Authentic Conversation Framework
+                      - generic [ref=e775]: 40 min
+                    - paragraph [ref=e776]: "Outcome: Master the four-part framework for having genuine conversations that acknowledge the relationship shift while building trust"
+                  - listitem [ref=e777]:
+                    - generic [ref=e778]:
+                      - generic [ref=e779]: Managing Resentment and Jealousy
+                      - generic [ref=e781]: 30 min
+                    - paragraph [ref=e782]: "Outcome: Develop strategies to address unspoken tensions and create psychological safety for all team members to succeed"
+                - generic [ref=e783]:
+                  - paragraph [ref=e784]: Output
+                  - paragraph [ref=e785]: Relationship strategy document for each key team member and scripts for reframing your leadership conversations
+              - generic [ref=e786]:
+                - 'heading "Module 4: Feedback Mastery - Giving Constructive Feedback with Confidence" [level=4] [ref=e787]'
+                - paragraph [ref=e788]: Deliver feedback that strengthens relationships and drives performance
+                - list [ref=e789]:
+                  - listitem [ref=e790]:
+                    - generic [ref=e791]:
+                      - generic [ref=e792]: Why Feedback Feels Dangerous (And How to Reframe It)
+                      - generic [ref=e794]: 25 min
+                    - paragraph [ref=e795]: "Outcome: Understand the fear-based thinking that leads to feedback avoidance and learn how to reframe feedback as a gift"
+                  - listitem [ref=e796]:
+                    - generic [ref=e797]:
+                      - generic [ref=e798]: "The SBI Model: Situation-Behavior-Impact Framework"
+                      - generic [ref=e800]: 35 min
+                    - paragraph [ref=e801]: "Outcome: Learn the evidence-based SBI framework for delivering specific, actionable feedback that doesn't trigger defensiveness"
+                  - listitem [ref=e802]:
+                    - generic [ref=e803]:
+                      - generic [ref=e804]: "The Feedback Conversation: From Preparation to Follow-Up"
+                      - generic [ref=e806]: 40 min
+                    - paragraph [ref=e807]: "Outcome: Master the complete feedback conversation including timing, environment, delivery, and accountability check-ins"
+                  - listitem [ref=e808]:
+                    - generic [ref=e809]:
+                      - generic [ref=e810]: Handling Emotional Reactions and Pushback
+                      - generic [ref=e812]: 30 min
+                    - paragraph [ref=e813]: "Outcome: Develop skills to stay calm, empathetic, and firm when receiving defensive responses or emotional reactions"
+                  - listitem [ref=e814]:
+                    - generic [ref=e815]:
+                      - generic [ref=e816]: Building a Feedback Culture
+                      - generic [ref=e818]: 25 min
+                    - paragraph [ref=e819]: "Outcome: Create systems for regular, ongoing feedback that prevents performance issues from festering and strengthens team dynamics"
+                - generic [ref=e820]:
+                  - paragraph [ref=e821]: Output
+                  - paragraph [ref=e822]: Feedback framework document with templates, list of 3-5 upcoming feedback conversations with detailed preparation notes
+              - generic [ref=e823]:
+                - 'heading "Module 5: Crucial Conversations - Leading Through Difficult Discussions" [level=4] [ref=e824]'
+                - paragraph [ref=e825]: Navigate high-stakes conversations about performance and expectations
+                - list [ref=e826]:
+                  - listitem [ref=e827]:
+                    - generic [ref=e828]:
+                      - generic [ref=e829]: When Feedback Becomes a Crucial Conversation
+                      - generic [ref=e831]: 30 min
+                    - paragraph [ref=e832]: "Outcome: Identify situations that require elevated conversation skills and understand the stakes involved in underperformance discussions"
+                  - listitem [ref=e833]:
+                    - generic [ref=e834]:
+                      - generic [ref=e835]: "The Crucial Conversations Framework: Create Safety"
+                      - generic [ref=e837]: 40 min
+                    - paragraph [ref=e838]: "Outcome: Learn how to establish psychological safety, share your perspective, and invite dialogue in high-stakes conversations"
+                  - listitem [ref=e839]:
+                    - generic [ref=e840]:
+                      - generic [ref=e841]: Active Listening and Inquiry in Difficult Moments
+                      - generic [ref=e843]: 35 min
+                    - paragraph [ref=e844]: "Outcome: Develop advanced listening skills to understand the root causes of underperformance and co-create solutions"
+                  - listitem [ref=e845]:
+                    - generic [ref=e846]:
+                      - generic [ref=e847]: Setting Boundaries and Expectations with Confidence
+                      - generic [ref=e849]: 30 min
+                    - paragraph [ref=e850]: "Outcome: Learn to be clear about expectations, consequences, and non-negotiables while maintaining respect and dignity"
+                  - listitem [ref=e851]:
+                    - generic [ref=e852]:
+                      - generic [ref=e853]: Coaching Through Underperformance
+                      - generic [ref=e855]: 40 min
+                    - paragraph [ref=e856]: "Outcome: Master the coaching approach to guide struggling team members toward improvement with structured support and accountability"
+                - generic [ref=e857]:
+                  - paragraph [ref=e858]: Output
+                  - paragraph [ref=e859]: Crucial conversation preparation template and coaching plan for identified underperforming team members
+              - generic [ref=e860]:
+                - 'heading "Module 6: Integration - Building Your Leadership Operating System" [level=4] [ref=e861]'
+                - paragraph [ref=e862]: Consolidate learning into sustainable leadership practices
+                - list [ref=e863]:
+                  - listitem [ref=e864]:
+                    - generic [ref=e865]:
+                      - generic [ref=e866]: "Your Leadership Dashboard: Key Metrics and Rhythms"
+                      - generic [ref=e868]: 35 min
+                    - paragraph [ref=e869]: "Outcome: Create a personalized leadership system with weekly, monthly, and quarterly rhythms for delegation, feedback, and conversations"
+                  - listitem [ref=e870]:
+                    - generic [ref=e871]:
+                      - generic [ref=e872]: "Sustaining Change: Building New Leadership Habits"
+                      - generic [ref=e874]: 30 min
+                    - paragraph [ref=e875]: "Outcome: Design a personal habit system that locks in delegation, feedback, and conversation practices into daily leadership work"
+                  - listitem [ref=e876]:
+                    - generic [ref=e877]:
+                      - generic [ref=e878]: Managing Your Own Leadership Stress and Growth
+                      - generic [ref=e880]: 25 min
+                    - paragraph [ref=e881]: "Outcome: Develop self-awareness practices and recovery strategies to sustain your leadership journey and model wellbeing"
+                  - listitem [ref=e882]:
+                    - generic [ref=e883]:
+                      - generic [ref=e884]: "From Manager to Leader: Your 90-Day Acceleration Plan"
+                      - generic [ref=e886]: 40 min
+                    - paragraph [ref=e887]: "Outcome: Create a comprehensive 90-day plan for implementing all three core competencies and measuring your leadership impact"
+                - generic [ref=e888]:
+                  - paragraph [ref=e889]: Output
+                  - paragraph [ref=e890]: Complete leadership operating system including dashboard, habit plan, and 90-day acceleration roadmap
+              - generic [ref=e891]:
+                - heading "Graduation - Your Leadership Journey Continues" [level=4] [ref=e892]
+                - paragraph [ref=e893]: Celebrate your transformation and plan for continued growth
+                - list [ref=e894]:
+                  - listitem [ref=e895]:
+                    - generic [ref=e896]:
+                      - generic [ref=e897]: "Your Transformation: Reflection and Celebration"
+                      - generic [ref=e899]: 20 min
+                    - paragraph [ref=e900]: "Outcome: Reflect on your growth across delegation, relationships, feedback, and crucial conversations and celebrate your progress"
+                  - listitem [ref=e901]:
+                    - generic [ref=e902]:
+                      - generic [ref=e903]: "Beyond Day One: Your Ongoing Leadership Development"
+                      - generic [ref=e905]: 25 min
+                    - paragraph [ref=e906]: "Outcome: Identify your next growth areas and resources for continued development as you move from first-time manager to seasoned leader"
+                - generic [ref=e907]:
+                  - paragraph [ref=e908]: Output
+                  - paragraph [ref=e909]: Graduation certificate, leadership legacy statement, and 12-month leadership growth plan
+            - generic [ref=e665]:
+              - button "Back to Pricing" [ref=e666] [cursor=pointer]:
+                - img [ref=e667]
+                - text: Back to Pricing
+              - button "Continue to Roadmap" [ref=e669] [cursor=pointer]:
+                - text: Continue to Roadmap
+                - img [ref=e670]

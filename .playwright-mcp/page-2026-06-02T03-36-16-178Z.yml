@@ -1,0 +1,166 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Credits" [ref=e38] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e39]
+              - generic [ref=e44]: Credits
+            - link "Profile" [ref=e45] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e46]
+              - generic [ref=e49]: Profile
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Book Your Free Call
+            - paragraph [ref=e58]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e59] [cursor=pointer]
+      - generic [ref=e62]:
+        - img [ref=e64]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Test User
+          - paragraph [ref=e69]: test@example.com
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+  - generic [ref=e74]:
+    - banner [ref=e75]:
+      - heading "Coach Blueprint" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - img [ref=e80]
+          - generic [ref=e82]: 100 credits
+        - button [ref=e83] [cursor=pointer]:
+          - img [ref=e84]
+        - button [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+        - button "Log out" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - img "Test User" [ref=e97]
+    - main [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - button "Reset Blueprint" [ref=e101] [cursor=pointer]:
+            - img [ref=e102]
+            - text: Reset Blueprint
+          - generic [ref=e185]: "ID: bp_1780371244340"
+        - generic [ref=e109]:
+          - button "Niche Discovery" [ref=e301] [cursor=pointer]:
+            - img [ref=e303]
+            - generic [ref=e113]: Niche Discovery
+          - button "Audience Mapping" [ref=e382] [cursor=pointer]:
+            - img [ref=e384]
+            - generic [ref=e116]: Audience Mapping
+          - button "3 Program Builder" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: "3"
+            - generic [ref=e119]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e120]:
+            - generic [ref=e121]: "4"
+            - generic [ref=e122]: Roadmap & PDF
+        - generic [ref=e387]:
+          - heading "Build Your Signature Program" [level=2] [ref=e389]
+          - generic [ref=e390]:
+            - generic [ref=e392]:
+              - img [ref=e498]
+              - generic [ref=e394]: Problems
+            - generic [ref=e397]:
+              - img [ref=e528]
+              - generic [ref=e399]: Naming
+            - generic [ref=e402]:
+              - generic [ref=e403]: "3"
+              - generic [ref=e404]: Pricing
+            - generic [ref=e407]:
+              - generic [ref=e408]: "4"
+              - generic [ref=e409]: Curriculum
+          - generic [ref=e530]:
+            - heading "Set Your Pricing Strategy" [level=3] [ref=e531]
+            - paragraph [ref=e532]: AI-recommended pricing based on Indian coaching market research and your target audience's paying capacity.
+            - generic [ref=e533]:
+              - generic [ref=e534]:
+                - generic [ref=e535]: ₹9,999
+                - generic [ref=e536]: /student
+              - paragraph [ref=e537]: Starting price (Launch tier)
+            - generic [ref=e538]:
+              - generic [ref=e539]:
+                - paragraph [ref=e540]: Adjust Your Price
+                - generic [ref=e541]: ₹5,000 — ₹19,998
+              - slider [ref=e546]
+              - generic [ref=e547]:
+                - generic [ref=e548]: "-50%"
+                - generic [ref=e549]: AI Price
+                - generic [ref=e550]: +200%
+            - generic [ref=e552]:
+              - img [ref=e553]
+              - generic [ref=e555]:
+                - paragraph [ref=e556]: Why this price?
+                - paragraph [ref=e557]: At ₹9,999, 'Lead From Day One' positions itself as a premium yet accessible entry point for newly promoted managers in tier-1 tech hubs who earn ₹15-25 LPA. This price signals credibility and specialized expertise while remaining well within the target persona's discretionary spend of ₹50,000-₹1,50,000 for a transformative 3-6 month program.
+            - generic [ref=e559]:
+              - img [ref=e560]
+              - generic [ref=e563]:
+                - paragraph [ref=e564]: Market Insight
+                - paragraph [ref=e565]: Executive leadership coaching for early-career managers in India's tech sector commands premium pricing due to high ROI (improved team productivity, retention, promotion readiness), yet most first-time managers are budget-conscious and prefer outcome-based pricing models. The Bangalore/Hyderabad talent market shows willingness to invest ₹10,000-₹15,000 per month when programs demonstrate clear frameworks for team-building and stakeholder management.
+            - generic [ref=e566]:
+              - generic [ref=e567]:
+                - img [ref=e568]
+                - paragraph [ref=e570]: ₹99,990
+                - paragraph [ref=e571]: 10 Students
+              - generic [ref=e572]:
+                - img [ref=e573]
+                - paragraph [ref=e577]: ₹4,99,950
+                - paragraph [ref=e578]: 50 Students
+              - generic [ref=e579]:
+                - img [ref=e580]
+                - paragraph [ref=e585]: ₹9,99,900
+                - paragraph [ref=e586]: 100 Students
+            - generic [ref=e587]:
+              - paragraph [ref=e588]: Price Evolution
+              - generic [ref=e589]:
+                - generic [ref=e590]:
+                  - generic [ref=e591]:
+                    - generic [ref=e593]: "1"
+                    - paragraph [ref=e594]: Launch
+                    - paragraph [ref=e595]: ₹9,999
+                  - img [ref=e596]
+                - generic [ref=e598]:
+                  - generic [ref=e599]:
+                    - generic [ref=e601]: "2"
+                    - paragraph [ref=e602]: After 10 Students
+                    - paragraph [ref=e603]: Increase to ₹12,999 after validating core curriculum with first 10 cohort graduates; gather testimonials from fast-tracked promotions and improved team metrics. Introduce limited-time founding member pricing at ₹9,999 for next 5 students to accelerate word-of-mouth in tech communities.
+                  - img [ref=e604]
+                - generic [ref=e607]:
+                  - generic [ref=e609]: "3"
+                  - paragraph [ref=e610]: Premium Tier
+                  - paragraph [ref=e611]: Executive Accelerator Program at ₹24,999 - includes 1:1 monthly coaching calls, personalized team diagnostics, peer mastermind group with other managers, and direct access to leadership frameworks used in Fortune 500 companies. Positioned for high-performing managers aiming for manager-of-managers roles within 18 months.
+            - generic [ref=e612]:
+              - paragraph [ref=e613]: Sweet Spot Range
+              - paragraph [ref=e614]: ₹19,999 - ₹34,999 (after validation phase, 3-6 months post-launch)
+            - generic [ref=e615]:
+              - button "Back to Naming" [ref=e616] [cursor=pointer]:
+                - img [ref=e617]
+                - text: Back to Naming
+              - button "Build Course Curriculum" [ref=e619] [cursor=pointer]:
+                - text: Build Course Curriculum
+                - img [ref=e620]

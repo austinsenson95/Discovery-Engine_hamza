@@ -1,0 +1,10 @@
+[      56ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5174/node_modules/.vite/deps/react-dom_client.js?v=07aba4ec:20102
+[     175ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5174/signup:0
+[     175ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5174/signup:0
+[   80721ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/blueprint/niche:0
+[  177910ms] [ERROR] WebSocket connection to 'ws://localhost:5174/?token=FDE13WhJDJhA' failed:  @ http://localhost:5174/@vite/client:744
+[  177910ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5174/@vite/client:864
+[  177989ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5174/node_modules/.vite/deps/react-dom_client.js?v=07aba4ec:20102
+[  178003ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/api/user/me:0
+[  178003ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/api/user/me:0
+[  178108ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5174/login:0

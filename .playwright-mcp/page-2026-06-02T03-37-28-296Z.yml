@@ -1,0 +1,89 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Credits" [ref=e38] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e39]
+              - generic [ref=e44]: Credits
+            - link "Profile" [ref=e45] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e46]
+              - generic [ref=e49]: Profile
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Book Your Free Call
+            - paragraph [ref=e58]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e59] [cursor=pointer]
+      - generic [ref=e62]:
+        - img [ref=e64]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Test User
+          - paragraph [ref=e69]: test@example.com
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+  - generic [ref=e74]:
+    - banner [ref=e75]:
+      - heading "Coach Blueprint" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - img [ref=e80]
+          - generic [ref=e82]: 100 credits
+        - button [ref=e83] [cursor=pointer]:
+          - img [ref=e84]
+        - button [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+        - button "Log out" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - img "Test User" [ref=e97]
+    - main [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - button "Reset Blueprint" [ref=e101] [cursor=pointer]:
+            - img [ref=e102]
+            - text: Reset Blueprint
+          - generic [ref=e185]: "ID: bp_1780371244340"
+        - generic [ref=e109]:
+          - button "Niche Discovery" [ref=e301] [cursor=pointer]:
+            - img [ref=e303]
+            - generic [ref=e113]: Niche Discovery
+          - button "Audience Mapping" [ref=e382] [cursor=pointer]:
+            - img [ref=e384]
+            - generic [ref=e116]: Audience Mapping
+          - button "Program Builder" [ref=e910] [cursor=pointer]:
+            - img [ref=e912]
+            - generic [ref=e119]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e120] [cursor=pointer]:
+            - generic [ref=e121]: "4"
+            - generic [ref=e122]: Roadmap & PDF
+        - generic [ref=e915]:
+          - generic [ref=e916]:
+            - heading "Your Business Roadmap" [level=2] [ref=e917]
+            - paragraph [ref=e918]: A 12-week execution plan to take you from zero to your first paying coaching clients.
+          - generic [ref=e919]:
+            - img [ref=e920]
+            - generic [ref=e922]: AI is building your roadmap...

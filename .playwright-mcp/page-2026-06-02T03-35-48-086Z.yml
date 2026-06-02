@@ -1,0 +1,165 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Credits" [ref=e38] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e39]
+              - generic [ref=e44]: Credits
+            - link "Profile" [ref=e45] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e46]
+              - generic [ref=e49]: Profile
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Book Your Free Call
+            - paragraph [ref=e58]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e59] [cursor=pointer]
+      - generic [ref=e62]:
+        - img [ref=e64]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Test User
+          - paragraph [ref=e69]: test@example.com
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+  - generic [ref=e74]:
+    - banner [ref=e75]:
+      - heading "Coach Blueprint" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - img [ref=e80]
+          - generic [ref=e82]: 100 credits
+        - button [ref=e83] [cursor=pointer]:
+          - img [ref=e84]
+        - button [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+        - button "Log out" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - img "Test User" [ref=e97]
+    - main [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - button "Reset Blueprint" [ref=e101] [cursor=pointer]:
+            - img [ref=e102]
+            - text: Reset Blueprint
+          - generic [ref=e185]: "ID: bp_1780371244340"
+        - generic [ref=e109]:
+          - button "Niche Discovery" [ref=e301] [cursor=pointer]:
+            - img [ref=e303]
+            - generic [ref=e113]: Niche Discovery
+          - button "Audience Mapping" [ref=e382] [cursor=pointer]:
+            - img [ref=e384]
+            - generic [ref=e116]: Audience Mapping
+          - button "3 Program Builder" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: "3"
+            - generic [ref=e119]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e120]:
+            - generic [ref=e121]: "4"
+            - generic [ref=e122]: Roadmap & PDF
+        - generic [ref=e387]:
+          - heading "Build Your Signature Program" [level=2] [ref=e389]
+          - generic [ref=e390]:
+            - generic [ref=e392]:
+              - generic [ref=e393]: "1"
+              - generic [ref=e394]: Problems
+            - generic [ref=e397]:
+              - generic [ref=e398]: "2"
+              - generic [ref=e399]: Naming
+            - generic [ref=e402]:
+              - generic [ref=e403]: "3"
+              - generic [ref=e404]: Pricing
+            - generic [ref=e407]:
+              - generic [ref=e408]: "4"
+              - generic [ref=e409]: Curriculum
+          - generic [ref=e410]:
+            - heading "What Problems Will You Solve?" [level=3] [ref=e411]
+            - paragraph [ref=e412]: Select the problems your coaching program will solve for your ideal student. These become the foundation of your offer.
+            - generic [ref=e413]:
+              - paragraph [ref=e414]: Suggested Problems
+              - generic [ref=e415]:
+                - generic [ref=e416] [cursor=pointer]:
+                  - generic [ref=e417]:
+                    - checkbox "Unable to delegate technical tasks effectively to team members, creating a bottleneck where Rajesh becomes the single point of failure for critical projects and works 12+ hours daily while his team remains underutilized" [checked] [ref=e418]
+                    - img [ref=e470]
+                  - generic [ref=e420]: Unable to delegate technical tasks effectively to team members, creating a bottleneck where Rajesh becomes the single point of failure for critical projects and works 12+ hours daily while his team remains underutilized
+                - generic [ref=e421] [cursor=pointer]:
+                  - generic [ref=e422]:
+                    - checkbox "Struggling to give constructive feedback to former peers without damaging relationships, leading to avoidance of difficult conversations and allowing performance issues to fester unchecked" [checked] [ref=e423]
+                    - img [ref=e472]
+                  - generic [ref=e425]: Struggling to give constructive feedback to former peers without damaging relationships, leading to avoidance of difficult conversations and allowing performance issues to fester unchecked
+                - generic [ref=e426] [cursor=pointer]:
+                  - generic [ref=e427]:
+                    - checkbox "Lacks frameworks and confidence for having crucial conversations around underperformance, resulting in missed opportunities to coach struggling team members and potential talent loss" [checked] [active] [ref=e428]
+                    - img [ref=e474]
+                  - generic [ref=e430]: Lacks frameworks and confidence for having crucial conversations around underperformance, resulting in missed opportunities to coach struggling team members and potential talent loss
+                - generic [ref=e431] [cursor=pointer]:
+                  - checkbox "Experiencing imposter syndrome that prevents him from seeking help or admitting knowledge gaps to his reporting manager or peers, creating isolation and limiting access to mentorship and guidance" [ref=e433]
+                  - generic [ref=e435]: Experiencing imposter syndrome that prevents him from seeking help or admitting knowledge gaps to his reporting manager or peers, creating isolation and limiting access to mentorship and guidance
+                - generic [ref=e436] [cursor=pointer]:
+                  - checkbox "Unable to establish psychological safety within the team, leaving engineers hesitant to speak up about blockers, mistakes, or innovative ideas, which stifles team morale and innovation" [ref=e438]
+                  - generic [ref=e440]: Unable to establish psychological safety within the team, leaving engineers hesitant to speak up about blockers, mistakes, or innovative ideas, which stifles team morale and innovation
+                - generic [ref=e441] [cursor=pointer]:
+                  - checkbox "Missing clear systems for conflict resolution and difficult interpersonal dynamics, causing team tensions to escalate and drain his emotional energy while reducing team cohesion" [ref=e443]
+                  - generic [ref=e445]: Missing clear systems for conflict resolution and difficult interpersonal dynamics, causing team tensions to escalate and drain his emotional energy while reducing team cohesion
+                - generic [ref=e446] [cursor=pointer]:
+                  - checkbox "Lack of emotional intelligence skills to recognize and manage his own stress triggers during high-pressure situations, causing him to default to taking on work himself rather than coaching his team through challenges" [ref=e448]
+                  - generic [ref=e450]: Lack of emotional intelligence skills to recognize and manage his own stress triggers during high-pressure situations, causing him to default to taking on work himself rather than coaching his team through challenges
+                - generic [ref=e451] [cursor=pointer]:
+                  - checkbox "No defined leadership philosophy or management approach aligned with promotion expectations, making it difficult to demonstrate the senior management capabilities needed to advance within 18 months" [ref=e453]
+                  - generic [ref=e455]: No defined leadership philosophy or management approach aligned with promotion expectations, making it difficult to demonstrate the senior management capabilities needed to advance within 18 months
+            - generic [ref=e456]:
+              - paragraph [ref=e457]: Add Your Own
+              - generic [ref=e458]:
+                - textbox "e.g. Struggling to set boundaries with clients..." [ref=e459]
+                - button "Add" [ref=e460] [cursor=pointer]:
+                  - img [ref=e461]
+                  - text: Add
+            - generic [ref=e476]:
+              - generic [ref=e477]:
+                - img [ref=e478]
+                - paragraph [ref=e481]: 3 problems selected
+              - generic [ref=e482]:
+                - generic [ref=e483]:
+                  - text: Unable to delegate technical tasks effectively to ...
+                  - button [ref=e484] [cursor=pointer]:
+                    - img [ref=e485]
+                - generic [ref=e488]:
+                  - text: Struggling to give constructive feedback to former...
+                  - button [ref=e489] [cursor=pointer]:
+                    - img [ref=e490]
+                - generic [ref=e493]:
+                  - text: Lacks frameworks and confidence for having crucial...
+                  - button [ref=e494] [cursor=pointer]:
+                    - img [ref=e495]
+            - generic [ref=e462]:
+              - button "Back to Audience" [ref=e463] [cursor=pointer]:
+                - img [ref=e464]
+                - text: Back to Audience
+              - paragraph [ref=e466]: 3 selected
+              - button "Confirm Problems" [ref=e467] [cursor=pointer]:
+                - text: Confirm Problems
+                - img [ref=e468]

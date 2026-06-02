@@ -1,0 +1,126 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Credits" [ref=e38] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e39]
+              - generic [ref=e44]: Credits
+            - link "Profile" [ref=e45] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e46]
+              - generic [ref=e49]: Profile
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Book Your Free Call
+            - paragraph [ref=e58]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e59] [cursor=pointer]
+      - generic [ref=e62]:
+        - img [ref=e64]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Test User
+          - paragraph [ref=e69]: test@example.com
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+  - generic [ref=e74]:
+    - banner [ref=e75]:
+      - heading "Coach Blueprint" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - img [ref=e80]
+          - generic [ref=e82]: 100 credits
+        - button [ref=e83] [cursor=pointer]:
+          - img [ref=e84]
+        - button [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+        - button "Log out" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - img "Test User" [ref=e97]
+    - main [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - button "Reset Blueprint" [ref=e101] [cursor=pointer]:
+            - img [ref=e102]
+            - text: Reset Blueprint
+          - generic [ref=e185]: "ID: bp_1780371244340"
+        - generic [ref=e109]:
+          - button "Niche Discovery" [ref=e301] [cursor=pointer]:
+            - img [ref=e303]
+            - generic [ref=e113]: Niche Discovery
+          - button "Audience Mapping" [ref=e382] [cursor=pointer]:
+            - img [ref=e384]
+            - generic [ref=e116]: Audience Mapping
+          - button "3 Program Builder" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: "3"
+            - generic [ref=e119]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e120]:
+            - generic [ref=e121]: "4"
+            - generic [ref=e122]: Roadmap & PDF
+        - generic [ref=e387]:
+          - heading "Build Your Signature Program" [level=2] [ref=e389]
+          - generic [ref=e390]:
+            - generic [ref=e392]:
+              - img [ref=e498]
+              - generic [ref=e394]: Problems
+            - generic [ref=e397]:
+              - img [ref=e528]
+              - generic [ref=e399]: Naming
+            - generic [ref=e402]:
+              - img [ref=e622]
+              - generic [ref=e404]: Pricing
+            - generic [ref=e407]:
+              - generic [ref=e408]: "4"
+              - generic [ref=e409]: Curriculum
+          - generic [ref=e624]:
+            - heading "Design Your Course Curriculum" [level=3] [ref=e625]
+            - paragraph [ref=e626]: AI-generated lesson plan structured into modules with clear learning outcomes.
+            - generic [ref=e627]:
+              - paragraph [ref=e628]: Choose Course Duration
+              - generic [ref=e629]:
+                - button "4 Weeks Intensive sprint" [ref=e630] [cursor=pointer]:
+                  - img [ref=e631]
+                  - paragraph [ref=e633]: 4 Weeks
+                  - paragraph [ref=e634]: Intensive sprint
+                - button "8 Weeks Standard pace" [ref=e635] [cursor=pointer]:
+                  - img [ref=e636]
+                  - paragraph [ref=e640]: 8 Weeks
+                  - paragraph [ref=e641]: Standard pace
+                - button "12 Weeks Comprehensive" [ref=e642] [cursor=pointer]:
+                  - img [ref=e643]
+                  - paragraph [ref=e648]: 12 Weeks
+                  - paragraph [ref=e649]: Comprehensive
+                  - img [ref=e651]
+            - generic [ref=e672]:
+              - img [ref=e673]
+              - generic [ref=e675]: AI is building your curriculum...
+            - generic [ref=e665]:
+              - button "Back to Pricing" [ref=e666] [cursor=pointer]:
+                - img [ref=e667]
+                - text: Back to Pricing
+              - button "Continue to Roadmap" [ref=e669] [cursor=pointer]:
+                - text: Continue to Roadmap
+                - img [ref=e670]

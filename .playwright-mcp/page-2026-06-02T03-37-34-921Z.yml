@@ -1,0 +1,298 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Credits" [ref=e38] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e39]
+              - generic [ref=e44]: Credits
+            - link "Profile" [ref=e45] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e46]
+              - generic [ref=e49]: Profile
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Book Your Free Call
+            - paragraph [ref=e58]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e59] [cursor=pointer]
+      - generic [ref=e62]:
+        - img [ref=e64]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Test User
+          - paragraph [ref=e69]: test@example.com
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+  - generic [ref=e74]:
+    - banner [ref=e75]:
+      - heading "Coach Blueprint" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - img [ref=e80]
+          - generic [ref=e82]: 100 credits
+        - button [ref=e83] [cursor=pointer]:
+          - img [ref=e84]
+        - button [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+        - button "Log out" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - img "Test User" [ref=e97]
+    - main [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - button "Reset Blueprint" [ref=e101] [cursor=pointer]:
+            - img [ref=e102]
+            - text: Reset Blueprint
+          - generic [ref=e185]: "ID: bp_1780371244340"
+        - generic [ref=e109]:
+          - button "Niche Discovery" [ref=e301] [cursor=pointer]:
+            - img [ref=e303]
+            - generic [ref=e113]: Niche Discovery
+          - button "Audience Mapping" [ref=e382] [cursor=pointer]:
+            - img [ref=e384]
+            - generic [ref=e116]: Audience Mapping
+          - button "Program Builder" [ref=e910] [cursor=pointer]:
+            - img [ref=e912]
+            - generic [ref=e119]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e120] [cursor=pointer]:
+            - generic [ref=e121]: "4"
+            - generic [ref=e122]: Roadmap & PDF
+        - generic [ref=e915]:
+          - generic [ref=e916]:
+            - heading "Your Business Roadmap" [level=2] [ref=e917]
+            - paragraph [ref=e918]: A 12-week execution plan to take you from zero to your first paying coaching clients.
+          - button "Back to Pricing" [ref=e924] [cursor=pointer]:
+            - img [ref=e925]
+            - text: Back to Pricing
+          - generic [ref=e927]:
+            - generic [ref=e929]:
+              - generic [ref=e930]:
+                - generic [ref=e931]:
+                  - generic [ref=e932]: "1"
+                  - generic [ref=e933]:
+                    - heading "Foundation & Validation" [level=4] [ref=e934]
+                    - paragraph [ref=e935]: Weeks 1-3
+                - generic [ref=e936]: 3 tasks
+              - generic [ref=e938]:
+                - generic [ref=e939]:
+                  - paragraph [ref=e940]: Week 1
+                  - list [ref=e941]:
+                    - listitem [ref=e942]:
+                      - generic [ref=e945]: Define your ideal client avatar for first-time managers (industry, company size, pain points)
+                    - listitem [ref=e946]:
+                      - generic [ref=e949]: Map out your unique coaching methodology and core frameworks for Lead From Day One
+                    - listitem [ref=e950]:
+                      - generic [ref=e953]: Create a simple one-page positioning statement articulating your differentiation
+                    - listitem [ref=e954]:
+                      - generic [ref=e957]: List 20 potential first clients from your network (colleagues, LinkedIn connections, former colleagues)
+                - generic [ref=e958]:
+                  - paragraph [ref=e959]: Week 2
+                  - list [ref=e960]:
+                    - listitem [ref=e961]:
+                      - generic [ref=e964]: Conduct 5 discovery conversations with first-time managers to validate their biggest challenges
+                    - listitem [ref=e965]:
+                      - generic [ref=e968]: Refine your service offering based on feedback (session length, frequency, duration of program)
+                    - listitem [ref=e969]:
+                      - generic [ref=e972]: Document 3-5 success stories or case studies from past coaching (even informal mentoring)
+                    - listitem [ref=e973]:
+                      - generic [ref=e976]: Develop your core messaging around the transformation clients will experience
+                - generic [ref=e977]:
+                  - paragraph [ref=e978]: Week 3
+                  - list [ref=e979]:
+                    - listitem [ref=e980]:
+                      - generic [ref=e983]: Set your initial coaching fee based on market research and your experience level
+                    - listitem [ref=e984]:
+                      - generic [ref=e987]: Create a simple program package (e.g., 6-week program with weekly 1-hour sessions)
+                    - listitem [ref=e988]:
+                      - generic [ref=e991]: Write your elevator pitch (2-3 sentences) for Lead From Day One
+                    - listitem [ref=e992]:
+                      - generic [ref=e995]: Build a prospect tracking spreadsheet with 30 potential clients and contact information
+            - generic [ref=e997]:
+              - generic [ref=e998]:
+                - generic [ref=e999]:
+                  - generic [ref=e1000]: "2"
+                  - generic [ref=e1001]:
+                    - heading "Build & Prepare" [level=4] [ref=e1002]
+                    - paragraph [ref=e1003]: Weeks 4-6
+                - generic [ref=e1004]: 3 tasks
+              - generic [ref=e1006]:
+                - generic [ref=e1007]:
+                  - paragraph [ref=e1008]: Week 4
+                  - list [ref=e1009]:
+                    - listitem [ref=e1010]:
+                      - generic [ref=e1013]: Build a basic website or landing page highlighting Lead From Day One and your transformation promise
+                    - listitem [ref=e1014]:
+                      - generic [ref=e1017]: Set up a professional email address and basic CRM (HubSpot free or Notion) to track prospects
+                    - listitem [ref=e1018]:
+                      - generic [ref=e1021]: Create a simple one-page service agreement and coaching intake form template
+                    - listitem [ref=e1022]:
+                      - generic [ref=e1025]: Record a 3-5 minute video introducing yourself and your coaching approach
+                - generic [ref=e1026]:
+                  - paragraph [ref=e1027]: Week 5
+                  - list [ref=e1028]:
+                    - listitem [ref=e1029]:
+                      - generic [ref=e1032]: Develop your Lead From Day One curriculum (outline 6-8 core modules or topics)
+                    - listitem [ref=e1033]:
+                      - generic [ref=e1036]: Create a simple client onboarding sequence (welcome email, intake call process, first session prep)
+                    - listitem [ref=e1037]:
+                      - generic [ref=e1040]: Set up scheduling tool (Calendly) and payment system (Stripe or PayPal)
+                    - listitem [ref=e1041]:
+                      - generic [ref=e1044]: Write 3 social media posts about common first-time manager challenges
+                - generic [ref=e1045]:
+                  - paragraph [ref=e1046]: Week 6
+                  - list [ref=e1047]:
+                    - listitem [ref=e1048]:
+                      - generic [ref=e1051]: Prepare your discovery call script and qualifying questions
+                    - listitem [ref=e1052]:
+                      - generic [ref=e1055]: Create templates for session notes and progress tracking
+                    - listitem [ref=e1056]:
+                      - generic [ref=e1059]: Develop a simple referral incentive system (for future growth)
+                    - listitem [ref=e1060]:
+                      - generic [ref=e1063]: Finalize your coaching packages and publish them on your website
+            - generic [ref=e1065]:
+              - generic [ref=e1066]:
+                - generic [ref=e1067]:
+                  - generic [ref=e1068]: "3"
+                  - generic [ref=e1069]:
+                    - heading "Launch & Acquire" [level=4] [ref=e1070]
+                    - paragraph [ref=e1071]: Weeks 7-9
+                - generic [ref=e1072]: 3 tasks
+              - generic [ref=e1074]:
+                - generic [ref=e1075]:
+                  - paragraph [ref=e1076]: Week 7
+                  - list [ref=e1077]:
+                    - listitem [ref=e1078]:
+                      - generic [ref=e1081]: "Launch soft outreach: Email your 30-person prospect list with personalized messages"
+                    - listitem [ref=e1082]:
+                      - generic [ref=e1085]: Schedule 15 discovery calls with warm leads from your network
+                    - listitem [ref=e1086]:
+                      - generic [ref=e1089]: Post your first LinkedIn article about first-time manager challenges or quick wins
+                    - listitem [ref=e1090]:
+                      - generic [ref=e1093]: Send welcome email sequence to website visitors with offer for free 30-min consultation
+                - generic [ref=e1094]:
+                  - paragraph [ref=e1095]: Week 8
+                  - list [ref=e1096]:
+                    - listitem [ref=e1097]:
+                      - generic [ref=e1100]: Conduct 10+ discovery calls, focusing on listening and understanding their needs
+                    - listitem [ref=e1101]:
+                      - generic [ref=e1104]: Close your first 1-2 paying clients from discovery calls
+                    - listitem [ref=e1105]:
+                      - generic [ref=e1108]: Create a case study from your first client (even if ongoing)
+                    - listitem [ref=e1109]:
+                      - generic [ref=e1112]: Attend 1-2 networking events or online communities where first-time managers gather
+                - generic [ref=e1113]:
+                  - paragraph [ref=e1114]: Week 9
+                  - list [ref=e1115]:
+                    - listitem [ref=e1116]:
+                      - generic [ref=e1119]: Launch your first cohort or one-on-one coaching engagements
+                    - listitem [ref=e1120]:
+                      - generic [ref=e1123]: Begin weekly client sessions and track progress meticulously
+                    - listitem [ref=e1124]:
+                      - generic [ref=e1127]: Ask first clients for testimonials and feedback on their experience
+                    - listitem [ref=e1128]:
+                      - generic [ref=e1131]: Post 2-3 times per week on LinkedIn sharing coaching insights and client wins (anonymously)
+            - generic [ref=e1133]:
+              - generic [ref=e1134]:
+                - generic [ref=e1135]:
+                  - generic [ref=e1136]: "4"
+                  - generic [ref=e1137]:
+                    - heading "Scale & Optimize" [level=4] [ref=e1138]
+                    - paragraph [ref=e1139]: Weeks 10-12
+                - generic [ref=e1140]: 3 tasks
+              - generic [ref=e1142]:
+                - generic [ref=e1143]:
+                  - paragraph [ref=e1144]: Week 10
+                  - list [ref=e1145]:
+                    - listitem [ref=e1146]:
+                      - generic [ref=e1149]: Analyze which lead sources converted best and double down on top 2-3 channels
+                    - listitem [ref=e1150]:
+                      - generic [ref=e1153]: Collect and showcase client testimonials and transformation metrics on website
+                    - listitem [ref=e1154]:
+                      - generic [ref=e1157]: Develop a strategic referral ask process with existing clients
+                    - listitem [ref=e1158]:
+                      - generic [ref=e1161]: Create a simple email nurture sequence for warm prospects not yet ready to buy
+                - generic [ref=e1162]:
+                  - paragraph [ref=e1163]: Week 11
+                  - list [ref=e1164]:
+                    - listitem [ref=e1165]:
+                      - generic [ref=e1168]: Launch a free webinar or workshop on 'First-Month Manager Mistakes' to build authority
+                    - listitem [ref=e1169]:
+                      - generic [ref=e1172]: Document your coaching process and create a simple how-to guide for prospects
+                    - listitem [ref=e1173]:
+                      - generic [ref=e1176]: Reach out to 20 new prospects based on lessons learned from Phase 3
+                    - listitem [ref=e1177]:
+                      - generic [ref=e1180]: Refine your messaging based on what resonates most with your ideal clients
+                - generic [ref=e1181]:
+                  - paragraph [ref=e1182]: Week 12
+                  - list [ref=e1183]:
+                    - listitem [ref=e1184]:
+                      - generic [ref=e1187]: Set concrete goals for next quarter (number of clients, revenue, case studies)
+                    - listitem [ref=e1188]:
+                      - generic [ref=e1191]: Plan your content marketing strategy (1-2 pieces per week going forward)
+                    - listitem [ref=e1192]:
+                      - generic [ref=e1195]: Build partnership opportunities with complementary service providers
+                    - listitem [ref=e1196]:
+                      - generic [ref=e1199]: Document and celebrate your first success milestone, then plan next phase of growth
+          - generic [ref=e1200]:
+            - generic [ref=e1201]:
+              - heading "Coach Readiness Quiz" [level=3] [ref=e1202]
+              - paragraph [ref=e1203]: Answer 5 quick questions to personalize your blueprint. This helps us tailor the tone, urgency, and action items to your current situation.
+            - generic [ref=e1204]:
+              - generic [ref=e1206]:
+                - generic [ref=e1207]: Question 1 of 5
+                - generic [ref=e1208]: 20%
+              - generic [ref=e1211]:
+                - generic [ref=e1212]:
+                  - generic [ref=e1213]: "1"
+                  - heading "How clear are you on WHO you want to coach?" [level=4] [ref=e1214]
+                - generic [ref=e1215]:
+                  - button "I have no idea" [ref=e1216] [cursor=pointer]:
+                    - generic [ref=e1218]: I have no idea
+                  - button "I have a broad industry in mind" [ref=e1219] [cursor=pointer]:
+                    - generic [ref=e1221]: I have a broad industry in mind
+                  - button "I know the persona but not the niche" [ref=e1222] [cursor=pointer]:
+                    - generic [ref=e1224]: I know the persona but not the niche
+                  - button "I have a specific niche and ideal client avatar" [ref=e1225] [cursor=pointer]:
+                    - generic [ref=e1227]: I have a specific niche and ideal client avatar
+              - generic [ref=e1228]:
+                - button "Previous" [disabled] [ref=e1229]:
+                  - img [ref=e1230]
+                  - text: Previous
+                - button "Next" [disabled] [ref=e1232]:
+                  - text: Next
+                  - img [ref=e1233]
+          - generic [ref=e1235]:
+            - generic [ref=e1236]:
+              - img [ref=e1237]
+              - generic [ref=e1239]: Your Blueprint PDF is ready!
+            - paragraph [ref=e1240]: Check your downloads folder for My-Coaching-Blueprint.pdf
+            - generic [ref=e1241]:
+              - button "Book a Strategy Call" [ref=e1242] [cursor=pointer]:
+                - img [ref=e1243]
+                - text: Book a Strategy Call
+              - button "Start Over" [ref=e1245] [cursor=pointer]:
+                - img [ref=e1246]
+                - text: Start Over

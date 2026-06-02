@@ -1,0 +1,181 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "Discovery Engine" [ref=e8]
+        - button "Collapse sidebar" [ref=e9] [cursor=pointer]:
+          - img [ref=e11]
+      - navigation [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: PROGRAM
+          - generic [ref=e16]:
+            - link "Dashboard" [ref=e17] [cursor=pointer]:
+              - /url: /
+              - img [ref=e18]
+              - generic [ref=e23]: Dashboard
+            - link "Blueprint" [ref=e24] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e25]
+              - generic [ref=e28]: Blueprint
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: MY STUFF
+          - generic [ref=e31]:
+            - link "My Journey" [ref=e32] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e33]
+              - generic [ref=e37]: My Journey
+            - link "Credits" [ref=e38] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e39]
+              - generic [ref=e44]: Credits
+            - link "Profile" [ref=e45] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e46]
+              - generic [ref=e49]: Profile
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Book Your Free Call
+            - paragraph [ref=e58]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e59] [cursor=pointer]
+      - generic [ref=e62]:
+        - img [ref=e64]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Test User
+          - paragraph [ref=e69]: test@example.com
+        - button [ref=e70] [cursor=pointer]:
+          - img [ref=e71]
+  - generic [ref=e74]:
+    - banner [ref=e75]:
+      - heading "Coach Blueprint" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - img [ref=e80]
+          - generic [ref=e82]: 100 credits
+        - button [ref=e83] [cursor=pointer]:
+          - img [ref=e84]
+        - button [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+        - button "Log out" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+        - img "Test User" [ref=e97]
+    - main [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - button "Reset Blueprint" [ref=e101] [cursor=pointer]:
+            - img [ref=e102]
+            - text: Reset Blueprint
+          - generic [ref=e185]: "ID: bp_1780371244340"
+        - generic [ref=e109]:
+          - button "1 Niche Discovery" [ref=e111] [cursor=pointer]:
+            - generic [ref=e112]: "1"
+            - generic [ref=e113]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e114]:
+            - generic [ref=e115]: "2"
+            - generic [ref=e116]: Audience Mapping
+          - button "3 Program Builder" [ref=e117]:
+            - generic [ref=e118]: "3"
+            - generic [ref=e119]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e120]:
+            - generic [ref=e121]: "4"
+            - generic [ref=e122]: Roadmap & PDF
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - heading "Let's Find Your Perfect Niche" [level=2] [ref=e127]
+            - paragraph [ref=e128]: Tell us about your background and we will use AI to discover coaching niches perfectly suited to your experience.
+          - generic [ref=e186]:
+            - generic [ref=e187]:
+              - paragraph [ref=e188]: We found 3 recommended niches based on your profile
+              - generic [ref=e189]:
+                - button "Edit My Answers" [ref=e190] [cursor=pointer]:
+                  - img [ref=e191]
+                  - text: Edit My Answers
+                - button "Regenerate" [ref=e193] [cursor=pointer]:
+                  - img [ref=e194]
+                  - text: Regenerate
+            - generic [ref=e197]:
+              - generic [ref=e199]:
+                - generic [ref=e200]:
+                  - heading "Executive Leadership Coaching for First-Time Managers" [level=3] [ref=e201]
+                  - generic [ref=e202]:
+                    - img [ref=e203]
+                    - generic [ref=e206]: ₹75K - ₹3L/month
+                - generic [ref=e207]:
+                  - generic [ref=e208]:
+                    - paragraph [ref=e209]: Who You Help
+                    - paragraph [ref=e210]: Professionals newly promoted to management roles who struggle with team leadership and decision-making.
+                  - generic [ref=e211]:
+                    - paragraph [ref=e212]: Problem Solved
+                    - paragraph [ref=e213]: New managers lack clarity on transitioning from individual contributor to leader, managing team dynamics, and making strategic decisions without experience.
+                  - generic [ref=e214]:
+                    - paragraph [ref=e215]: Result Delivered
+                    - paragraph [ref=e216]: Clients gain confidence in leadership abilities, develop effective team management strategies, and accelerate their growth into successful managers.
+                - generic [ref=e218]:
+                  - generic [ref=e219]: Market Demand
+                  - generic [ref=e220]: 8.8/10
+                - generic [ref=e223]:
+                  - generic [ref=e224]: first-time manager coaching
+                  - generic [ref=e225]: leadership transition
+                  - generic [ref=e226]: team management skills
+                  - generic [ref=e227]: new manager training
+                  - generic [ref=e228]: executive coaching
+                - paragraph [ref=e229]: Your 10 years of corporate experience managing 15+ person teams directly aligns with helping new managers. Your leadership and team-building expertise is exactly what this audience needs.
+                - paragraph [ref=e230]: "Competition: Medium-High"
+                - button "Select This Niche" [ref=e231] [cursor=pointer]
+              - generic [ref=e233]:
+                - generic [ref=e234]:
+                  - heading "High-Performance Team Building & Organizational Culture Coaching" [level=3] [ref=e235]
+                  - generic [ref=e236]:
+                    - img [ref=e237]
+                    - generic [ref=e240]: ₹1L - ₹5L/month
+                - generic [ref=e241]:
+                  - generic [ref=e242]:
+                    - paragraph [ref=e243]: Who You Help
+                    - paragraph [ref=e244]: Mid-sized companies (50-500 employees) and team leaders seeking to build cohesive, high-performing teams.
+                  - generic [ref=e245]:
+                    - paragraph [ref=e246]: Problem Solved
+                    - paragraph [ref=e247]: Organizations struggle with silos, poor communication, low engagement, and inability to execute strategy due to misaligned or dysfunctional teams.
+                  - generic [ref=e248]:
+                    - paragraph [ref=e249]: Result Delivered
+                    - paragraph [ref=e250]: Teams develop stronger collaboration, improved communication, higher productivity, and alignment with organizational goals.
+                - generic [ref=e252]:
+                  - generic [ref=e253]: Market Demand
+                  - generic [ref=e254]: 8.5/10
+                - generic [ref=e257]:
+                  - generic [ref=e258]: team building workshops
+                  - generic [ref=e259]: organizational culture coaching
+                  - generic [ref=e260]: high-performance teams
+                  - generic [ref=e261]: team dynamics
+                  - generic [ref=e262]: workplace culture
+                - paragraph [ref=e263]: Your extensive team-building experience and strategic planning skills perfectly match this niche. You can offer workshops and coaching that directly leverage your corporate background.
+                - paragraph [ref=e264]: "Competition: Medium"
+                - button "Select This Niche" [ref=e265] [cursor=pointer]
+              - generic [ref=e267]:
+                - generic [ref=e268]:
+                  - heading "Strategic Career Advancement Coaching for Corporate Professionals" [level=3] [ref=e269]
+                  - generic [ref=e270]:
+                    - img [ref=e271]
+                    - generic [ref=e274]: ₹60K - ₹2.5L/month
+                - generic [ref=e275]:
+                  - generic [ref=e276]:
+                    - paragraph [ref=e277]: Who You Help
+                    - paragraph [ref=e278]: Mid-career professionals (5-15 years experience) aiming for senior leadership roles and navigating career transitions.
+                  - generic [ref=e279]:
+                    - paragraph [ref=e280]: Problem Solved
+                    - paragraph [ref=e281]: Ambitious professionals lack clarity on career strategy, don't know how to position themselves for promotions, and struggle with executive presence.
+                  - generic [ref=e282]:
+                    - paragraph [ref=e283]: Result Delivered
+                    - paragraph [ref=e284]: Clients clarify career goals, develop actionable advancement strategies, build executive presence, and successfully transition to senior leadership roles.
+                - generic [ref=e286]:
+                  - generic [ref=e287]: Market Demand
+                  - generic [ref=e288]: 8.2/10
+                - generic [ref=e291]:
+                  - generic [ref=e292]: career advancement coaching
+                  - generic [ref=e293]: executive presence
+                  - generic [ref=e294]: career strategy
+                  - generic [ref=e295]: promotion coaching
+                  - generic [ref=e296]: senior leadership transition
+                - paragraph [ref=e297]: Your passion for helping people grow and 10 years of corporate experience enable you to mentor professionals through career transitions with credibility and real-world insights.
+                - paragraph [ref=e298]: "Competition: Medium-High"
+                - button "Select This Niche" [ref=e299] [cursor=pointer]
