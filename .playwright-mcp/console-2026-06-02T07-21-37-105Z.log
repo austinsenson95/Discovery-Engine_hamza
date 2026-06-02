@@ -1,0 +1,2 @@
+[  233092ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://discovery-engine-backend.vercel.app/api/blueprint/pdf/bp_1780384140482:0
+[  233093ms] [ERROR] [Blueprint] PDF download failed: Cannot find package 'puppeteer-core' imported from /var/task/discovery-engine-backend/src/services/pdfService.js @ https://discovery-engine-hamza.vercel.app/assets/index-3mkkAeRS.js:24

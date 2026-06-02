@@ -949,15 +949,15 @@ export const downloadPDF = async (
       return;
     }
 
-    const pdfBuffer = await pdfService.streamPDF(id, blueprint);
-    const { filename } = compileBlueprintTemplate(blueprint);
+    const { buffer, filename } = await pdfService.renderPDF(blueprint);
 
-    res.setHeader('Content-Type', 'application/pdf');
+    const contentType = filename.endsWith('.html') ? 'text/html' : 'application/pdf';
+    res.setHeader('Content-Type', contentType);
     res.setHeader(
       'Content-Disposition',
       `attachment; filename="${filename}"`
     );
-    res.send(pdfBuffer);
+    res.send(buffer);
   } catch (error) {
     next(error);
   }

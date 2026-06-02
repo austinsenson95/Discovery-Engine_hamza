@@ -1,0 +1,181 @@
+- generic [ref=e5]:
+  - complementary [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - img "Discovery Engine" [ref=e10]
+        - button "Collapse sidebar" [ref=e11] [cursor=pointer]:
+          - img [ref=e13]
+      - navigation [ref=e15]:
+        - generic [ref=e16]:
+          - paragraph [ref=e17]: PROGRAM
+          - generic [ref=e18]:
+            - link "Dashboard" [ref=e19] [cursor=pointer]:
+              - /url: /
+              - img [ref=e20]
+              - generic [ref=e25]: Dashboard
+            - link "Blueprint" [ref=e26] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e27]
+              - generic [ref=e30]: Blueprint
+        - generic [ref=e31]:
+          - paragraph [ref=e32]: MY STUFF
+          - generic [ref=e33]:
+            - link "My Journey" [ref=e34] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e35]
+              - generic [ref=e39]: My Journey
+            - link "Credits" [ref=e40] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e41]
+              - generic [ref=e46]: Credits
+            - link "Profile" [ref=e47] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e48]
+              - generic [ref=e51]: Profile
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - img [ref=e56]
+          - generic [ref=e58]:
+            - paragraph [ref=e59]: Book Your Free Call
+            - paragraph [ref=e60]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e61] [cursor=pointer]
+      - generic [ref=e64]:
+        - img [ref=e66]
+        - generic [ref=e69]:
+          - paragraph [ref=e70]: Test User
+          - paragraph [ref=e188]: test99@example.com
+        - button [ref=e71] [cursor=pointer]:
+          - img [ref=e72]
+  - generic [ref=e75]:
+    - banner [ref=e76]:
+      - heading "Coach Blueprint" [level=2] [ref=e78]
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - img [ref=e81]
+          - generic [ref=e83]: 25 credits
+        - button [ref=e84] [cursor=pointer]:
+          - img [ref=e85]
+        - button [ref=e88] [cursor=pointer]:
+          - img [ref=e89]
+        - button "Log out" [ref=e93] [cursor=pointer]:
+          - img [ref=e94]
+        - img "Test User" [ref=e189]
+    - main [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - button "Reset Blueprint" [ref=e104] [cursor=pointer]:
+            - img [ref=e105]
+            - text: Reset Blueprint
+          - generic [ref=e442]: "ID: bp_1780385961850"
+        - generic [ref=e112]:
+          - button "1 Niche Discovery" [ref=e370] [cursor=pointer]:
+            - generic [ref=e115]: "1"
+            - generic [ref=e116]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e371]:
+            - generic [ref=e118]: "2"
+            - generic [ref=e119]: Audience Mapping
+          - button "3 Program Builder" [ref=e372]:
+            - generic [ref=e121]: "3"
+            - generic [ref=e122]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e123]:
+            - generic [ref=e124]: "4"
+            - generic [ref=e125]: Roadmap & PDF
+        - generic [ref=e374]:
+          - generic [ref=e375]:
+            - heading "Let's Find Your Perfect Niche" [level=2] [ref=e376]
+            - paragraph [ref=e377]: Tell us about your background and we will use AI to discover coaching niches perfectly suited to your experience.
+          - generic [ref=e443]:
+            - generic [ref=e444]:
+              - paragraph [ref=e445]: We found 3 recommended niches based on your profile
+              - generic [ref=e446]:
+                - button "Edit My Answers" [ref=e447] [cursor=pointer]:
+                  - img [ref=e448]
+                  - text: Edit My Answers
+                - button "Regenerate" [ref=e450] [cursor=pointer]:
+                  - img [ref=e451]
+                  - text: Regenerate
+            - generic [ref=e454]:
+              - generic [ref=e456]:
+                - generic [ref=e457]:
+                  - heading "Early-Stage Startup Team Building Coach" [level=3] [ref=e458]
+                  - generic [ref=e459]:
+                    - img [ref=e460]
+                    - generic [ref=e463]: ₹1.5L - ₹4L/month
+                - generic [ref=e464]:
+                  - generic [ref=e465]:
+                    - paragraph [ref=e466]: Who You Help
+                    - paragraph [ref=e467]: Founders and early-stage startup leaders who need to build high-performing teams quickly without breaking the bank.
+                  - generic [ref=e468]:
+                    - paragraph [ref=e469]: Problem Solved
+                    - paragraph [ref=e470]: Startups struggle to hire the right people, create team culture, and manage growing teams while maintaining early-stage energy and execution speed.
+                  - generic [ref=e471]:
+                    - paragraph [ref=e472]: Result Delivered
+                    - paragraph [ref=e473]: Clients build cohesive, motivated teams that ship faster, reduce turnover, and create strong company culture from day one.
+                - generic [ref=e475]:
+                  - generic [ref=e476]: Market Demand
+                  - generic [ref=e477]: 8.8/10
+                - generic [ref=e480]:
+                  - generic [ref=e481]: startup team building
+                  - generic [ref=e482]: founder coaching
+                  - generic [ref=e483]: early-stage hiring
+                  - generic [ref=e484]: team culture
+                  - generic [ref=e485]: startup scaling
+                - paragraph [ref=e486]: Your direct experience building teams from scratch aligns perfectly with startup needs. You can teach founders the playbook you've learned while tapping into the booming Indian startup ecosystem.
+                - paragraph [ref=e487]: "Competition: Medium"
+                - button "Select This Niche" [ref=e488] [cursor=pointer]
+              - generic [ref=e490]:
+                - generic [ref=e491]:
+                  - heading "Community-Driven Leadership & Team Engagement Coach" [level=3] [ref=e492]
+                  - generic [ref=e493]:
+                    - img [ref=e494]
+                    - generic [ref=e497]: ₹1.2L - ₹3.5L/month
+                - generic [ref=e498]:
+                  - generic [ref=e499]:
+                    - paragraph [ref=e500]: Who You Help
+                    - paragraph [ref=e501]: Mid-level managers and team leaders in tech, education, and corporate sectors who want to build engaged communities within their teams.
+                  - generic [ref=e502]:
+                    - paragraph [ref=e503]: Problem Solved
+                    - paragraph [ref=e504]: Leaders lack strategies to create psychological safety, foster collaboration, and transform teams into thriving communities where people actually want to work.
+                  - generic [ref=e505]:
+                    - paragraph [ref=e506]: Result Delivered
+                    - paragraph [ref=e507]: Clients experience improved employee engagement, reduced attrition, increased productivity, and create workplace cultures where teams feel like communities.
+                - generic [ref=e509]:
+                  - generic [ref=e510]: Market Demand
+                  - generic [ref=e511]: 8.3/10
+                - generic [ref=e514]:
+                  - generic [ref=e515]: team engagement
+                  - generic [ref=e516]: community building
+                  - generic [ref=e517]: employee retention
+                  - generic [ref=e518]: leadership coaching
+                  - generic [ref=e519]: organizational culture
+                - paragraph [ref=e520]: Your passion for building communities combined with team management expertise gives you a unique angle. This niche bridges the gap between traditional management and modern community-building principles.
+                - paragraph [ref=e521]: "Competition: Low-Medium"
+                - button "Select This Niche" [ref=e522] [cursor=pointer]
+              - generic [ref=e524]:
+                - generic [ref=e525]:
+                  - heading "Educational Institution Team Development Coach" [level=3] [ref=e526]
+                  - generic [ref=e527]:
+                    - img [ref=e528]
+                    - generic [ref=e531]: ₹80K - ₹2.5L/month
+                - generic [ref=e532]:
+                  - generic [ref=e533]:
+                    - paragraph [ref=e534]: Who You Help
+                    - paragraph [ref=e535]: School principals, college administrators, and EdTech leaders who need to build and manage effective teaching and administrative teams.
+                  - generic [ref=e536]:
+                    - paragraph [ref=e537]: Problem Solved
+                    - paragraph [ref=e538]: Educational institutions struggle with staff coordination, creating collaborative teaching cultures, and building teams that improve student outcomes while managing competing priorities.
+                  - generic [ref=e539]:
+                    - paragraph [ref=e540]: Result Delivered
+                    - paragraph [ref=e541]: Clients develop unified teams that collaborate better, improve student satisfaction, reduce staff burnout, and create positive institutional cultures.
+                - generic [ref=e543]:
+                  - generic [ref=e544]: Market Demand
+                  - generic [ref=e545]: 7.9/10
+                - generic [ref=e548]:
+                  - generic [ref=e549]: educational leadership
+                  - generic [ref=e550]: school team management
+                  - generic [ref=e551]: EdTech team building
+                  - generic [ref=e552]: institutional development
+                  - generic [ref=e553]: teacher team coaching
+                - paragraph [ref=e554]: Your team management expertise directly applies to educational settings, and the Education & Skills domain you selected makes this a natural fit. India's growing EdTech and school modernization sector needs this support.
+                - paragraph [ref=e555]: "Competition: Low"
+                - button "Select This Niche" [ref=e556] [cursor=pointer]

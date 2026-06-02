@@ -1,0 +1,142 @@
+- generic [ref=e5]:
+  - complementary [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - img "Discovery Engine" [ref=e10]
+        - button "Collapse sidebar" [ref=e11] [cursor=pointer]:
+          - img [ref=e13]
+      - navigation [ref=e15]:
+        - generic [ref=e16]:
+          - paragraph [ref=e17]: PROGRAM
+          - generic [ref=e18]:
+            - link "Dashboard" [ref=e19] [cursor=pointer]:
+              - /url: /
+              - img [ref=e20]
+              - generic [ref=e25]: Dashboard
+            - link "Blueprint" [ref=e26] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e27]
+              - generic [ref=e30]: Blueprint
+        - generic [ref=e31]:
+          - paragraph [ref=e32]: MY STUFF
+          - generic [ref=e33]:
+            - link "My Journey" [ref=e34] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e35]
+              - generic [ref=e39]: My Journey
+            - link "Credits" [ref=e40] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e41]
+              - generic [ref=e46]: Credits
+            - link "Profile" [ref=e47] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e48]
+              - generic [ref=e51]: Profile
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - img [ref=e56]
+          - generic [ref=e58]:
+            - paragraph [ref=e59]: Book Your Free Call
+            - paragraph [ref=e60]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e61] [cursor=pointer]
+      - generic [ref=e64]:
+        - img [ref=e66]
+        - generic [ref=e69]:
+          - paragraph [ref=e70]: Test User
+          - paragraph [ref=e71]: test99@example.com
+        - button [ref=e72] [cursor=pointer]:
+          - img [ref=e73]
+  - generic [ref=e76]:
+    - banner [ref=e77]:
+      - heading "Coach Blueprint" [level=2] [ref=e79]
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - img [ref=e82]
+          - generic [ref=e84]: 80 credits
+        - button [ref=e85] [cursor=pointer]:
+          - img [ref=e86]
+        - button [ref=e89] [cursor=pointer]:
+          - img [ref=e90]
+        - button "Log out" [ref=e94] [cursor=pointer]:
+          - img [ref=e95]
+        - img "Test User" [ref=e99]
+    - main [ref=e100]:
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - button "Reset Blueprint" [ref=e103] [cursor=pointer]:
+            - img [ref=e104]
+            - text: Reset Blueprint
+          - generic [ref=e187]: "ID: bp_1780384140482"
+        - generic [ref=e111]:
+          - button "Niche Discovery" [ref=e189] [cursor=pointer]:
+            - img [ref=e191]
+            - generic [ref=e115]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e116] [cursor=pointer]:
+            - generic [ref=e117]: "2"
+            - generic [ref=e118]: Audience Mapping
+          - button "3 Program Builder" [ref=e119]:
+            - generic [ref=e120]: "3"
+            - generic [ref=e121]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e122]:
+            - generic [ref=e123]: "4"
+            - generic [ref=e124]: Roadmap & PDF
+        - generic [ref=e194]:
+          - generic [ref=e195]:
+            - heading "Meet Your Ideal Student" [level=2] [ref=e196]
+            - paragraph [ref=e197]: Here is a detailed persona of the person most likely to buy your coaching program.
+          - generic [ref=e198]:
+            - img [ref=e199]
+            - generic [ref=e203]:
+              - paragraph [ref=e204]: Selected Niche
+              - paragraph [ref=e205]: Tech Leadership Accelerator Coaching
+          - generic [ref=e227]:
+            - generic [ref=e228]:
+              - generic [ref=e229]:
+                - heading "Rajesh" [level=3] [ref=e230]
+                - paragraph [ref=e231]: 32-42 years old
+                - paragraph [ref=e232]: Senior Software Engineer / Tech Lead transitioning to Engineering Manager
+                - generic [ref=e233]:
+                  - img [ref=e234]
+                  - generic [ref=e237]: Bangalore / Hyderabad
+              - generic [ref=e238]: ₹50,000 - ₹1,50,000 for a 3-6 month coaching program
+            - generic [ref=e239]:
+              - paragraph [ref=e240]: Current Situation
+              - paragraph [ref=e241]: Rajesh has been coding for 12 years and recently got promoted to a tech lead role managing 5-7 engineers. He's struggling because his technical expertise doesn't translate to people management—his team feels micromanaged, communication is tense, and he's working 60+ hour weeks without seeing results. His manager expects him to scale the team and mentor junior developers, but he feels lost navigating these new responsibilities.
+            - generic [ref=e242]:
+              - paragraph [ref=e243]: Biggest Desire
+              - paragraph [ref=e244]: "\"To become a confident, strategic tech leader who can build and scale high-performing teams while maintaining work-life balance, earning respect through leadership skills rather than just technical prowess.\""
+            - paragraph [ref=e246]: "\"I can write elegant code and solve complex technical problems, but I have no idea how to make my team feel motivated and aligned. I'm drowning in meetings and my family barely sees me. I need to figure out this leadership thing before I burn out completely.\""
+            - generic [ref=e247]:
+              - paragraph [ref=e248]: Pain Points
+              - generic [ref=e249]:
+                - generic [ref=e250]: Difficulty transitioning from individual contributor to people manager mindset
+                - generic [ref=e251]: Struggling with delegation and trusting team members with important tasks
+                - generic [ref=e252]: Imposter syndrome when dealing with senior leadership and stakeholder management
+                - generic [ref=e253]: Burnout from trying to be both a technical expert and a manager simultaneously
+                - generic [ref=e254]: Lack of frameworks for giving constructive feedback and handling difficult team conversations
+                - generic [ref=e255]: Fear of losing technical credibility while learning to lead
+            - generic [ref=e256]:
+              - paragraph [ref=e257]: Goals
+              - generic [ref=e258]:
+                - generic [ref=e259]: Build and lead a high-performing engineering team that delivers quality work on time
+                - generic [ref=e260]: Develop emotional intelligence and communication skills for effective team management
+                - generic [ref=e261]: Create a clear career path to become a Director of Engineering or VP of Technology
+                - generic [ref=e262]: Reduce working hours to 45-50 per week while maintaining team productivity
+                - generic [ref=e263]: Mentor junior engineers and create a culture of learning within the team
+            - generic [ref=e264]:
+              - paragraph [ref=e265]: Where to Find Them
+              - generic [ref=e266]:
+                - generic [ref=e267]: LinkedIn (3-4 times/week)
+                - generic [ref=e268]: Twitter/X (2-3 times/week)
+                - generic [ref=e269]: YouTube (weekends)
+                - generic [ref=e270]: WhatsApp groups (daily)
+            - button "Yes, This Is My Student!" [ref=e271] [cursor=pointer]:
+              - text: Yes, This Is My Student!
+              - img [ref=e272]
+          - generic [ref=e212]:
+            - button "Regenerate Avatar" [ref=e213] [cursor=pointer]:
+              - img [ref=e214]
+              - text: Regenerate Avatar
+            - button "Back to Niche" [ref=e217] [cursor=pointer]:
+              - img [ref=e218]
+              - text: Back to Niche

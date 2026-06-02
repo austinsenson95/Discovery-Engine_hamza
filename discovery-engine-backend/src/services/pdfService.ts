@@ -26,7 +26,7 @@ const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 // ---------------------------------------------------------------------------
 // Chromium Resolution
 // ---------------------------------------------------------------------------
-function resolveExecutablePath(): string {
+async function resolveExecutablePath(): Promise<string> {
   // 1. Environment variable override
   const envPath = process.env.PUPPETEER_EXECUTABLE_PATH;
   if (envPath) {
@@ -34,7 +34,19 @@ function resolveExecutablePath(): string {
     return envPath;
   }
 
-  // 2. Platform-specific common paths
+  // 2. Vercel / serverless: use @sparticuz/chromium
+  if (process.env.VERCEL) {
+    try {
+      const chromium = require('@sparticuz/chromium');
+      const path = await chromium.executablePath();
+      console.log(`[PDF] Using @sparticuz/chromium at: ${path}`);
+      return path;
+    } catch (err) {
+      console.warn('[PDF] @sparticuz/chromium not available:', err);
+    }
+  }
+
+  // 3. Platform-specific common paths
   const platformPaths: Record<string, string[]> = {
     darwin: [
       '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -70,7 +82,7 @@ function resolveExecutablePath(): string {
     }
   }
 
-  // 3. Fallback: try puppeteer's default (may throw at launch if not found)
+  // 4. Fallback: try puppeteer's default (may throw at launch if not found)
   console.warn('[PDF] No Chromium found in common paths. Will attempt puppeteer default.');
   return '';
 }
@@ -92,17 +104,30 @@ async function getBrowser(): Promise<Browser> {
     }
   }
 
-  const executablePath = resolveExecutablePath();
+  const executablePath = await resolveExecutablePath();
+
+  // Build args: start with our defaults, then merge serverless args on Vercel
+  const args = new Set([
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-accelerated-2d-canvas',
+    '--disable-gpu',
+    '--font-render-hinting=none',
+  ]);
+
+  if (process.env.VERCEL) {
+    try {
+      const chromium = require('@sparticuz/chromium');
+      chromium.args.forEach((a: string) => args.add(a));
+    } catch {
+      // ignore
+    }
+  }
+
   const launchOptions: LaunchOptions = {
     headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--disable-gpu',
-      '--font-render-hinting=none',
-    ],
+    args: Array.from(args),
   };
 
   if (executablePath) {
@@ -110,11 +135,12 @@ async function getBrowser(): Promise<Browser> {
   }
 
   console.log('[PDF] Launching Puppeteer browser...');
-  const puppeteer = await import('puppeteer-core');
+  // True dynamic ESM import that bypasses TypeScript CommonJS compilation
+  const puppeteer = await new Function('return import("puppeteer-core")')();
   browserInstance = await puppeteer.default.launch(launchOptions);
   console.log('[PDF] Puppeteer browser launched');
 
-  return browserInstance;
+  return browserInstance as Browser;
 }
 
 // ---------------------------------------------------------------------------
@@ -215,9 +241,18 @@ class PDFService {
     }
 
     // Compile template
-    const { html, filename } = compileBlueprintTemplate(blueprint);
+    const { html, filename: pdfFilename } = compileBlueprintTemplate(blueprint);
 
-    // Render with Puppeteer
+    // Vercel serverless: return HTML fallback (Chromium binary exceeds 50MB function limit)
+    if (process.env.VERCEL) {
+      console.log('[PDF] Running on Vercel — returning HTML blueprint (print to PDF from your browser)');
+      const htmlFilename = pdfFilename.replace(/\.pdf$/i, '.html');
+      const htmlBuffer = Buffer.from(html, 'utf-8');
+      setCachedPDF(blueprint.id, htmlBuffer);
+      return { buffer: htmlBuffer, filename: htmlFilename };
+    }
+
+    // Render with Puppeteer (local dev / self-hosted only)
     const browser = await getBrowser();
     const page = await browser.newPage();
 
@@ -242,7 +277,7 @@ class PDFService {
       const processingTime = Date.now() - startTime;
       console.log(`[PDF] PDF rendered in ${processingTime}ms (${(pdfBuffer.length / 1024).toFixed(1)} KB)`);
 
-      return { buffer: pdfBuffer, filename };
+      return { buffer: pdfBuffer, filename: pdfFilename };
     } finally {
       await page.close();
     }
