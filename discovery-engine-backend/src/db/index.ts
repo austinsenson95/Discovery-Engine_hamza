@@ -8,8 +8,6 @@
  */
 
 import { Pool } from 'pg';
-import sqlite3 from 'sqlite3';
-import { open, Database } from 'sqlite';
 
 const connectionString = process.env.DATABASE_URL;
 const isPostgres = !!connectionString;
@@ -18,18 +16,20 @@ const isPostgres = !!connectionString;
 export const pool = isPostgres
   ? new Pool({
       connectionString,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      ssl: { rejectUnauthorized: false },
       max: 1,
       idleTimeoutMillis: 0,
-      connectionTimeoutMillis: 10000,
+      connectionTimeoutMillis: 5000,
     })
   : (null as any);
 
-// SQLite instance (only created if no DATABASE_URL)
-let sqliteDb: Database<sqlite3.Database, sqlite3.Statement> | null = null;
+// SQLite instance (lazy-loaded only in local dev)
+let sqliteDb: any = null;
 
-async function getSqliteDb(): Promise<Database<sqlite3.Database, sqlite3.Statement>> {
+async function getSqliteDb(): Promise<any> {
   if (!sqliteDb) {
+    const sqlite3 = (await import('sqlite3')).default;
+    const { open } = await import('sqlite');
     sqliteDb = await open({
       filename: './data/dev.sqlite',
       driver: sqlite3.Database,
@@ -71,6 +71,7 @@ export async function query(text: string, params?: any[]): Promise<{ rows: any[]
 // Initialize Schema
 // ---------------------------------------------------------------------------
 export async function initDb() {
+  console.log('[DB] initDb called, isPostgres:', isPostgres);
   if (isPostgres) {
     await initPostgres();
   } else {
@@ -79,6 +80,7 @@ export async function initDb() {
 }
 
 async function initPostgres() {
+  console.log('[DB] initPostgres starting, pool created:', !!pool);
   await pool.query(`
     CREATE TABLE IF NOT EXISTS blueprints (
       id TEXT PRIMARY KEY,
