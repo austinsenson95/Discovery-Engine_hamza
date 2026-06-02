@@ -5,7 +5,6 @@
  */
 
 const express = require('express');
-const serverless = require('serverless-http');
 
 let app: any;
 let initError: Error | null = null;
@@ -26,4 +25,7 @@ try {
   });
 }
 
-export default serverless(app);
+export default (req: any, res: any) => {
+  console.log('[HANDLER] Request:', req.method, req.url);
+  return app(req, res);
+};

@@ -8,7 +8,6 @@
  * ============================================================================
  */
 
-import puppeteer from 'puppeteer-core';
 import type { Browser, LaunchOptions } from 'puppeteer-core';
 import type { Blueprint } from '../types';
 import { compileBlueprintTemplate, validateBlueprintForPDF } from './templateEngine';
@@ -111,7 +110,8 @@ async function getBrowser(): Promise<Browser> {
   }
 
   console.log('[PDF] Launching Puppeteer browser...');
-  browserInstance = await puppeteer.launch(launchOptions);
+  const puppeteer = await import('puppeteer-core');
+  browserInstance = await puppeteer.default.launch(launchOptions);
   console.log('[PDF] Puppeteer browser launched');
 
   return browserInstance;

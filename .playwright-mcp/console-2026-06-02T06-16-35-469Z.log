@@ -1,0 +1,4 @@
+[     383ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ https://discovery-engine-hamza.vercel.app/signup:0
+[     383ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ https://discovery-engine-hamza.vercel.app/signup:0
+[   82012ms] [ERROR] Access to fetch at 'http://localhost:3001/api/auth/register' from origin 'https://discovery-engine-hamza.vercel.app' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://discovery-engine-hamza.vercel.app/signup:0
+[   82013ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3001/api/auth/register:0

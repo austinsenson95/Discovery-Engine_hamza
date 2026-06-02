@@ -45,7 +45,7 @@ import {
 // ---------------------------------------------------------------------------
 // Claude Client Setup
 // ---------------------------------------------------------------------------
-const CLAUDE_MODEL = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
+const CLAUDE_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6';
 
 const anthropic = config.anthropicApiKey
   ? new Anthropic({ apiKey: config.anthropicApiKey })

@@ -1,0 +1,142 @@
+- generic [ref=e5]:
+  - complementary [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - img "Discovery Engine" [ref=e10]
+        - button "Collapse sidebar" [ref=e11] [cursor=pointer]:
+          - img [ref=e13]
+      - navigation [ref=e15]:
+        - generic [ref=e16]:
+          - paragraph [ref=e17]: PROGRAM
+          - generic [ref=e18]:
+            - link "Dashboard" [ref=e19] [cursor=pointer]:
+              - /url: /
+              - img [ref=e20]
+              - generic [ref=e25]: Dashboard
+            - link "Blueprint" [ref=e26] [cursor=pointer]:
+              - /url: /blueprint
+              - img [ref=e27]
+              - generic [ref=e30]: Blueprint
+        - generic [ref=e31]:
+          - paragraph [ref=e32]: MY STUFF
+          - generic [ref=e33]:
+            - link "My Journey" [ref=e34] [cursor=pointer]:
+              - /url: /journey
+              - img [ref=e35]
+              - generic [ref=e39]: My Journey
+            - link "Credits" [ref=e40] [cursor=pointer]:
+              - /url: /credits
+              - img [ref=e41]
+              - generic [ref=e46]: Credits
+            - link "Profile" [ref=e47] [cursor=pointer]:
+              - /url: /profile
+              - img [ref=e48]
+              - generic [ref=e51]: Profile
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - img [ref=e56]
+          - generic [ref=e58]:
+            - paragraph [ref=e59]: Book Your Free Call
+            - paragraph [ref=e60]: Get clarity on your coaching business in 20 minutes.
+        - button "Book Now" [ref=e61] [cursor=pointer]
+      - generic [ref=e64]:
+        - img [ref=e66]
+        - generic [ref=e69]:
+          - paragraph [ref=e70]: Test User
+          - paragraph [ref=e71]: test99@example.com
+        - button [ref=e72] [cursor=pointer]:
+          - img [ref=e73]
+  - generic [ref=e76]:
+    - banner [ref=e77]:
+      - heading "Coach Blueprint" [level=2] [ref=e79]
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - img [ref=e82]
+          - generic [ref=e84]: 100 credits
+        - button [ref=e85] [cursor=pointer]:
+          - img [ref=e86]
+        - button [ref=e89] [cursor=pointer]:
+          - img [ref=e90]
+        - button "Log out" [ref=e94] [cursor=pointer]:
+          - img [ref=e95]
+        - img "Test User" [ref=e99]
+    - main [ref=e100]:
+      - generic [ref=e101]:
+        - button "Reset Blueprint" [ref=e103] [cursor=pointer]:
+          - img [ref=e104]
+          - text: Reset Blueprint
+        - generic [ref=e111]:
+          - button "1 Niche Discovery" [ref=e113] [cursor=pointer]:
+            - generic [ref=e114]: "1"
+            - generic [ref=e115]: Niche Discovery
+          - button "2 Audience Mapping" [ref=e116]:
+            - generic [ref=e117]: "2"
+            - generic [ref=e118]: Audience Mapping
+          - button "3 Program Builder" [ref=e119]:
+            - generic [ref=e120]: "3"
+            - generic [ref=e121]: Program Builder
+          - button "4 Roadmap & PDF" [ref=e122]:
+            - generic [ref=e123]: "4"
+            - generic [ref=e124]: Roadmap & PDF
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - heading "Let's Find Your Perfect Niche" [level=2] [ref=e129]
+            - paragraph [ref=e130]: Tell us about your background and we will use AI to discover coaching niches perfectly suited to your experience.
+          - generic [ref=e198]:
+            - generic [ref=e199]:
+              - generic [ref=e200]: Choose Your Coaching Domain
+              - generic [ref=e201]:
+                - button "💪 Fitness & Health" [ref=e202] [cursor=pointer]
+                - button "💼 Business & Career" [ref=e203] [cursor=pointer]
+                - button "🎓 Education & Skills" [ref=e204] [cursor=pointer]
+                - button "🧘 Yoga & Mindfulness" [ref=e205] [cursor=pointer]
+                - button "💰 Personal Finance" [ref=e206] [cursor=pointer]
+                - button "👨‍👩‍👧 Parenting" [ref=e207] [cursor=pointer]
+                - button "🎨 Creative Arts" [ref=e208] [cursor=pointer]
+                - button "💻 Technology" [ref=e209] [cursor=pointer]
+                - button "🗣️ Communication" [ref=e210] [cursor=pointer]
+                - button "🏠 Life Coaching" [ref=e211] [cursor=pointer]
+                - button "🎵 Music & Performing Arts" [ref=e212] [cursor=pointer]
+                - button "📸 Photography & Video" [ref=e213] [cursor=pointer]
+                - button "🍳 Cooking & Nutrition" [ref=e214] [cursor=pointer]
+                - button "🧠 Mental Health" [ref=e215] [cursor=pointer]
+                - button "📱 Digital Marketing" [ref=e216] [cursor=pointer]
+                - button "🏋️ Sports Coaching" [ref=e217] [cursor=pointer]
+                - button "✈️ Travel & Lifestyle" [ref=e218] [cursor=pointer]
+                - button "🌿 Ayurveda & Naturopathy" [ref=e219] [cursor=pointer]
+            - generic [ref=e220]:
+              - generic [ref=e221]:
+                - text: What are your top skills?
+                - generic [ref=e222]: (41 chars)
+              - textbox "e.g. Leadership, team building, strategic planning, mentoring junior developers..." [ref=e223]: Leadership, strategic planning, mentoring
+              - generic [ref=e224]:
+                - button "+ Leadership" [ref=e225] [cursor=pointer]
+                - button "+ Public Speaking" [ref=e226] [cursor=pointer]
+                - button "+ Team Management" [ref=e227] [cursor=pointer]
+                - button "+ Problem Solving" [ref=e228] [cursor=pointer]
+                - button "+ Mentoring" [ref=e229] [cursor=pointer]
+            - generic [ref=e230]:
+              - generic [ref=e231]:
+                - text: What's your professional experience?
+                - generic [ref=e232]: (45 chars)
+              - textbox "e.g. 12 years in tech, managed teams of 20+ people, led digital transformation projects..." [ref=e233]: 10 years in tech, managed teams of 20+ people
+              - generic [ref=e234]:
+                - button "+ 10+ years corporate" [ref=e235] [cursor=pointer]
+                - button "+ Built teams from scratch" [ref=e236] [cursor=pointer]
+                - button "+ Managed P&L" [ref=e237] [cursor=pointer]
+                - button "+ Career pivots" [ref=e238] [cursor=pointer]
+            - generic [ref=e239]:
+              - generic [ref=e240]:
+                - text: What are you passionate about?
+                - generic [ref=e241]: (41 chars)
+              - textbox "e.g. Helping people grow, writing about leadership, conducting workshops, building communities..." [ref=e242]: Helping people grow, building communities
+              - generic [ref=e243]:
+                - button "+ Helping others grow" [ref=e244] [cursor=pointer]
+                - button "+ Teaching" [ref=e245] [cursor=pointer]
+                - button "+ Building communities" [ref=e246] [cursor=pointer]
+                - button "+ Writing" [ref=e247] [cursor=pointer]
+            - generic [ref=e248]:
+              - button "Discover My Niche" [ref=e249] [cursor=pointer]:
+                - img [ref=e250]
+                - text: Discover My Niche
+              - paragraph [ref=e253]: This will deduct 10 credits from your account
