@@ -192,7 +192,9 @@ export const recordPaymentFailure = async (payload: {
 };
 
 export const downloadPDF = async (id: string): Promise<void> => {
-  const response = await fetch(`${API_BASE}/blueprint/pdf/${id}`);
+  const response = await fetch(`${API_BASE}/blueprint/pdf/${id}`, {
+    headers: getAuthHeaders(),
+  });
 
   if (!response.ok) {
     const errorText = await response.text().catch(() => 'Failed to download PDF');

@@ -33,7 +33,6 @@ import {
   dummyPricing,
   dummyModules,
   dummyRoadmapPhases,
-  dummyUser,
   quizQuestions,
   quizActionTips,
 } from '../data/dummyData';
@@ -80,7 +79,7 @@ export const getBlueprint = async (
   try {
     console.log(`[Blueprint] GET /api/blueprint — fetching blueprint`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
     const blueprints = await getBlueprintsByUser(userId);
     const blueprint = blueprints[0] || {
       ...dummyBlueprint,
@@ -103,7 +102,7 @@ export const getAllBlueprints = async (
 ) => {
   try {
     console.log(`[Blueprint] GET /api/blueprint/all — fetching all blueprints`);
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
     const blueprints = await getBlueprintsByUser(userId);
     sendSuccess(res, blueprints);
   } catch (error) {
@@ -121,7 +120,7 @@ export const createNewBlueprint = async (
 ) => {
   try {
     console.log(`[Blueprint] POST /api/blueprint — creating new blueprint`);
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
     const id = `bp_${Date.now()}`;
     const now = new Date();
 
@@ -217,7 +216,7 @@ export const submitNiche = async (
     const { skills, experience, passions, domains } = req.body;
     console.log(`[Blueprint] POST /api/blueprint/niche — skills="${skills}" domains="${domains?.join(', ') ?? ''}"`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'niche');
     if (!canAfford) {
@@ -320,7 +319,7 @@ export const generateAudience = async (
     const { nicheId } = req.body;
     console.log(`[Blueprint] POST /api/blueprint/audience — nicheId="${nicheId}"`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'audience');
     if (!canAfford) {
@@ -391,7 +390,7 @@ export const submitProblems = async (
     const { selectedProblems } = req.body;
     console.log(`[Blueprint] POST /api/blueprint/problems — ${selectedProblems?.length} problems`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
     const problems = selectedProblems || dummySelectedProblems;
 
     const blueprints = await getBlueprintsByUser(userId);
@@ -429,7 +428,7 @@ export const generateProblems = async (
   try {
     console.log(`[Blueprint] POST /api/blueprint/generate-problems`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'problems');
     if (!canAfford) {
@@ -514,7 +513,7 @@ export const generateProgramNames = async (
   try {
     console.log(`[Blueprint] POST /api/blueprint/program-name`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'program');
     if (!canAfford) {
@@ -576,7 +575,7 @@ export const generatePricing = async (
   try {
     console.log(`[Blueprint] POST /api/blueprint/pricing`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'pricing');
     if (!canAfford) {
@@ -639,7 +638,7 @@ export const generateCurriculum = async (
   try {
     console.log(`[Blueprint] POST /api/blueprint/curriculum — generating course curriculum`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'curriculum');
     if (!canAfford) {
@@ -730,7 +729,7 @@ export const submitQuiz = async (
       return;
     }
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'quiz');
     if (!canAfford) {
@@ -850,7 +849,7 @@ export const generateRoadmap = async (
   try {
     console.log(`[Blueprint] POST /api/blueprint/roadmap — generating 12-week roadmap`);
 
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const canAfford = await creditService.hasEnoughCredits(userId, 'roadmap');
     if (!canAfford) {

@@ -40,8 +40,12 @@ import {
   downloadPDF,
 } from '../controllers/blueprintController';
 import { validateNicheForm } from '../middleware/validateRequest';
+import { authenticate } from '../middleware/auth';
 
 const router = Router();
+
+// All blueprint routes require authentication
+router.use(authenticate);
 
 // Blueprint state
 router.get('/', getBlueprint);

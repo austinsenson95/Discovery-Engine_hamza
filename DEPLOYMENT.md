@@ -8,25 +8,30 @@
 
 1. [Vercel account](https://vercel.com/signup)
 2. [Vercel CLI](https://vercel.com/docs/cli) installed: `npm i -g vercel`
-3. PostgreSQL database (Supabase recommended for free tier)
+3. [Supabase account](https://supabase.com) (free PostgreSQL)
 4. Anthropic API key (for AI generation)
 5. Razorpay account (optional, for payments)
+
+> 📖 **Detailed Supabase setup instructions:** See `SUPABASE_SETUP.md` in this folder.
 
 ---
 
 ## 1. Backend Deployment (`discovery-engine-backend/`)
 
-### 1.1 Set up PostgreSQL Database
+### 1.1 Set up Supabase (Free PostgreSQL)
 
-The backend requires PostgreSQL in production. SQLite is only used for local development.
+> 📖 **Full step-by-step guide with screenshots:** `SUPABASE_SETUP.md`
 
-**Option A: Supabase (Recommended — Free tier)**
-1. Go to [supabase.com](https://supabase.com) and create a project
-2. In Project Settings → Database, copy the **Connection Pooler** URL (port `6543`)
-3. It looks like: `postgresql://postgres:[password]@db.[project].supabase.co:6543/postgres?pgbouncer=true`
+**Quick version:**
+1. Go to [supabase.com](https://supabase.com) → New Project
+2. **Project Settings → Database → Connection Pooler**
+3. Copy the URI with **port 6543** (NOT 5432)
+4. It looks like:
+   ```
+   postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true
+   ```
 
-**Option B: Local/Other PostgreSQL**
-- Any PostgreSQL 14+ instance will work
+**Why port 6543?** Vercel serverless opens/closes connections on every request. Without connection pooling, you'll hit PostgreSQL's connection limit. Port 6543 is Supabase's PgBouncer pooler — designed exactly for serverless.
 
 ### 1.2 Environment Variables
 

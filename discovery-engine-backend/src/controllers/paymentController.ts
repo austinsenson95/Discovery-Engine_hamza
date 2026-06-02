@@ -55,7 +55,7 @@ export const getPackages = async (req: Request, res: Response, next: NextFunctio
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { packageId } = req.body;
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     const pkg = creditPackages.find((p) => p.id === packageId);
     if (!pkg) {
@@ -102,7 +102,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
 export const verifyPayment = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
-    const userId = dummyUser.id;
+    const userId = req.user!.id;
 
     // Idempotency check: already processed?
     const existingTx = await getPaymentTransactionByPaymentId(razorpay_payment_id);
@@ -216,7 +216,7 @@ export const recordPaymentFailure = async (req: Request, res: Response, next: Ne
     if (!existingTx) {
       await createPaymentTransaction({
         id: crypto.randomUUID(),
-        userId: dummyUser.id,
+        userId: req.user!.id,
         razorpayOrderId: orderId,
         razorpayPaymentId: paymentId,
         status: 'failed',
@@ -317,7 +317,8 @@ export const webhookHandler = async (req: Request, res: Response, next: NextFunc
       creditsToAdd = pkg?.credits || 0;
     }
 
-    const userId = dummyUser.id;
+    // Derive userId from transaction records (webhooks have no auth)
+    const userId = existingTx?.userId || orderTx?.userId || dummyUser.id;
 
     // Add credits
     if (creditsToAdd > 0) {

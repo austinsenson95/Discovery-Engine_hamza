@@ -14,12 +14,13 @@
 import { Router } from 'express';
 import { getPackages, createOrder, verifyPayment, recordPaymentFailure } from '../controllers/paymentController';
 import { validateCreateOrderBody, validateVerifyPaymentBody } from '../middleware/validateRequest';
+import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
 router.get('/packages', getPackages);
-router.post('/create-order', validateCreateOrderBody, createOrder);
-router.post('/verify', validateVerifyPaymentBody, verifyPayment);
-router.post('/fail', recordPaymentFailure);
+router.post('/create-order', authenticate, validateCreateOrderBody, createOrder);
+router.post('/verify', authenticate, validateVerifyPaymentBody, verifyPayment);
+router.post('/fail', authenticate, recordPaymentFailure);
 
 export default router;
