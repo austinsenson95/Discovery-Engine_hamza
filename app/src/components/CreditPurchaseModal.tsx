@@ -233,9 +233,6 @@ export default function CreditPurchaseModal({ isOpen, onClose, onSuccess }: Cred
                         </div>
                         <div className="text-right">
                           <p className="text-lg font-serif text-[#0A0A0A]">{pkg.priceDisplay}</p>
-                          <p className="text-[10px] text-[#6B7280]">
-                            ₹{Math.round(pkg.priceInPaise / pkg.credits)}/credit
-                          </p>
                         </div>
                       </motion.button>
                     ))}

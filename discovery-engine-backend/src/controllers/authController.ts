@@ -92,7 +92,7 @@ export const register = async (
 // Dev mode credentials
 const DEV_EMAIL = 'dev';
 const DEV_PASSWORD = 'password';
-const DEV_CREDITS = 999;
+const DEV_CREDITS = 100;
 
 async function ensureDevUser(): Promise<User & { passwordHash: string }> {
   let user = await getUserByEmail(DEV_EMAIL);

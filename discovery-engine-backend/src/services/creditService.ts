@@ -16,7 +16,7 @@ import {
   getBalance,
   updateBalance,
 } from '../db/creditRepository';
-import { seedDummyUserIfNeeded } from '../db/userRepository';
+import { seedDummyUserIfNeeded, getUserById } from '../db/userRepository';
 
 class CreditService {
   private static instance: CreditService;
@@ -37,7 +37,15 @@ class CreditService {
     return { ...this.deductions };
   }
 
+  private async isDevUser(userId: string): Promise<boolean> {
+    const user = await getUserById(userId);
+    return user?.isDev === true;
+  }
+
   async getBalance(userId: string): Promise<number> {
+    if (await this.isDevUser(userId)) {
+      return 100;
+    }
     const balance = await getBalance(userId);
     if (balance === undefined) {
       // New user — seed and return default
@@ -53,6 +61,13 @@ class CreditService {
     blueprintId?: string
   ): Promise<{ deducted: number; remaining: number }> {
     const amount = this.deductions[action];
+
+    // Dev users: skip deduction, always return 100
+    if (await this.isDevUser(userId)) {
+      console.log(`[Credits] DEV MODE: Skipped ${amount} credit deduction for "${action}"`);
+      return { deducted: 0, remaining: 100 };
+    }
+
     const currentBalance = await this.getBalance(userId);
 
     if (currentBalance < amount) {
@@ -105,6 +120,9 @@ class CreditService {
     userId: string,
     action: keyof CreditDeductions
   ): Promise<boolean> {
+    if (await this.isDevUser(userId)) {
+      return true;
+    }
     const balance = await this.getBalance(userId);
     return balance >= this.deductions[action];
   }
